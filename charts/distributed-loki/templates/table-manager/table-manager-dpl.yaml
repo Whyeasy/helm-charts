@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: table-manager
 spec:
   minReadySeconds: 10
-  replicas: {{ .Values.tableManager.replicas }}
+  replicas: {{ .Values.tableManager.replicaCount }}
   revisionHistoryLimit: 10
   selector:
     matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}

@@ -6,7 +6,7 @@ metadata:
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: memcached-index-queries
 spec:
-  replicas: {{ .Values.memcachedIndexQueries.replicas }}
+  replicas: {{ .Values.memcachedIndexQueries.replicaCount }}
   selector:
     matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: memcached-index-queries

@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: querier-frontend
 spec:
   minReadySeconds: 10
-  replicas: {{ .Values.querierFrontend.replicas }}
+  replicas: {{ .Values.querierFrontend.replicaCount }}
   revisionHistoryLimit: 10
   selector:
     matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
