@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "loki-helm.querier" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: querier
+spec:
+  minReadySeconds: 10
+  replicas: {{ .Values.querier.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: querier
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: querier
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
+                app.kubernetes.io/component: querier
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -target=querier
+        image: {{ .Values.loki.image }}
+        imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
+        name: querier
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        {{- if .Values.querier.resources }}
+        resources: {{- toYaml .Values.querier.resources | nindent 12 }}
+        {{- end }}
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /etc/loki/overrides
+          name: overrides
+      volumes:
+      - configMap:
+          name: {{ include "loki-helm.fullname" . }}-loki
+        name: loki
+      - configMap:
+          name: {{ include "loki-helm.fullname" . }}-overrides
+        name: overrides

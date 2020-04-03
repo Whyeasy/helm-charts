@@ -1,0 +1,19 @@
+{{ if eq .Values.storage.store "aws-dynamo" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "loki-helm.table-manager" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: table-manager
+spec:
+  ports:
+  - name: table-manager-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: table-manager-grpc
+    port: 9095
+    targetPort: 9095
+  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: table-manager
+{{ end }}

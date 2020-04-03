@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "loki-helm.gateway" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: gateway
+spec:
+  minReadySeconds: 10
+  replicas: {{ .Values.gateway.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: gateway
+  template:
+    metadata:
+      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
+                app.kubernetes.io/component: gateway
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - image: {{ .Values.gateway.image }}
+        imagePullPolicy: {{ .Values.gateway.pullPolicy | quote }}
+        name: nginx
+        ports:
+        - containerPort: 80
+          name: http
+        {{- if .Values.gateway.resources }}
+        resources: {{- toYaml .Values.gateway.resources | nindent 12 }}
+        {{- end }}
+        volumeMounts:
+        - mountPath: /etc/nginx
+          name: gateway-config
+      volumes:
+      - configMap:
+          name: {{ include "loki-helm.gateway" . }}-config
+        name: gateway-config

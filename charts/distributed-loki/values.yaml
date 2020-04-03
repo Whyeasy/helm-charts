@@ -1,0 +1,162 @@
+loki:
+  # loki.image -- Image repository for Loki images.
+  image: grafana/loki:1.4.0
+  # loki.pullPolicy -- Image pull policy for Loki images.
+  pullPolicy: IfNotPresent
+
+consul:
+  # consul.replicaCount -- Number of replicas for the Consul deployment.
+  replicaCount: 3
+  # consul.image -- Image repository for the Consul images.
+  image: consul:1.5.3
+  # consul.pullPolicy -- Image pull policy for the Consul images.
+  pullPolicy: IfNotPresent
+  # consul.resources -- Custom resources for the Consul deployment.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 500Mi
+
+distributor:
+  # distributor.replicaCount -- Number of replicas for the Distributor deployment.
+  replicaCount: 3
+  # distributor.resources -- Custom resources for the Distributor deployment.
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+
+gateway:
+  # gateway.replicaCount -- Number of replicas for the Gateway deployment.
+  replicaCount: 3
+  # gateway.image -- Image repository for the Gateway images.
+  image: nginx:1.15.1-alpine
+  # gateway.pullPolicy -- Image pull policy for the Gateway images.
+  pullPolicy: IfNotPresent
+  # gateway.resources -- Custom resources for the Gateway deployment.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  ingress:
+    # gateway.ingress.enabled -- Enable Ingress for your gateway deployment
+    enabled: false
+    # gateway.ingress.annotations -- 
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths: []
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+ingester:
+  # ingester.replicaCount -- Number of replicas for the Ingester deployment.
+  replicaCount: 3
+  # ingester.resources -- Custom resources for the Ingester deployment.
+  resources:
+    limits:
+      cpu: 2
+      memory: 10Gi
+    requests:
+      cpu: 1
+      memory: 5Gi
+
+memcached:
+  # memcached.replicaCount -- Number of replicas for the Memcached deployment.
+  replicaCount: 3
+  # memcached.image -- Image repository for the Memcached images.
+  image: memcached:1.5.17-alpine
+  # memcached.pullPolicy -- Image pull policy for the Memcached images.
+  pullPolicy: IfNotPresent
+  # memcached.resources -- Custom resources for the Memcached deployment.
+  resources:
+    limits:
+      cpu: 3
+      memory: 6Gi
+    requests:
+      cpu: 500m
+      memory: 5Gi
+
+memcachedFrontend:
+  # memcachedFrontend.replicaCount -- Number of replicas for the Memcached-frontend deployment.
+  replicaCount: 3
+  # memcachedFrontend.resources -- Custom resources for the Memcached-frontend deployment.
+  resources:
+    limits:
+      cpu: 3
+      memory: 1546Mi
+    requests:
+      cpu: 500m
+      memory: 1329Mi
+
+memcachedIndexQueries:
+  # memcachedIndexQueries.replicaCount -- Number of replicas for the Memcached-index-queries deployment.
+  replicaCount: 3
+  # memcachedIndexQueries.resources -- Custom resources for the Memcached-index-queries deployment.
+  resources:
+    limits:
+      cpu: 3
+      memory: 1536Mi
+    requests:
+      cpu: 500m
+      memory: 1329Mi
+
+memcachedIndexWrites:
+  # memcachedIndexWrites.replicaCount -- Number of replicas for the Memcached-index-writes deployment.
+  replicaCount: 3
+  # memcachedIndexWrites.resources -- Custom resources for the Memcached-index-writes deployment.
+  resources:
+    limits:
+      cpu: 3
+      memory: 1536Mi
+    requests:
+      cpu: 500m
+      memory: 1329Mi
+
+querier:
+  # querier.replicaCount -- Number of replicas for the Querier deployment.
+  replicaCount: 3
+  # querier.resources -- Custom resources for the Querier deployment.
+  resources: {}
+
+querierFrontend:
+  # querierFrontend.replicaCount -- Number of replicas for the Querier-frontend deployment.
+  replicaCount: 2
+  # querierFrontend.resources -- Customer resources for the Querier-frontend deployment.
+  resources:
+    limits:
+      memory: 1200Mi
+    requests:
+      cpu: "2"
+      memory: 600Mi
+
+# If aws-dynomodb is used, table-manager is needed.
+tableManager:
+  # tableManager.replicaCount -- Number of replicas for the Table-manager deployment.
+  replicaCount: 1
+  # tableManager.resources -- Custom resources for the Table-manager deployment.
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+storage:
+  # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.
+  store: cassandra
+  # storage.objectstore -- Type of store to use for your chunks. Currently only gcs is supported.
+  objectstore: gcs
+  config:
+    # storage.config.storeUrl -- Url of your cassandra instance.
+    storeUrl: loki-cassandra.monitoring.svc
+    # storage.config.bucketName -- Name of your gcs bucket.
+    bucketName: loki_distributed

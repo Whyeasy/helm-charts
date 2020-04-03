@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: distributor
+  name: {{ include "loki-helm.distributor" . }}
+spec:
+  ports:
+  - name: distributor-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: distributor-grpc
+    port: 9095
+    targetPort: 9095
+  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: distributor

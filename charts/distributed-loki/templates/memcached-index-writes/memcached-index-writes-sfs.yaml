@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "loki-helm.memcached-index-writes" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: memcached-index-writes
+spec:
+  replicas: {{ .Values.memcachedIndexWrites.replicas }}
+  selector:
+    matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: memcached-index-writes
+  serviceName: {{ include "loki-helm.memcached-index-writes" . }}
+  template:
+    metadata:
+      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: memcached-index-writes
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
+                app.kubernetes.io/component: memcached-index-writes
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - -m 1024
+        - -I 1m
+        - -c 1024
+        - -v
+        image: {{ .Values.memcached.image }}
+        imagePullPolicy: {{ .Values.memcached.pullPolicy | quote }}
+        name: memcached
+        ports:
+        - containerPort: 11211
+          name: client
+        {{- if .Values.memcachedIndexWrites.resources }}
+        resources: {{- toYaml .Values.memcachedIndexWrites.resources | nindent 12 }}
+        {{- end }}
+      - args:
+        - --memcached.address=localhost:11211
+        - --web.listen-address=0.0.0.0:9150
+        image: prom/memcached-exporter:v0.6.0
+        imagePullPolicy: IfNotPresent
+        name: exporter
+        ports:
+        - containerPort: 9150
+          name: http-metrics
+  updateStrategy:
+    type: RollingUpdate
