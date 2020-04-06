@@ -106,11 +106,11 @@ data:
         http_server_write_timeout: 1m
     storage_config:
         cassandra:
-            addresses: {{ .Values.storage.storeUrl }}
+            addresses: {{ .Values.storage.config.storeUrl }}
             auth: false
             keyspace: lokiindex
         gcs:
-            bucket_name: {{ .Values.storage.bucketName }}
+            bucket_name: {{ .Values.storage.config.bucketName }}
         index_queries_cache_config:
             memcached:
                 batch_size: 100
