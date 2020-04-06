@@ -156,6 +156,10 @@ storage:
   # storage.objectstore -- Type of store to use for your chunks. Currently only gcs is supported.
   objectStore: gcs
   config:
+    # storage.config.retentionPeriod -- Retention period of storing logs.
+    retentionPeriod: 0
+    # storage.config.retentionDelete -- Enable the deletion of indexes.
+    retentionDelete: false
     # storage.config.storeUrl -- Url of your cassandra instance.
     storeUrl: loki-cassandra.monitoring.svc
     # storage.config.bucketName -- Name of your gcs bucket.

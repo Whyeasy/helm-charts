@@ -10,7 +10,7 @@ data:
                 consistent_hash: true
                 host: {{ include "loki-helm.memcached" . }}.{{ .Release.Namespace }}.svc.cluster.local
                 service: memcached-client
-        max_look_back_period: 0
+        max_look_back_period: {{ .Values.storage.config.retentionPeriod }}
         write_dedupe_cache_config:
             memcached:
                 batch_size: 100
@@ -118,8 +118,7 @@ data:
             memcached_client:
                 consistent_hash: true
                 host: {{ include "loki-helm.memcached-index-queries" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                service: memcached-client
-    {{ if eq .Values.storage.store "aws-dynamo" }}            
+                service: memcached-client         
     table_manager:
         chunk_tables_provisioning:
             inactive_read_throughput: 0
@@ -131,9 +130,8 @@ data:
             inactive_write_throughput: 0
             provisioned_read_throughput: 0
             provisioned_write_throughput: 0
-        retention_deletes_enabled: false
-        retention_period: 0
-    {{ end }}
+        retention_deletes_enabled: {{ .Values.storage.config.retentionDelete }}
+        retention_period: {{ .Values.storage.config.retentionPeriod }}
 kind: ConfigMap
 metadata:
   name: {{ include "loki-helm.fullname" . }}-config

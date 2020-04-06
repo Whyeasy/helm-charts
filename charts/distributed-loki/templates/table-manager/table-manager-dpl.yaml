@@ -1,4 +1,3 @@
-{{ if eq .Values.storage.store "aws-dynamo" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -47,6 +46,5 @@ spec:
           name: loki
       volumes:
       - configMap:
-          name: {{ include "loki-helm.fullname" . }}-loki
+          name: {{ include "loki-helm.fullname" . }}-config
         name: loki
-{{ end }}

@@ -60,7 +60,7 @@ spec:
       terminationGracePeriodSeconds: 4800
       volumes:
       - configMap:
-          name: {{ include "loki-helm.fullname" . }}-loki
+          name: {{ include "loki-helm.fullname" . }}-config
         name: loki
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-overrides

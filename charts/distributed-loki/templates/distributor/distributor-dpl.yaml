@@ -55,7 +55,7 @@ spec:
           name: overrides
       volumes:
       - configMap:
-          name: {{ include "loki-helm.fullname" . }}-loki
+          name: {{ include "loki-helm.fullname" . }}-config
         name: loki
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-overrides
