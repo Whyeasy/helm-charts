@@ -38,6 +38,9 @@ spec:
         image: {{ .Values.loki.image }}
         imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
         name: ingester
+        {{- if .Values.ingester.env }}
+        env: {{- toYaml .Values.ingester.env | nindent 8 }}
+        {{- end }}
         ports:
         - containerPort: 3100
           name: http-metrics
@@ -57,6 +60,9 @@ spec:
           name: loki
         - mountPath: /etc/loki/overrides
           name: overrides
+        {{- with .Values.ingester.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       terminationGracePeriodSeconds: 4800
       volumes:
       - configMap:
@@ -65,3 +71,6 @@ spec:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-overrides
         name: overrides
+      {{- with .Values.ingester.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}

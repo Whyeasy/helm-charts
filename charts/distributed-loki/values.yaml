@@ -28,6 +28,12 @@ distributor:
     requests:
       cpu: 500m
       memory: 500Mi
+  # distributor.env -- Allow Extra env variables into the deployment
+  env: []
+  # distributor.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # distributor.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
 
 gateway:
   # gateway.replicaCount -- Number of replicas for the Gateway deployment.
@@ -41,6 +47,12 @@ gateway:
     requests:
       cpu: 50m
       memory: 100Mi
+  # gateway.env -- Allow Extra env variables into the deployment
+  env: []
+  # gateway.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # gateway.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
   ingress:
     # gateway.ingress.enabled -- Enable Ingress for your gateway deployment
     enabled: false
@@ -67,6 +79,12 @@ ingester:
     requests:
       cpu: 1
       memory: 5Gi
+  # ingester.env -- Allow Extra env variables into the deployment
+  env: []
+  # ingester.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # ingester.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
 
 memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
@@ -125,6 +143,13 @@ querier:
   replicaCount: 3
   # querier.resources -- Custom resources for the Querier deployment.
   resources: {}
+  # querier.env -- Allow Extra env variables into the deployment
+  env: []
+  # querier.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # querier.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
+
 
 querierFrontend:
   # querierFrontend.replicaCount -- Number of replicas for the Querier-frontend deployment.
@@ -136,6 +161,13 @@ querierFrontend:
     requests:
       cpu: "2"
       memory: 600Mi
+  resources: {}
+  # querierFrontend.env -- Allow Extra env variables into the deployment
+  env: []
+  # querierFrontend.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # querierFrontend.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
 
 # If aws-dynomodb is used, table-manager is needed.
 tableManager:
@@ -149,6 +181,12 @@ tableManager:
     requests:
       cpu: 100m
       memory: 100Mi
+  # tableManager.env -- Allow Extra env variables into the deployment
+  env: []
+  # tableManager.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # tableManager.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
 
 storage:
   # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.

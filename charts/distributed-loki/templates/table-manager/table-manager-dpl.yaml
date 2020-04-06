@@ -27,6 +27,9 @@ spec:
         image: {{ .Values.loki.image }}
         imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
         name: table-manager
+        {{- if .Values.tableManager.env }}
+        env: {{- toYaml .Values.tableManager.env | nindent 8 }}
+        {{- end }}
         ports:
         - containerPort: 3100
           name: http-metrics
@@ -44,7 +47,13 @@ spec:
         volumeMounts:
         - mountPath: /etc/loki/config
           name: loki
+        {{- with .Values.tableManager.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-config
         name: loki
+      {{- with .Values.tableManager.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}

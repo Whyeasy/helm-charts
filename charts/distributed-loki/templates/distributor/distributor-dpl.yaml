@@ -34,6 +34,9 @@ spec:
         image: {{ .Values.loki.image }}
         imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
         name: distributor
+        {{- if .Values.distributor.env }}
+        env: {{- toYaml .Values.distributor.env | nindent 8 }}
+        {{- end }}
         ports:
         - containerPort: 3100
           name: http-metrics
@@ -53,6 +56,9 @@ spec:
           name: loki
         - mountPath: /etc/loki/overrides
           name: overrides
+        {{- with .Values.distributor.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-config
@@ -60,3 +66,6 @@ spec:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-overrides
         name: overrides
+      {{- with .Values.distributor.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
