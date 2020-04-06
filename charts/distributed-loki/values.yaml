@@ -154,7 +154,7 @@ storage:
   # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.
   store: cassandra
   # storage.objectstore -- Type of store to use for your chunks. Currently only gcs is supported.
-  objectstore: gcs
+  objectStore: gcs
   config:
     # storage.config.storeUrl -- Url of your cassandra instance.
     storeUrl: loki-cassandra.monitoring.svc
