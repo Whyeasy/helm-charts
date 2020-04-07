@@ -23,6 +23,10 @@ data:
       server {
         listen               80;
 
+        location = / {
+          proxy_pass      http://{{ include "loki-helm.querier" . }}.{{ .Release.Namespace }}.svc.cluster.local:3100/ready
+        }
+
         location = /api/prom/push {
           proxy_pass       http://{{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local:3100$request_uri;
         }
