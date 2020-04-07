@@ -1,4 +1,5 @@
 {{ if .Values.gateway.ingress.enabled }}
+{{- $fullName := include "loki-helm.gateway" . -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
@@ -6,18 +7,18 @@ apiVersion: extensions/v1beta1
 {{ end }}
 kind: Ingress
 metadata: 
-  name: {{ include "loki-helm.gateway" . }}
+  name: {{ $fullName }}
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: gateway
-  {{- with .Values.ingress.annotations }}
+  {{- with .Values.gateway.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.gateway.ingress.tls }}
   tls:
-  {{- range .Values.ingress.tls }}
+  {{- range .Values.gateway.ingress.tls }}
     - hosts:
       {{- range .hosts }}
         - {{ . | quote }}
@@ -26,15 +27,11 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.gateway.ingress.host }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: /*
             backend:
-              serviceName: {{ include "loki-helm.gateway" . }}
-              servicePort: 80
-        {{- end }}
-  {{- end }}
+              serviceName: {{ $fullName }}
+              servicePort: http
 {{ end }}
