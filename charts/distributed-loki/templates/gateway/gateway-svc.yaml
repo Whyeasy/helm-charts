@@ -5,7 +5,12 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: gateway
+  {{- with .Values.gateway.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{ end }}
 spec:
+  type: {{ .Values.gateway.service.type }}
   ports:
   - name: nginx-http
     port: 80

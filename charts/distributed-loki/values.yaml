@@ -53,6 +53,11 @@ gateway:
   extraVolumeMounts: []
   # gateway.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  service:
+    #gateway.service.annotations -- Annotations to apply on gateway service
+    annotations: {}
+    #gateway.service.type -- Service type
+    type: ClusterIP
   ingress:
     # gateway.ingress.enabled -- Enable Ingress for your gateway deployment
     enabled: false
