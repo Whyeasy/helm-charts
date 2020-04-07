@@ -33,5 +33,5 @@ spec:
           - path: /*
             backend:
               serviceName: {{ $fullName }}
-              servicePort: http
+              servicePort: nginx-http
 {{ end }}
