@@ -202,3 +202,13 @@ storage:
     storeUrl: loki-cassandra.monitoring.svc
     # storage.config.bucketName -- Name of your gcs bucket.
     bucketName: loki_distributed
+
+serviceMonitor:
+  # serviceMonitor.enabled -- Enable service monitors for Loki deployment.
+  enabled: false
+  # serviceMonitor.interval -- Set interval scraping the targets.
+  interval: ""
+  # serviceMonitor.additionalLabels -- Set additional labels for the service monitor.
+  additionalLabels: {}
+  # serviceMonitor.scrapeTimeout -- Set time out for scraping.
+  # scrapeTimeout: 10s
