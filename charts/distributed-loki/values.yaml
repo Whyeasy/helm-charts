@@ -161,7 +161,6 @@ querierFrontend:
     requests:
       cpu: "2"
       memory: 600Mi
-  resources: {}
   # querierFrontend.env -- Allow Extra env variables into the deployment
   env: []
   # querierFrontend.extraVolumeMounts -- Allow Extra volume mounts into the deployment
