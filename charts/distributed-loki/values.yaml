@@ -1,6 +1,6 @@
 loki:
   # loki.image -- Image repository for Loki images.
-  image: grafana/loki:1.4.0
+  image: grafana/loki:1.4.1
   # loki.pullPolicy -- Image pull policy for Loki images.
   pullPolicy: IfNotPresent
 

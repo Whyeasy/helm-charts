@@ -22,7 +22,6 @@ data:
 
       server {
         listen               80;
-        proxy_set_header     X-Scope-OrgID 1;
 
         location = /api/prom/push {
           proxy_pass       http://{{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local:3100$request_uri;
