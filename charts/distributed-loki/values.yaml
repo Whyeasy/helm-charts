@@ -214,3 +214,9 @@ serviceMonitor:
   additionalLabels: {}
   # serviceMonitor.scrapeTimeout -- Set time out for scraping.
   # scrapeTimeout: 10s
+
+# tolartions -- Add tolartions for pod assginment
+tolarations: []
+
+# nodeSelector -- Add Node labels for pod assginment
+nodeSelector: {}

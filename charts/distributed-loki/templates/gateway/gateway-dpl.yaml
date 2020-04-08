@@ -24,6 +24,10 @@ spec:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: gateway
             topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
       containers:
       - image: {{ .Values.gateway.image }}
         imagePullPolicy: {{ .Values.gateway.pullPolicy | quote }}

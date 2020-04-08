@@ -19,6 +19,10 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: table-manager
     spec:
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
       containers:
       - args:
         - -config.file=/etc/loki/config/config.yaml
