@@ -1,0 +1,10 @@
+apiVersion: v2
+appVersion: "v0.10.0"
+name: prometheus-mongodb-exporter
+description: A Prometheus exporter for MongoDB metrics
+type: application
+
+sources:
+- https://github.com/percona/mongodb_exporter
+
+version: 0.0.1
