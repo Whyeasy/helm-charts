@@ -31,4 +31,17 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.0.16/loki-distributed-0.0.16.tgz
     version: 0.0.16
+  prometheus-mongodb-exporter:
+  - apiVersion: v2
+    appVersion: v0.10.0
+    created: "2020-04-09T10:08:33.868571892Z"
+    description: A Prometheus exporter for MongoDB metrics
+    digest: 71fe35833dc630634ed9af69476c46bdad0d14fd429200746c75632c60338d17
+    name: prometheus-mongodb-exporter
+    sources:
+    - https://github.com/percona/mongodb_exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.1/prometheus-mongodb-exporter-0.0.1.tgz
+    version: 0.0.1
 generated: "2020-04-07T13:13:22.040148679Z"
