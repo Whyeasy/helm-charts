@@ -56,7 +56,7 @@ data:
                         host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
                         httpclienttimeout: 20s
                     store: consul
-                replication_factor: {{ .Values.ingester.replicaCount }}
+                replication_factor: {{ .Values.ingester.replicationFactor }}
         max_transfer_retries: {{ .Values.ingester.transferRetries }}
     ingester_client:
         grpc_client_config:

@@ -90,6 +90,8 @@ ingester:
   extraVolumes: []
   # ingester.trasnferRetries -- Retry transfer chunks when leaving ring
   transferRetries: 10
+  # ingester.replicationFactor -- Replication factor between ingesters. Minimal is 1.
+  replicationFactor: 2
 
 memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
