@@ -39,6 +39,7 @@ data:
             max_send_msg_size: 1.048576e+08
         parallelism: 8
     ingester:
+        max_transfer_retries: {{ .Values.ingester.transferRetries }}
         chunk_block_size: 262144
         chunk_idle_period: 15m
         lifecycler:
@@ -56,7 +57,7 @@ data:
                         host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
                         httpclienttimeout: 20s
                     store: consul
-                replication_factor: 3
+                replication_factor: {{ .Values.ingester.replicaCount }}
         max_transfer_retries: 60
     ingester_client:
         grpc_client_config:

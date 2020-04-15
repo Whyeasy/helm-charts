@@ -88,6 +88,8 @@ ingester:
   extraVolumeMounts: []
   # ingester.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  # ingester.trasnferRetries -- Retry transfer chunks when leaving ring
+  transferRetries: 10
 
 memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
