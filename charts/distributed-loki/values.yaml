@@ -16,6 +16,10 @@ consul:
     requests:
       cpu: 100m
       memory: 500Mi
+  # consul.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # consul.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 distributor:
   # distributor.replicaCount -- Number of replicas for the Distributor deployment.
@@ -34,6 +38,10 @@ distributor:
   extraVolumeMounts: []
   # distributor.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  # distributor.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # distributor.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 gateway:
   # gateway.replicaCount -- Number of replicas for the Gateway deployment.
@@ -70,6 +78,10 @@ gateway:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+  # gateway.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # gateway.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 ingester:
   # ingester.replicaCount -- Number of replicas for the Ingester deployment.
@@ -92,6 +104,10 @@ ingester:
   transferRetries: 10
   # ingester.replicationFactor -- Replication factor between ingesters. Minimal is 1.
   replicationFactor: 2
+  # ingester.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # ingester.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
@@ -108,6 +124,10 @@ memcached:
     requests:
       cpu: 500m
       memory: 5Gi
+  # memcached.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # memcached.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 memcachedFrontend:
   # memcachedFrontend.replicaCount -- Number of replicas for the Memcached-frontend deployment.
@@ -120,6 +140,10 @@ memcachedFrontend:
     requests:
       cpu: 500m
       memory: 1329Mi
+  # memcachedFrontend.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # memcachedFrontend.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 memcachedIndexQueries:
   # memcachedIndexQueries.replicaCount -- Number of replicas for the Memcached-index-queries deployment.
@@ -132,6 +156,10 @@ memcachedIndexQueries:
     requests:
       cpu: 500m
       memory: 1329Mi
+  # memcachedIndexQueries.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # memcachedIndexQueries.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 memcachedIndexWrites:
   # memcachedIndexWrites.replicaCount -- Number of replicas for the Memcached-index-writes deployment.
@@ -144,6 +172,10 @@ memcachedIndexWrites:
     requests:
       cpu: 500m
       memory: 1329Mi
+  # memcachedIndexWrites.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # memcachedIndexWrites.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 querier:
   # querier.replicaCount -- Number of replicas for the Querier deployment.
@@ -156,6 +188,10 @@ querier:
   extraVolumeMounts: []
   # querier.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  # querier.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # querier.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 
 querierFrontend:
@@ -174,6 +210,11 @@ querierFrontend:
   extraVolumeMounts: []
   # querierFrontend.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  # querierFrontend.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # querierFrontend.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
+
 
 # If aws-dynomodb is used, table-manager is needed.
 tableManager:
@@ -193,6 +234,10 @@ tableManager:
   extraVolumeMounts: []
   # tableManager.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
+  # tableManager.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # tableManager.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
 
 storage:
   # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.
@@ -218,9 +263,3 @@ serviceMonitor:
   additionalLabels: {}
   # serviceMonitor.scrapeTimeout -- Set time out for scraping.
   # scrapeTimeout: 10s
-
-# tolartions -- Add tolartions for pod assginment
-tolarations: []
-
-# nodeSelector -- Add Node labels for pod assginment
-nodeSelector: {}

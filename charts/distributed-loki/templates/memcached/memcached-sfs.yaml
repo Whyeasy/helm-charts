@@ -24,9 +24,9 @@ spec:
                 app.kubernetes.io/component: memcached
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.memcached.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.memcached.tolerations | nindent 8 }}
       containers:
       - args:
         - -m 4096

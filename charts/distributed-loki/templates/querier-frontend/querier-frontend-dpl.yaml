@@ -27,9 +27,9 @@ spec:
                 app.kubernetes.io/component: querier-frontend
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.querierFrontend.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.querierFrontend.tolerations | nindent 8 }}
       containers:
       - args:
         - -config.file=/etc/loki/config/config.yaml

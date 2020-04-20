@@ -27,9 +27,9 @@ spec:
                 app.kubernetes.io/component: distributor
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.distributor.tolerations | nindent 8 }}
       containers:
       - args:
         - -config.file=/etc/loki/config/config.yaml

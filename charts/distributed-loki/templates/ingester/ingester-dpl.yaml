@@ -31,9 +31,9 @@ spec:
                 app.kubernetes.io/component: ingester
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
       containers:
       - args:
         - -config.file=/etc/loki/config/config.yaml

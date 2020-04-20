@@ -24,9 +24,9 @@ spec:
                 app.kubernetes.io/component: memcached-index-writes
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.memcachedIndexWrites.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.memcachedIndexWrites.tolerations | nindent 8 }}
       containers:
       - args:
         - -m 1024

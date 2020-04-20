@@ -27,9 +27,9 @@ spec:
                 app.kubernetes.io/component: consul
             topologyKey: kubernetes.io/hostname
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.consul.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml .Values.consul.tolerations | nindent 8 }}
       containers:
       - args:
         - agent
