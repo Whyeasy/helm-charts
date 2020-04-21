@@ -17,6 +17,9 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: gateway
     spec:
+      {{- if .Values.gateway.affinity }}
+      affinity: {{- toYaml .Values.gateway.affinity | nindent 8 }}
+      {{- else }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -24,6 +27,7 @@ spec:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: gateway
             topologyKey: kubernetes.io/hostname
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.gateway.nodeSelector | nindent 8 }}
       tolerations:

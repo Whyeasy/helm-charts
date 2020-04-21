@@ -16,6 +16,9 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: memcached-frontend
     spec:
+      {{- if .Values.memcachedFrontend.affinity }}
+      affinity: {{- toYaml .Values.memcachedFrontend.affinity | nindent 8 }}
+      {{- else }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -23,6 +26,7 @@ spec:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: memcached-frontend
             topologyKey: kubernetes.io/hostname
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.memcachedFrontend.nodeSelector | nindent 8 }}
       tolerations:

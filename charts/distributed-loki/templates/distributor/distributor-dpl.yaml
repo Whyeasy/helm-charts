@@ -19,6 +19,9 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: distributor
     spec:
+      {{- if .Values.distributor.affinity }}
+      affinity: {{- toYaml .Values.distributor.affinity | nindent 8 }}
+      {{- else }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -26,6 +29,7 @@ spec:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: distributor
             topologyKey: kubernetes.io/hostname
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
       tolerations:

@@ -23,13 +23,17 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: ingester
     spec:
-      affinity:
+      {{- if .Values.ingester.affinity }}
+      affinity: {{- toYaml .Values.ingester.affinity | nindent 8 }}
+      {{- else }}
+      affinity: 
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: ingester
             topologyKey: kubernetes.io/hostname
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
       tolerations:

@@ -19,6 +19,9 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: querier-frontend
     spec:
+      {{- if .Values.querierFrontend.affinity }}
+      affinity: {{- toYaml .Values.querierFrontend.affinity | nindent 8 }}
+      {{- else }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -26,6 +29,7 @@ spec:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
                 app.kubernetes.io/component: querier-frontend
             topologyKey: kubernetes.io/hostname
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.querierFrontend.nodeSelector | nindent 8 }}
       tolerations:

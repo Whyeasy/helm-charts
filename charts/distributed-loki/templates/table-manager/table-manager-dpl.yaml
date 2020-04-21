@@ -19,6 +19,8 @@ spec:
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: table-manager
     spec:
+      affinity:
+        {{- toYaml .Values.tableManager.affinity | nindent 8 }}
       nodeSelector:
         {{- toYaml .Values.tableManager.nodeSelector | nindent 8 }}
       tolerations:

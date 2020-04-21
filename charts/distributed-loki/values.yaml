@@ -20,6 +20,8 @@ consul:
   tolarations: []
   # consul.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # consul.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 distributor:
   # distributor.replicaCount -- Number of replicas for the Distributor deployment.
@@ -42,6 +44,8 @@ distributor:
   tolarations: []
   # distributor.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # distributor.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 gateway:
   # gateway.replicaCount -- Number of replicas for the Gateway deployment.
@@ -82,6 +86,8 @@ gateway:
   tolarations: []
   # gateway.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # gateway.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 ingester:
   # ingester.replicaCount -- Number of replicas for the Ingester deployment.
@@ -108,6 +114,8 @@ ingester:
   tolarations: []
   # ingester.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # ingester.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
@@ -128,6 +136,8 @@ memcached:
   tolarations: []
   # memcached.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # memcached.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 memcachedFrontend:
   # memcachedFrontend.replicaCount -- Number of replicas for the Memcached-frontend deployment.
@@ -144,6 +154,8 @@ memcachedFrontend:
   tolarations: []
   # memcachedFrontend.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # memcachedFrontend.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 memcachedIndexQueries:
   # memcachedIndexQueries.replicaCount -- Number of replicas for the Memcached-index-queries deployment.
@@ -160,6 +172,8 @@ memcachedIndexQueries:
   tolarations: []
   # memcachedIndexQueries.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # memcachedIndexQueries.affinity -- Add custom affinity to deployment
+  affinity: {}
 
 memcachedIndexWrites:
   # memcachedIndexWrites.replicaCount -- Number of replicas for the Memcached-index-writes deployment.
@@ -176,6 +190,8 @@ memcachedIndexWrites:
   tolarations: []
   # memcachedIndexWrites.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # memcachedIndexWrites.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 querier:
   # querier.replicaCount -- Number of replicas for the Querier deployment.
@@ -192,6 +208,8 @@ querier:
   tolarations: []
   # querier.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # querier.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 
 querierFrontend:
@@ -214,9 +232,10 @@ querierFrontend:
   tolarations: []
   # querierFrontend.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # querierFrontend.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 
-# If aws-dynomodb is used, table-manager is needed.
 tableManager:
   # tableManager.replicaCount -- Number of replicas for the Table-manager deployment.
   replicaCount: 1
@@ -238,6 +257,8 @@ tableManager:
   tolarations: []
   # tableManager.nodeSelector -- Add Node labels for pod assginment
   nodeSelector: {}
+  # tableManager.affinity -- Replace default affinity with custom affinity
+  affinity: {}
 
 storage:
   # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.
