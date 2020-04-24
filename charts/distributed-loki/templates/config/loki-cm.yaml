@@ -31,16 +31,21 @@ data:
                     watchkeyratelimit: 1
                 store: consul
     frontend:
-        compress_responses: true
+        compress_responses: {{ .Values.querierFrontend.config.compressResponses }}
         max_outstanding_per_tenant: 200
+        {{- if .Values.querierFrontend.config.logQueries}}
+        log_queries_longer_than: {{ .Values.querierFrontend.config.logQueries }}
+        {{- end }}
     frontend_worker:
         address: {{ include "loki-helm.querier-frontend" . }}.{{ .Release.Namespace }}.svc.cluster.local:9095
         grpc_client_config:
             max_send_msg_size: 1.048576e+08
-        parallelism: 8
+        parallelism: {{ .Values.querier.config.parallelism }}
     ingester:
-        chunk_block_size: 262144
-        chunk_idle_period: 15m
+        chunk_block_size: {{ .Values.ingester.config.chunkSize }}
+        chunk_idle_period: {{ .Values.ingester.config.chunkIdle }}
+        chunk_target_size: {{ .Values.ingester.config.chunkTargetSize }}
+        max_chunk_age: {{ .Values.ingester.config.maxChunkAge }}
         lifecycler:
             claim_on_rollout: true
             heartbeat_period: 5s
@@ -56,8 +61,8 @@ data:
                         host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
                         httpclienttimeout: 20s
                     store: consul
-                replication_factor: {{ .Values.ingester.replicationFactor }}
-        max_transfer_retries: {{ .Values.ingester.transferRetries }}
+                replication_factor: {{ .Values.ingester.config.replicationFactor }}
+        max_transfer_retries: {{ .Values.ingester.config.transferRetries }}
     ingester_client:
         grpc_client_config:
             max_recv_msg_size: 6.7108864e+07
@@ -75,7 +80,7 @@ data:
         reject_old_samples_max_age: 168h
     query_range:
         align_queries_with_step: true
-        cache_results: true
+        cache_results: {{ .Values.querierFrontend.config.cacheResult }}
         max_retries: 5
         results_cache:
             cache:
@@ -87,7 +92,7 @@ data:
                     timeout: 500ms
                     update_interval: 1m
             max_freshness: 10m
-        split_queries_by_interval: 30m
+        split_queries_by_interval: {{ .Values.querierFrontend.config.splitQueries }}
     schema_config:
         configs:
           - from: "2018-04-15"
