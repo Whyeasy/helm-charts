@@ -1,70 +1,58 @@
-# Prometheus MongoDB Exporter
+prometheus-mongodb-exporter
+===========================
+A Prometheus exporter for MongoDB metrics
 
-Installs the [MongoDB Exporter](https://github.com/percona/mongodb_exporter) for [Prometheus](https://prometheus.io/). The
-MongoDB Exporter collects and exports oplog, replica set, server status, sharding and storage engine metrics.
+Current chart version is `0.0.1`
 
-## Installing the Chart
 
-To install the chart with the release name `my-release`:
 
-```console
-$ helm upgrade --install my-release stable/prometheus-mongodb-exporter
-```
 
-This command deploys the MongoDB Exporter with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
-## Using the Chart
+## Chart Values
 
-To use the chart, ensure the `mongodb.secretKey` is the secret key containing a valid [MongoDB URI](https://docs.mongodb.com/manual/reference/connection-string).
-If the MongoDB server requires authentication, credentials should be populated in the connection string as well. The MongoDB Exporter supports
-connecting to either a MongoDB replica set member, shard, or standalone instance.
-
-The secret containing the URI should be provisioned outside of this helm chart.
-
-The chart comes with a ServiceMonitor for use with the [Prometheus Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator).
-If you're not using the Prometheus Operator, you can disable the ServiceMonitor by setting `serviceMonitor.enabled` to `false` and instead
-populate the `podAnnotations` as below:
-
-```yaml
-podAnnotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/port: "metrics"
-```
-
-## Configuration
-
-| Parameter                         | Description                                                                                                                 | Default                    |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `affinity`                        | Node/pod affinities                                                                                                         | `{}`                       |
-| `annotations`                     | Annotations to be added to the pods                                                                                         | `{}`                       |
-| `extraArgs`                       | The extra command line arguments to pass to the MongoDB Exporter                                                            | See values.yaml            |
-| `fullnameOverride`                | Override the full chart name                                                                                                | ``                         |
-| `image.pullPolicy`                | MongoDB Exporter image pull policy                                                                                          | `IfNotPresent`             |
-| `image.repository`                | MongoDB Exporter image name                                                                                                 | `ssheehy/mongodb-exporter` |
-| `image.tag`                       | MongoDB Exporter image tag                                                                                                  | `0.10.0`                   |
-| `imagePullSecrets`                | List of container registry secrets                                                                                          | `[]`                       |
-| `mongodb.secretName`              | The secret containing the required [URI](https://docs.mongodb.com/manual/reference/connection-string) to connect to MongoDB | ``                         |
-| `mongodb.secretKey`               | The key name containing the URI                                                                                             | ``                         |
-| `nameOverride`                    | Override the application name                                                                                               | ``                         |
-| `nodeSelector`                    | Node labels for pod assignment                                                                                              | `{}`                       |
-| `podAnnotations`                  | Annotations to be added to all pods                                                                                         | `{}`                       |
-| `port`                            | The container port to listen on                                                                                             | `9216`                     |
-| `priorityClassName`               | Pod priority class name                                                                                                     | ``                         |
-| `replicas`                        | Number of replicas in the replica set                                                                                       | `1`                        |
-| `resources`                       | Pod resource requests and limits                                                                                            | `{}`                       |
-| `env`                             | Extra environment variables passed to pod                                                                                   | `[]`                       |
-| `securityContext`                 | Security context for the pod                                                                                                | See values.yaml            |
-| `service.annotations`             | Annotations to be added to the service                                                                                      | `{}`                       |
-| `service.port`                    | The port to expose                                                                                                          | `9216`                     |
-| `service.type`                    | The type of service to expose                                                                                               | `ClusterIP`                |
-| `serviceAccount.create`           | If `true`, create the service account                                                                                       | `true`                     |
-| `serviceAccount.name`             | Name of the service account                                                                                                 | ``                         |
-| `serviceMonitor.enabled`          | Set to true if using the Prometheus Operator                                                                                | `true`                     |
-| `serviceMonitor.interval`         | Interval at which metrics should be scraped                                                                                 | `30s`                      |
-| `serviceMonitor.scrapeTimeout`    | Interval at which metric scrapes should time out                                                                            | `10s`                      |
-| `serviceMonitor.additionalLabels` | Additional labels to add to the ServiceMonitor                                                                              | `{}`                       |
-| `tolerations`                     | List of node taints to tolerate                                                                                             | `[]`                       |
-
-## Limitations
-
-Connecting to MongoDB via TLS is currently not supported.
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| affinity | object | `{}` | Node/pod affinities |
+| annotations | object | `{}` | Annotations to be added to the pods |
+| env | list | `[]` | Extra environment variables passed to pod |
+| extraArgs[0] | string | `"--collect.collection"` |  |
+| extraArgs[1] | string | `"--collect.database"` |  |
+| extraArgs[2] | string | `"--collect.indexusage"` |  |
+| extraArgs[3] | string | `"--collect.topmetrics"` |  |
+| extraArgs[4] | string | `"--collect.connpoolstats"` |  |
+| fullnameOverride | string | `""` | Override the full chart name |
+| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy for images |
+| image.repository | string | `"ssheehy/mongodb-exporter"` | Image repository for images |
+| image.tag | string | `"0.10.0"` | Image tag for image |
+| imagePullSecrets | list | `[]` | List of container registry secrets |
+| livenessProbe.httpGet.path | string | `"/"` |  |
+| livenessProbe.httpGet.port | string | `"metrics"` |  |
+| livenessProbe.initialDelaySeconds | int | `10` |  |
+| mongodb.secretKey | string | `nil` | Key within the secret containing the MongoDB URI. |
+| mongodb.secretName | string | `nil` | Secret name containing the MongoDB URI. |
+| nameOverride | string | `""` | Override the application name |
+| nodeSelector | object | `{}` | Add Node labels for pod assginment |
+| podAnnotations | object | `{}` |  |
+| port | string | `"9216"` | The container port to listen on |
+| priorityClassName | string | `""` | Pod priority class name |
+| readinessProbe.httpGet.path | string | `"/"` |  |
+| readinessProbe.httpGet.port | string | `"metrics"` |  |
+| readinessProbe.initialDelaySeconds | int | `10` |  |
+| replicas | int | `1` | Number of replicas for the deployment |
+| resources | object | `{}` | Custom Resources for the deployment |
+| securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| securityContext.capabilities.drop[0] | string | `"all"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| securityContext.runAsGroup | int | `10000` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `10000` |  |
+| service.annotations | object | `{}` | 	Annotations to be added to the service |
+| service.port | int | `9216` | The port to expose |
+| service.type | string | `"ClusterIP"` | The type of service to expose |
+| serviceAccount.create | bool | `true` | If true, create the service account |
+| serviceAccount.name | string | `nil` | Name of the service account |
+| serviceMonitor.additionalLabels | object | `{}` | Additional labels to add to the ServiceMonitor |
+| serviceMonitor.enabled | bool | `true` | Enable service monitor for the Prometheus Operator |
+| serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| serviceMonitor.scrapeTimeout | string | `"10s"` | Interval at which metric scrapes should time out |
+| tolerations | list | `[]` |  |
