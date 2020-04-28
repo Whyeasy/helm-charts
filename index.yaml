@@ -3,6 +3,16 @@ entries:
   loki-distributed:
   - apiVersion: v2
     appVersion: 1.4.1
+    created: "2020-04-28T12:41:03.622718842Z"
+    description: A Helm chart for Kubernetes
+    digest: fac1d46e033d0e661356b33b2a67661830ba72cb2c227e9286e00e796607e297
+    name: loki-distributed
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.1.5/loki-distributed-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.4.1
     created: "2020-04-28T11:17:26.751717888Z"
     description: A Helm chart for Kubernetes
     digest: 81acbd03cb32b865beeb84a66fd2edbfba43502c700ec4543555e9219eaed217
