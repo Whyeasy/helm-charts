@@ -311,6 +311,8 @@ canary:
   affinity: {}
   # canary.args -- Allow extra arguments into the container.
   args: []
+  # canary.env -- Allow Extra env variables into the deployment
+  env: []
 
 serviceMonitor:
   # serviceMonitor.enabled -- Enable service monitors for Loki deployment.

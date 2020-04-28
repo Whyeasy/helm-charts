@@ -31,6 +31,8 @@ spec:
       containers:
       - args:
         - -addr={{ include "loki-helm.gateway" . }}.{{ .Release.Namespace }}.svc.cluster.local:80
+        - -labelname=instance
+        - -labelvalue=$POD_NAME
         {{- if .Values.canary.args }}
           {{- toYaml .Values.canary.args | nindent 8 }}
         {{- end }}
@@ -39,6 +41,14 @@ spec:
         name: loki-canary
         {{- if .Values.canary.resources }}
         resources: {{- toYaml .Values.canary.resources | nindent 12 }}
+        {{- end }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        {{- if .Values.canary.env }}
+          {{- toYaml .Values.canary.env | nindent 8 }}
         {{- end }}
         ports:
         - containerPort: 3500
