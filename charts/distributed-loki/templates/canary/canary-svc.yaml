@@ -1,0 +1,17 @@
+{{- if .Values.canary.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loki-canary
+spec:
+  type: ClusterIP
+  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: loki-canary
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 3500
+    targetPort: 3500
+{{- end }}

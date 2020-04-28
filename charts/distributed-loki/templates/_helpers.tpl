@@ -98,3 +98,6 @@ Naming deployments
 {{- define "loki-helm.table-manager" -}}
   {{- printf "%s-table-manager" (include "loki-helm.fullname" .) -}}
 {{- end -}}
+{{- define "loki-helm.canary" -}}
+  {{- printf "%s-loki-canary" (include "loki-helm.fullname" .) -}}
+{{- end -}}

@@ -298,6 +298,20 @@ storage:
     # storage.config.bucketName -- Name of your gcs bucket.
     bucketName: loki_distributed
 
+canary:
+  # canary.enabled -- Enable the Loki-Canary deployment
+  enabled: false
+  # canary.resources -- Custom resources for the Loki-Canary deployment.
+  resources: {}
+  # canary.tolartions -- Add tolartions for pod assginment
+  tolarations: []
+  # canary.nodeSelector -- Add Node labels for pod assginment
+  nodeSelector: {}
+  # canary.affinity -- Replace default affinity with custom affinity
+  affinity: {}
+  # canary.args -- Allow extra arguments into the container.
+  args: []
+
 serviceMonitor:
   # serviceMonitor.enabled -- Enable service monitors for Loki deployment.
   enabled: false

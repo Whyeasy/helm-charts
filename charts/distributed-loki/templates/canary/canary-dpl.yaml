@@ -1,0 +1,37 @@
+{{- if .Values.canary.enabled }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loki-canary
+  name: {{ include "loki-helm.canary" . }}
+spec:
+  template:
+    metadata:
+      name: {{ include "loki-helm.canary" . }}
+      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: loki-canary
+    spec:
+      affinity: 
+        {{- toYaml .Values.canary.affinity | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.canary.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.canary.tolerations | nindent 8 }}
+      containers:
+      - args:
+        - -addr={{ include "loki-helm.querier-frontend" . }}.{{ .Release.Namespace }}.svc.cluster.local:9095
+        {{- if .Values.canary.args }}
+          {{- toYaml .Values.canary.args | nindent 10 }}
+        {{- end }}
+        image: grafana/loki-canary:latest
+        imagePullPolicy: IfNotPresent
+        name: loki-canary
+        {{- if .Values.canary.resources }}
+        resources: {{- toYaml .Values.canary.resources | nindent 12 }}
+        {{- end }}
+        ports:
+        - containerPort: 3500
+          name: metrics
+{{- end }}
