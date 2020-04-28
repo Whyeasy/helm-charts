@@ -25,7 +25,7 @@ spec:
       - args:
         - -addr={{ include "loki-helm.gateway" . }}.{{ .Release.Namespace }}.svc.cluster.local:80
         {{- if .Values.canary.args }}
-          {{- toYaml .Values.canary.args | nindent 10 }}
+          {{- toYaml .Values.canary.args | nindent 8 }}
         {{- end }}
         image: grafana/loki-canary:latest
         imagePullPolicy: IfNotPresent
