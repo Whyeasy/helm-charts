@@ -10,8 +10,10 @@ spec:
   template:
     metadata:
       name: {{ include "loki-helm.canary" . }}
-      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+      labels:
         app.kubernetes.io/component: loki-canary
+        app.kubernetes.io/name: {{ include "loki-helm.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       affinity: 
         {{- toYaml .Values.canary.affinity | nindent 8 }}
