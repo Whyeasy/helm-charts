@@ -7,8 +7,9 @@ metadata:
     app.kubernetes.io/component: loki-canary
   name: {{ include "loki-helm.canary" . }}
 spec:
-  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: loki-canary
+  selector: 
+    matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: loki-canary
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 1
