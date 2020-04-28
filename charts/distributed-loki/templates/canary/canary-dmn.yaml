@@ -32,7 +32,7 @@ spec:
       - args:
         - -addr={{ include "loki-helm.gateway" . }}.{{ .Release.Namespace }}.svc.cluster.local:80
         - -labelname=instance
-        - -labelvalue=$POD_NAME
+        - -labelvalue=$(POD_NAME)
         {{- if .Values.canary.args }}
           {{- toYaml .Values.canary.args | nindent 8 }}
         {{- end }}
