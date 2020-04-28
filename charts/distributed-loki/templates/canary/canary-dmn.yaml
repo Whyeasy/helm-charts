@@ -1,12 +1,16 @@
 {{- if .Values.canary.enabled }}
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: loki-canary
   name: {{ include "loki-helm.canary" . }}
 spec:
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       name: {{ include "loki-helm.canary" . }}
