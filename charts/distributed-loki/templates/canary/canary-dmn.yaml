@@ -21,8 +21,8 @@ spec:
         {{- toYaml .Values.canary.tolerations | nindent 8 }}
       containers:
       - args:
-        - -addr={{ include "loki-helm.loki-helm.gateway" . }}.{{ .Release.Namespace }}.svc.cluster.local:80
-        - -labelname ="container_name"
+        - -addr={{ include "loki-helm.gateway" . }}.{{ .Release.Namespace }}.svc.cluster.local:80
+        - -labelname="container_name"
         {{- if .Values.canary.args }}
           {{- toYaml .Values.canary.args | nindent 10 }}
         {{- end }}
