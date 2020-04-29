@@ -295,6 +295,8 @@ storage:
     retentionDelete: false
     # storage.config.storeUrl -- Url of your cassandra instance.
     storeUrl: loki-cassandra.monitoring.svc
+    # storage.config.replicationFactor -- Replication factor of the label index in cassanra
+    replicationFactor: 1
     # storage.config.bucketName -- Name of your gcs bucket.
     bucketName: loki_distributed
 

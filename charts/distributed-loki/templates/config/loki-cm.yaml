@@ -115,6 +115,7 @@ data:
             addresses: {{ .Values.storage.config.storeUrl }}
             auth: false
             keyspace: lokiindex
+            replication_factor: {{ .Values.storage.config.replicationFactor }}
         gcs:
             bucket_name: {{ .Values.storage.config.bucketName }}
         index_queries_cache_config:

@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.1.0`
+Current chart version is `0.1.14`
 
 
 
@@ -12,6 +12,13 @@ Current chart version is `0.1.0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| canary.affinity | object | `{}` | Replace default affinity with custom affinity |
+| canary.args | list | `[]` | Allow extra arguments into the container. |
+| canary.enabled | bool | `false` | Enable the Loki-Canary deployment |
+| canary.env | list | `[]` | Allow Extra env variables into the deployment |
+| canary.nodeSelector | object | `{}` | Add Node labels for pod assginment |
+| canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
+| canary.tolarations | list | `[]` |  |
 | consul.affinity | object | `{}` | Replace default affinity with custom affinity |
 | consul.image | string | `"consul:1.5.3"` | Image repository for the Consul images. |
 | consul.nodeSelector | object | `{}` | Add Node labels for pod assginment |
@@ -106,6 +113,7 @@ Current chart version is `0.1.0`
 | serviceMonitor.enabled | bool | `false` | Enable service monitors for Loki deployment. |
 | serviceMonitor.interval | string | `""` | Set interval scraping the targets. |
 | storage.config.bucketName | string | `"loki_distributed"` | Name of your gcs bucket. |
+| storage.config.replicationFactor | int | `1` | Replication factor of the label index in cassanra |
 | storage.config.retentionDelete | bool | `false` | Enable the deletion of indexes. |
 | storage.config.retentionPeriod | int | `0` | Retention period of storing logs. |
 | storage.config.storeUrl | string | `"loki-cassandra.monitoring.svc"` | Url of your cassandra instance. |
