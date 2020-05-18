@@ -1,0 +1,7 @@
+apiVersion: v2
+name: k8s-node-termination-handler
+description: |-
+  A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
+type: application
+version: 0.0.1
+appVersion: 0.1.0
