@@ -47,7 +47,6 @@ data:
         chunk_target_size: {{ .Values.ingester.config.chunkTargetSize }}
         max_chunk_age: {{ .Values.ingester.config.maxChunkAge }}
         lifecycler:
-            claim_on_rollout: true
             heartbeat_period: 5s
             interface_names:
               - eth0
