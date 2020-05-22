@@ -24,11 +24,11 @@ data:
         ring:
             kvstore:
                 consul:
-                    consistentreads: false
+                    consistent_reads: false
                     host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
-                    httpclienttimeout: 20s
-                    watchkeyburstsize: 1
-                    watchkeyratelimit: 1
+                    http_client_timeout: 20s
+                    watch_burst_size: 1
+                    watch_rate_limit: 1
                 store: consul
     frontend:
         compress_responses: {{ .Values.querierFrontend.config.compressResponses }}
