@@ -37,7 +37,7 @@ data:
         log_queries_longer_than: {{ .Values.querierFrontend.config.logQueries }}
         {{- end }}
     frontend_worker:
-        address: {{ include "loki-helm.querier-frontend" . }}.{{ .Release.Namespace }}.svc.cluster.local:9095
+        frontend_address: {{ include "loki-helm.querier-frontend" . }}.{{ .Release.Namespace }}.svc.cluster.local:9095
         grpc_client_config:
             max_send_msg_size: 1.048576e+08
         parallelism: {{ .Values.querier.config.parallelism }}
@@ -57,9 +57,9 @@ data:
                 heartbeat_timeout: 1m
                 kvstore:
                     consul:
-                        consistentreads: true
+                        consistent_reads: true
                         host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
-                        httpclienttimeout: 20s
+                        http_client_timeout: 20s
                     store: consul
                 replication_factor: {{ .Values.ingester.config.replicationFactor }}
         max_transfer_retries: {{ .Values.ingester.config.transferRetries }}

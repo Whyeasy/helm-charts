@@ -17,8 +17,8 @@ Current chart version is `0.0.1`
 | envFrom | list | `[]` | environment variable sources for the container |
 | fullnameOverride | string | `""` | full name of the chart. |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
-| image.repository | string | `"k8s.gcr.io"` | image repository |
-| image.tag | string | `"gke-node-termination-handler@sha256:aca12d17b222dfed755e28a44d92721e477915fb73211d0a0f8925a1fa847cca"` | image tag |
+| image.repository | string | `"whyeasy/k8s-node-termination-handler"` | image repository |
+| image.tag | string | `"v0.0.1"` | image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | override name of the chart |
 | nodeSelector | object | `{}` | node for scheduler pod assignment |
