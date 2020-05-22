@@ -3,6 +3,16 @@ entries:
   k8s-node-termination-handler:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2020-05-22T06:15:29.408761136Z"
+    description: A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
+    digest: c349cdc1de9c57056693deea7724dc1397bcbe502a9e26496fbe5cbc5ff26b6a
+    name: k8s-node-termination-handler
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/k8s-node-termination-handler-0.0.2/k8s-node-termination-handler-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2020-05-18T08:38:12.811758929Z"
     description: A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
     digest: efe78b2e1a4801f7c4f138ed14aa289ff6abbec96643d3659b37463dfcb8b00f
@@ -12,6 +22,16 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/k8s-node-termination-handler-0.0.1/k8s-node-termination-handler-0.0.1.tgz
     version: 0.0.1
   loki-distributed:
+  - apiVersion: v2
+    appVersion: 1.5.0
+    created: "2020-05-22T06:15:29.521178134Z"
+    description: A Helm chart for Kubernetes
+    digest: 2b4e785613e5ded05ab575b7769ee24c2c147d09835616da48ce7a263c7bdff1
+    name: loki-distributed
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.2.0/loki-distributed-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: 1.4.1
     created: "2020-04-29T12:40:09.998002783Z"
