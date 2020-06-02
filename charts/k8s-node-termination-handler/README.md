@@ -2,7 +2,7 @@ k8s-node-termination-handler
 ============================
 A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
 
-Current chart version is `0.0.2`
+Current chart version is `0.0.3`
 
 
 
