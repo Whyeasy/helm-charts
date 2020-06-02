@@ -1,0 +1,16 @@
+{{ if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "gitlab-extra-exporter.fullname" . }}
+  labels:
+    {{- include "gitlab-extra-exporter.labels" . | nindent 4 }}
+spec:
+  endpoints:
+  - port: metrics
+    interval: {{ .Values.serviceMonitor.interval }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+  selector:
+    matchLabels:
+      {{- include "gitlab-extra-exporter.selectorLabels" . | nindent 6 }}
+{{- end }}
