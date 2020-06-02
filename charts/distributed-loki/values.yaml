@@ -5,8 +5,6 @@ loki:
   pullPolicy: IfNotPresent
 
 consul:
-  # consul.replicaCount -- Number of replicas for the Consul deployment.
-  replicaCount: 3
   # consul.image -- Image repository for the Consul images.
   image: consul:1.5.3
   # consul.pullPolicy -- Image pull policy for the Consul images.

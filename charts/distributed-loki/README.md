@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.2.0`
+Current chart version is `0.2.3`
 
 
 
@@ -23,7 +23,6 @@ Current chart version is `0.2.0`
 | consul.image | string | `"consul:1.5.3"` | Image repository for the Consul images. |
 | consul.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | consul.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Consul images. |
-| consul.replicaCount | int | `3` | Number of replicas for the Consul deployment. |
 | consul.resources | object | `{"requests":{"cpu":"100m","memory":"500Mi"}}` | Custom resources for the Consul deployment. |
 | consul.tolarations | list | `[]` |  |
 | distributor.affinity | object | `{}` | Replace default affinity with custom affinity |
