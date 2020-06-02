@@ -30,6 +30,7 @@ Current chart version is `0.1.0`
 | serviceMonitor.enabled | bool | `true` |  |
 | serviceMonitor.interval | string | `"5m"` |  |
 | serviceMonitor.scrapeTimeout | string | `"30s"` |  |
+| strategy.type | string | `"RollingUpdate"` | Strategy for deploying containers |
 | tolerations | list | `[]` | tolerations for scheduler pod assignment |
 | volumeMounts | list | `[]` | additional volume mounts |
 | volumes | list | `[]` | volumes |

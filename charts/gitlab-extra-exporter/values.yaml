@@ -60,6 +60,9 @@ envFrom: []
 #  - configMapRef:
 #      name: gitlab-extra-exporter-cm
 
+strategy:
+  # strategy.type -- Strategy for deploying containers
+  type: RollingUpdate
 
 service:
   # service.type - Serive type for the exporter

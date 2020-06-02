@@ -2,5 +2,5 @@ apiVersion: v2
 name: gitlab-extra-exporter
 description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: 0.0.1
