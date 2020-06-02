@@ -3,6 +3,16 @@ entries:
   gitlab-extra-exporter:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2020-06-02T14:47:10.024221806Z"
+    description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
+    digest: 97766dd2267210574ee88c424a4b4ccab5aae083db59a436c3baf9831eed5b21
+    name: gitlab-extra-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/gitlab-extra-exporter-0.1.1/gitlab-extra-exporter-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2020-06-02T14:40:47.7731809Z"
     description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
     digest: df9c5a71b3a6805f3d310273360ee241454a794a4acfec77471e52f9185a99ef
