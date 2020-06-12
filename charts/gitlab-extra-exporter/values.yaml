@@ -2,7 +2,7 @@ image:
   # image.repository -- image repository
   repository: whyeasy/gitlab-extra-exporter
   # image.tag -- image tag
-  tag: v0.0.5
+  tag: v0.0.6
   # image.pullPolicy -- image pull policy
   pullPolicy: IfNotPresent
 
