@@ -50,8 +50,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              {{- if .Values.stackdriver.secretKey}}
-              value: /etc/secrets/service-account/{{ .Values.stackdriver.secretKey}}
+              {{- if .Values.stackdriver.serviceAccount.key}}
+              value: /etc/secrets/service-account/{{ .Values.stackdriver.serviceAccount.key}}
               {{- else }}
               value: /etc/secrets/service-account/credentials.json
               {{- end}}
@@ -72,7 +72,7 @@ spec:
         {{- end }}
           volumeMounts:
             - name: service-account
-              {{- if .Values.stackdriver.serviceAccount.items }}
+              {{- if .Values.stackdriver.serviceAccount.key }}
               mountPath: /etc/secrets/service-account
               {{- else }}
               mountPath: /etc/secrets/service-account/credentials.json
