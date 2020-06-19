@@ -376,4 +376,16 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.1/prometheus-mongodb-exporter-0.0.1.tgz
     version: 0.0.1
+  stackdriver-exporter:
+  - apiVersion: v2
+    appVersion: 0.9.1
+    created: "2020-06-19T11:21:47.147167945Z"
+    description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO
+      SA and Secrets.
+    digest: 8d0f59eee0e959e6ce5017f1b76c924891cd4e350b69dd31f5c0d2438d72a1e5
+    name: stackdriver-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/stackdriver-exporter-0.1.0/stackdriver-exporter-0.1.0.tgz
+    version: 0.1.0
 generated: "2020-04-07T13:13:22.040148679Z"
