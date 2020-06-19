@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stackdriver-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "stackdriver-exporter.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "stackdriver-exporter.selectorLabels" . | nindent 6 }}
+  {{- with .Values.strategy }}
+  strategy: {{ toYaml . | nindent 4 }}
+  {{- end }}    
+  template:
+    metadata:
+      labels:
+        {{- include "stackdriver-exporter.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.exporter.listenAddress }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/secrets/service-account/credentials.json
+            - name: STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID
+              value: {{ .Values.stackdriver.projectId | quote }}
+            - name: STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES
+              value: {{ .Values.stackdriver.metrics.typePrefixes | quote }}
+            - name: STACKDRIVER_EXPORTER_MONITORING_METRICS_INTERVAL
+              value: {{ .Values.stackdriver.metrics.interval | quote }}
+            - name: STACKDRIVER_EXPORTER_MONITORING_METRICS_OFFSET
+              value: {{ .Values.stackdriver.metrics.offset | quote }}
+            - name: STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS
+              value: {{ .Values.exporter.listenAddress | quote }}
+            - name: STACKDRIVER_EXPORTER_WEB_TELEMETRY_PATH
+              value: {{ .Values.exporter.path | quote }}
+        {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+          volumeMounts:
+            - name: service-account
+              {{- if .Values.stackdriver.serivceAccount.items }}
+              mountPath: /etc/secrets/service-account
+              {{- else }}
+              mountPath: /etc/secrets/service-account/credentials.json
+              subPath: credentials.json
+              {{- end }}
+      volumes:
+        - name: service-account
+          secret:
+            secretName: {{ .Values.stackdriver.serivceAccount.secret }}
+            {{- if .Values.stackdriver.serivceAccount.items }}
+            items: {{- toYaml .Values.stackdriver.serivceAccount.items | nindent 14 }}
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

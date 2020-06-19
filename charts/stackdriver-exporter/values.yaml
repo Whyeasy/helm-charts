@@ -1,0 +1,92 @@
+# Default values for stackdriver-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# replicaCount -- Amount of replicas to run.
+replicaCount: 1
+
+image:
+  # image.repository -- Image repository to use.
+  repository: prometheuscommunity/stackdriver-exporter
+  # image.tag -- Image tag to use.
+  tag: v0.9.1
+  # image.pullPolicy -- Pull Policy to use within Cluster.
+  pullPolicy: IfNotPresent
+
+# imagePullSecrets -- Providing image pull secrets when needed.
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# resources -- define custom resources to use for your deployment.
+resources:
+  limits:
+  #   cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# nodeSelector -- Adding a Node selector for your deployment.
+nodeSelector: {}
+
+# tolerations -- Adding any tolerations to your deployment.
+tolerations: []
+
+# affinity -- Adding any affinity for your deployment.
+affinity: {}
+
+service:
+  # service.type -- Define service type to deploy.
+  type: ClusterIP
+  # service.port -- Define which port to for your service.
+  port: 80
+
+stackdriver:
+  # stackdriver.projectId -- Define which google Project to query for stackdriver metrics.
+  projectId: ""
+  serivceAccount:
+    # stackdriver.serviceAccount.secret -- Define the secret name which stores the SA credentials.
+    secret: "sd-account"
+    # stackdriver.serviceAccount.items -- Needed when custom data keys are used. Path should be credentials.json!
+    items: []
+    # - key: SD_CONFIG
+    #   path: credentials.json
+  metrics:
+    # stackdriver.metrics.typePrefixes -- Comma seperated list of metrics to query in stackdriver.
+    typePrefixes: compute.googleapis.com/instance/cpu
+    # stackdriver.metrics.interval -- Interval in which stackdriver should be queried.
+    interval: 5m
+    # stackdriver.metrics.offset -- Set off set of data to retrieve, may be needed for some metrics.
+    offset: 0s
+
+exporter:
+  # exporter.listenAddress -- What port should be used for the exporter to run on.
+  listenAddress: 9255
+  # exporter.path -- What path should be used for the exporter to run on.
+  path: /metrics
+
+
+serviceMonitor:
+  # serviceMonitor.enabled -- Deploy a Prometheus Service Monitor along with the exporter.
+  enabled: false
+  # serviceMonitor.additionalLabels -- Adding any additional labels to the service monitor.
+  additionalLabels: {}
+  # serviceMonitor.honorLabels -- if true, label conflicts are resolved by keeping label values from the scraped data
+  honorLabels: true
+  # serviceMonitor.interval -- Set scraping interval for the service monitor.
+  interval: ""
+  # serviceMonitor.scrapeTimeout -- Set scraping time out for the service monitor.
+  scrapeTimeout: ""

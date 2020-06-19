@@ -1,0 +1,6 @@
+apiVersion: v2
+name: stackdriver-exporter
+description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
+type: application
+version: 0.1.0
+appVersion: 0.9.1
