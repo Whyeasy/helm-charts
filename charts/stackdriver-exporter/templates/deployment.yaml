@@ -50,7 +50,11 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
+              {{- if .Values.stackdriver.secretKey}}
+              value: /etc/secrets/service-account/{{ .Values.stackdriver.secretKey}}
+              {{- else }}
               value: /etc/secrets/service-account/credentials.json
+              {{- end}}
             - name: STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID
               value: {{ .Values.stackdriver.projectId | quote }}
             - name: STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES
@@ -78,9 +82,6 @@ spec:
         - name: service-account
           secret:
             secretName: {{ .Values.stackdriver.serivceAccount.secret }}
-            {{- if .Values.stackdriver.serivceAccount.items }}
-            items: {{- toYaml .Values.stackdriver.serivceAccount.items | nindent 14 }}
-            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

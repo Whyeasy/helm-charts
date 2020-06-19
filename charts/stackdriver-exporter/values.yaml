@@ -60,10 +60,9 @@ stackdriver:
   serivceAccount:
     # stackdriver.serviceAccount.secret -- Define the secret name which stores the SA credentials.
     secret: "sd-account"
-    # stackdriver.serviceAccount.items -- Needed when custom data keys are used. Path should be credentials.json!
-    items: []
-    # - key: SD_CONFIG
-    #   path: credentials.json
+    # stackdriver.serviceAccount.items -- Needed when custom data keys are used.
+    key: ""
+    # SD_CONFIG
   metrics:
     # stackdriver.metrics.typePrefixes -- Comma seperated list of metrics to query in stackdriver.
     typePrefixes: compute.googleapis.com/instance/cpu
