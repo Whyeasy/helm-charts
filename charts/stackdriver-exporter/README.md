@@ -2,7 +2,7 @@ stackdriver-exporter
 ====================
 A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
 
-Current chart version is `0.1.1`
+Current chart version is `0.1.2`
 
 
 
@@ -37,6 +37,6 @@ Current chart version is `0.1.1`
 | stackdriver.metrics.offset | string | `"0s"` | Set off set of data to retrieve, may be needed for some metrics. |
 | stackdriver.metrics.typePrefixes | string | `"compute.googleapis.com/instance/cpu"` | Comma seperated list of metrics to query in stackdriver. |
 | stackdriver.projectId | string | `""` | Define which google Project to query for stackdriver metrics. |
-| stackdriver.serivceAccount.key | string | `""` |  |
-| stackdriver.serivceAccount.secret | string | `"sd-account"` |  |
+| stackdriver.serviceAccount.key | string | `""` |  |
+| stackdriver.serviceAccount.secret | string | `"sd-account"` | Define the secret name which stores the SA credentials. |
 | tolerations | list | `[]` | Adding any tolerations to your deployment. |

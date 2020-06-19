@@ -57,7 +57,7 @@ service:
 stackdriver:
   # stackdriver.projectId -- Define which google Project to query for stackdriver metrics.
   projectId: ""
-  serivceAccount:
+  serviceAccount:
     # stackdriver.serviceAccount.secret -- Define the secret name which stores the SA credentials.
     secret: "sd-account"
     # stackdriver.serviceAccount.items -- Needed when custom data keys are used.
