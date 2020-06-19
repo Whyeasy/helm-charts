@@ -73,7 +73,7 @@ stackdriver:
 
 exporter:
   # exporter.listenAddress -- What port should be used for the exporter to run on.
-  listenAddress: 9255
+  listenAddress: :9255
   # exporter.path -- What path should be used for the exporter to run on.
   path: /metrics
 

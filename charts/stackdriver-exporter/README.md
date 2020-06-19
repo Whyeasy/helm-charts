@@ -2,7 +2,7 @@ stackdriver-exporter
 ====================
 A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
 
-Current chart version is `0.1.4`
+Current chart version is `0.1.5`
 
 
 
@@ -13,7 +13,7 @@ Current chart version is `0.1.4`
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Adding any affinity for your deployment. |
-| exporter.listenAddress | int | `9255` | What port should be used for the exporter to run on. |
+| exporter.listenAddress | string | `":9255"` | What port should be used for the exporter to run on. |
 | exporter.path | string | `"/metrics"` | What path should be used for the exporter to run on. |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull Policy to use within Cluster. |
