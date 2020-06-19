@@ -72,7 +72,7 @@ spec:
         {{- end }}
           volumeMounts:
             - name: service-account
-              {{- if .Values.stackdriver.serivceAccount.items }}
+              {{- if .Values.stackdriver.serviceAccount.items }}
               mountPath: /etc/secrets/service-account
               {{- else }}
               mountPath: /etc/secrets/service-account/credentials.json
@@ -81,7 +81,7 @@ spec:
       volumes:
         - name: service-account
           secret:
-            secretName: {{ .Values.stackdriver.serivceAccount.secret }}
+            secretName: {{ .Values.stackdriver.serviceAccount.secret }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
