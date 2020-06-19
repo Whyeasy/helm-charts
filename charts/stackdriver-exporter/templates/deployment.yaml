@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.exporter.listenAddress }}
+              containerPort: 9255
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -64,7 +64,7 @@ spec:
             - name: STACKDRIVER_EXPORTER_MONITORING_METRICS_OFFSET
               value: {{ .Values.stackdriver.metrics.offset | quote }}
             - name: STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS
-              value: {{ .Values.exporter.listenAddress | quote }}
+              value: ":9255"
             - name: STACKDRIVER_EXPORTER_WEB_TELEMETRY_PATH
               value: {{ .Values.exporter.path | quote }}
         {{- with .Values.env }}
