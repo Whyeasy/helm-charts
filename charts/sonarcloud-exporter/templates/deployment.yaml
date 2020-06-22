@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gitlab-extra-exporter.fullname" . }}
+  name: {{ include "sonarcloud-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "gitlab-extra-exporter.labels" . | nindent 4 }}
+    {{- include "sonarcloud-exporter.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "gitlab-extra-exporter.selectorLabels" . | nindent 6 }}
+      {{- include "sonarcloud-exporter.selectorLabels" . | nindent 6 }}
   {{- with .Values.strategy }}
   strategy: {{ toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
       labels:
-        {{- include "gitlab-extra-exporter.selectorLabels" . | nindent 8 }}
+        {{- include "sonarcloud-exporter.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

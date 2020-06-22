@@ -2,9 +2,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "gitlab-extra-exporter.fullname" . }}
+  name: {{ include "sonarcloud-exporter.fullname" . }}
   labels:
-    {{- include "gitlab-extra-exporter.labels" . | nindent 4 }}
+    {{- include "sonarcloud-exporter.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
   endpoints:
@@ -17,5 +17,5 @@ spec:
     {{- end }}
   selector:
     matchLabels:
-      {{- include "gitlab-extra-exporter.selectorLabels" . | nindent 6 }}
+      {{- include "sonarcloud-exporter.selectorLabels" . | nindent 6 }}
 {{- end }}

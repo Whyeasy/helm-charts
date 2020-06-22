@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "gitlab-extra-exporter.fullname" . }}
+  name: {{ include "sonarcloud-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "gitlab-extra-exporter.labels" . | nindent 4 }}
+    {{- include "sonarcloud-exporter.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,4 +13,4 @@ spec:
       protocol: TCP
       name: metrics
   selector:
-    {{- include "gitlab-extra-exporter.selectorLabels" . | nindent 4 }}
+    {{- include "sonarcloud-exporter.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: sonarcloud-exporter
+description: A Helm chart to deploy [sonarcloud-exporter](https://github.com/Whyeasy/sonarcloud-exporter)
+type: application
+version: 0.1.0
+appVersion: 0.0.1

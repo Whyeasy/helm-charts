@@ -1,8 +1,8 @@
 image:
   # image.repository -- image repository
-  repository: whyeasy/gitlab-extra-exporter
+  repository: whyeasy/sonarcloud-exporter
   # image.tag -- image tag
-  tag: v0.0.6
+  tag: v0.0.1
   # image.pullPolicy -- image pull policy
   pullPolicy: IfNotPresent
 
@@ -58,7 +58,7 @@ env: []
 # envFrom -- environment variable sources for the container
 envFrom: []
 #  - configMapRef:
-#      name: gitlab-extra-exporter-cm
+#      name: sonarcloud-exporter-cm
 
 strategy:
   # strategy.type -- Strategy for deploying containers
@@ -72,8 +72,8 @@ service:
 
 serviceMonitor:
   # serviceMonitor.enabled -- Deploy a service monitor along with the exporter.
-  enabled: true
+  enabled: false
   # serviceMonitor.interval -- Set scraping interval for the service monitor.
-  interval: 5m
+  interval: ""
   # serviceMonitor.scrapeTimeout -- Set scraping time out for the service monitor.
-  scrapeTimeout: 30s
+  scrapeTimeout: ""
