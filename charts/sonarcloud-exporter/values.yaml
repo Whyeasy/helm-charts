@@ -2,7 +2,7 @@ image:
   # image.repository -- image repository
   repository: whyeasy/sonarcloud-exporter
   # image.tag -- image tag
-  tag: v0.0.1
+  tag: v0.0.2
   # image.pullPolicy -- image pull policy
   pullPolicy: IfNotPresent
 

@@ -2,7 +2,7 @@ sonarcloud-exporter
 ===================
 A Helm chart to deploy [sonarcloud-exporter](https://github.com/Whyeasy/sonarcloud-exporter)
 
-Current chart version is `0.1.0`
+Current chart version is `0.1.1`
 
 
 
@@ -18,7 +18,7 @@ Current chart version is `0.1.0`
 | fullnameOverride | string | `""` | full name of the chart. |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
 | image.repository | string | `"whyeasy/sonarcloud-exporter"` | image repository |
-| image.tag | string | `"v0.0.1"` | image tag |
+| image.tag | string | `"v0.0.2"` | image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | override name of the chart |
 | nodeSelector | object | `{}` | node for scheduler pod assignment |
