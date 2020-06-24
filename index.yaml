@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   gitlab-extra-exporter:
   - apiVersion: v2
+    appVersion: 0.0.7
+    created: "2020-06-24T07:00:00.257393416Z"
+    description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
+    digest: ecd36fa6e04562f14a556edec65d0eb3266b524ddae74899cf8cc38f84dc6a3c
+    name: gitlab-extra-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/gitlab-extra-exporter-0.1.8/gitlab-extra-exporter-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
     appVersion: 0.0.6
     created: "2020-06-22T11:52:12.282996135Z"
     description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
@@ -387,6 +397,16 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.1/prometheus-mongodb-exporter-0.0.1.tgz
     version: 0.0.1
   sonarcloud-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2020-06-24T07:00:00.339191975Z"
+    description: A Helm chart to deploy [sonarcloud-exporter](https://github.com/Whyeasy/sonarcloud-exporter)
+    digest: 89b9a211b4e9915f628e1876cc9b6e4bb051ba80945dacffb427602cb9ce6cb1
+    name: sonarcloud-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/sonarcloud-exporter-0.1.1/sonarcloud-exporter-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-06-22T11:52:12.356705087Z"
