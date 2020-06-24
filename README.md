@@ -7,7 +7,7 @@ This repository contains [Helm](https://helm.sh) charts for various projects
 - [k8s Node Termination Handler](https://github.com/whyeasy/helm-charts/tree/master/charts/k8s-node-termination-handler)
 - [Gitlab-extra-expoter](https://github.com/Whyeasy/helm-charts/tree/master/charts/gitlab-extra-exporter)
 - [Stackdriver-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/stackdriver-exporter)
-- [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud -exporter)
+- [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
 
 ## Installing Charts from this Repository
 
