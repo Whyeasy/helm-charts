@@ -2,7 +2,7 @@ jira-exporter
 =============
 A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
 
-Current chart version is `0.1.0`
+Current chart version is `0.1.1`
 
 
 
