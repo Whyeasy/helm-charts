@@ -93,6 +93,16 @@ entries:
     version: 0.1.0
   jira-exporter:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2020-07-01T11:15:05.432601065Z"
+    description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
+    digest: 81182a0bc70e689f01c703a4e94eeb02dc69bf3dfaa1c0673462acea826837c6
+    name: jira-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/jira-exporter-0.1.1/jira-exporter-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-07-01T07:47:55.416778733Z"
     description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
