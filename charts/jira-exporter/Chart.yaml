@@ -3,4 +3,4 @@ name: jira-exporter
 description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
 type: application
 version: 0.1.0
-appVersion: 0.0.1
+appVersion: 0.0.2
