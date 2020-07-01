@@ -91,6 +91,17 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/gitlab-extra-exporter-0.1.0/gitlab-extra-exporter-0.1.0.tgz
     version: 0.1.0
+  jira-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-07-01T07:47:55.416778733Z"
+    description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
+    digest: fa4073c8bacc1441bb03aaeb7b81b517115ee74856383d9addb183b9023b3a26
+    name: jira-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/jira-exporter-0.1.0/jira-exporter-0.1.0.tgz
+    version: 0.1.0
   k8s-node-termination-handler:
   - apiVersion: v2
     appVersion: 0.1.0
