@@ -1,0 +1,79 @@
+image:
+  # image.repository -- image repository
+  repository: whyeasy/jira-exporter
+  # image.tag -- image tag
+  tag: v0.0.1
+  # image.pullPolicy -- image pull policy
+  pullPolicy: IfNotPresent
+
+# imagePullSecrets -- image pull secret for private images
+imagePullSecrets: []
+# nameOverride -- override name of the chart
+nameOverride: ""
+# fullnameOverride -- full name of the chart.
+fullnameOverride: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# resources -- custom resource configuration
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 128Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+# nodeSelector -- node for scheduler pod assignment
+nodeSelector: {}
+
+# tolerations -- tolerations for scheduler pod assignment
+tolerations: []
+
+# affinity -- affinity for scheduler pod assignment
+affinity: {}
+
+# volumeMounts -- additional volume mounts
+volumeMounts: []
+#  - name: some
+#    mountPath: /volume
+
+# volumes -- volumes
+volumes: []
+#  - name: tmp
+#    emptyDir: {}
+
+# env -- environment variables for the container
+env: []
+
+# envFrom -- environment variable sources for the container
+envFrom: []
+#  - configMapRef:
+#      name: jira-exporter-cm
+
+strategy:
+  # strategy.type -- Strategy for deploying containers
+  type: RollingUpdate
+
+service:
+  # service.type -- Serive type for the exporter
+  type: ClusterIP
+  # service.port -- Service port for the exporter
+  port: 8080
+
+serviceMonitor:
+  # serviceMonitor.enabled -- Deploy a service monitor along with the exporter.
+  enabled: false
+  # serviceMonitor.interval -- Set scraping interval for the service monitor.
+  interval: ""
+  # serviceMonitor.scrapeTimeout -- Set scraping time out for the service monitor.
+  scrapeTimeout: ""

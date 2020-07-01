@@ -8,6 +8,7 @@ This repository contains [Helm](https://helm.sh) charts for various projects
 - [Gitlab-extra-expoter](https://github.com/Whyeasy/helm-charts/tree/master/charts/gitlab-extra-exporter)
 - [Stackdriver-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/stackdriver-exporter)
 - [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
+- [Jira-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-exporter)
 
 ## Installing Charts from this Repository
 
