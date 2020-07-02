@@ -77,5 +77,5 @@ serviceMonitor:
   interval: ""
   # serviceMonitor.scrapeTimeout -- Set scraping time out for the service monitor.
   scrapeTimeout: ""
-  # serviceMonitor.endpoints -- Specify a list of Endpoint objects
+  # serviceMonitor.endpoints -- Specify addiotnal Endpoint objects
   endpoints: []
