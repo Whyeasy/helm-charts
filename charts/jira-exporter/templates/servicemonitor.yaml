@@ -15,6 +15,10 @@ spec:
     {{- if .Values.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    {{- with .Values.serviceMonitor.endpoints }}
+    endpoints:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
   selector:
     matchLabels:
       {{- include "jira-exporter.selectorLabels" . | nindent 6 }}

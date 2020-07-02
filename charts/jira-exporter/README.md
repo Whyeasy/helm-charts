@@ -2,7 +2,7 @@ jira-exporter
 =============
 A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
 
-Current chart version is `0.1.2`
+Current chart version is `0.1.3`
 
 
 
@@ -28,6 +28,7 @@ Current chart version is `0.1.2`
 | service.port | int | `8080` | Service port for the exporter |
 | service.type | string | `"ClusterIP"` | Serive type for the exporter |
 | serviceMonitor.enabled | bool | `false` | Deploy a service monitor along with the exporter. |
+| serviceMonitor.endpoints | list | `[]` | Specify a list of Endpoint objects |
 | serviceMonitor.interval | string | `""` | Set scraping interval for the service monitor. |
 | serviceMonitor.scrapeTimeout | string | `""` | Set scraping time out for the service monitor. |
 | strategy.type | string | `"RollingUpdate"` | Strategy for deploying containers |
