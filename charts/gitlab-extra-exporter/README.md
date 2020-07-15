@@ -2,7 +2,7 @@ gitlab-extra-exporter
 =====================
 A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
 
-Current chart version is `0.1.12`
+Current chart version is `0.1.13`
 
 
 
@@ -18,7 +18,7 @@ Current chart version is `0.1.12`
 | fullnameOverride | string | `""` | full name of the chart. |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
 | image.repository | string | `"whyeasy/gitlab-extra-exporter"` | image repository |
-| image.tag | string | `"v0.0.11"` | image tag |
+| image.tag | string | `"v0.0.12"` | image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | override name of the chart |
 | nodeSelector | object | `{}` | node for scheduler pod assignment |
