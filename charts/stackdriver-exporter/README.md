@@ -2,7 +2,7 @@ stackdriver-exporter
 ====================
 A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
 
-Current chart version is `0.1.6`
+Current chart version is `0.1.7`
 
 
 
@@ -17,7 +17,7 @@ Current chart version is `0.1.6`
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull Policy to use within Cluster. |
 | image.repository | string | `"prometheuscommunity/stackdriver-exporter"` | Image repository to use. |
-| image.tag | string | `"v0.9.1"` | Image tag to use. |
+| image.tag | string | `"v0.10.0"` | Image tag to use. |
 | imagePullSecrets | list | `[]` | Providing image pull secrets when needed. |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` | Adding a Node selector for your deployment. |
@@ -31,6 +31,8 @@ Current chart version is `0.1.6`
 | serviceMonitor.enabled | bool | `false` | Deploy a Prometheus Service Monitor along with the exporter. |
 | serviceMonitor.honorLabels | bool | `true` | if true, label conflicts are resolved by keeping label values from the scraped data |
 | serviceMonitor.interval | string | `""` | Set scraping interval for the service monitor. |
+| serviceMonitor.metricRelabelings | list | `[]` | Set config for relabeling labels before ingestion |
+| serviceMonitor.relabelings | list | `[]` | Set config for relabeling labels before scrape |
 | serviceMonitor.scrapeTimeout | string | `""` | Set scraping time out for the service monitor. |
 | stackdriver.metrics.interval | string | `"5m"` | Interval in which stackdriver should be queried. |
 | stackdriver.metrics.offset | string | `"0s"` | Set off set of data to retrieve, may be needed for some metrics. |

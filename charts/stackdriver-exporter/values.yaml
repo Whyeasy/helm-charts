@@ -9,7 +9,7 @@ image:
   # image.repository -- Image repository to use.
   repository: prometheuscommunity/stackdriver-exporter
   # image.tag -- Image tag to use.
-  tag: v0.9.1
+  tag: v0.10.0
   # image.pullPolicy -- Pull Policy to use within Cluster.
   pullPolicy: IfNotPresent
 
@@ -87,3 +87,7 @@ serviceMonitor:
   interval: ""
   # serviceMonitor.scrapeTimeout -- Set scraping time out for the service monitor.
   scrapeTimeout: ""
+  # serviceMonitor.relabelings -- Set config for relabeling labels before scrape
+  relabelings: []
+  # serviceMonitor.metricRelabelings -- Set config for relabeling labels before ingestion
+  metricRelabelings: []
