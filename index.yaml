@@ -530,6 +530,17 @@ entries:
     version: 0.1.0
   stackdriver-exporter:
   - apiVersion: v2
+    appVersion: 0.10.0
+    created: "2020-07-29T10:48:19.241411397Z"
+    description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO
+      SA and Secrets.
+    digest: acbe1b06bd91c7073c87815a8241e5873a2af4e4bdba2c9f120e3639341a61ac
+    name: stackdriver-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/stackdriver-exporter-0.1.7/stackdriver-exporter-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     appVersion: 0.9.1
     created: "2020-06-19T14:42:30.322632528Z"
     description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO
