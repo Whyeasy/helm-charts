@@ -1,6 +1,6 @@
 loki:
   # loki.image -- Image repository for Loki images.
-  image: grafana/loki:1.5.0
+  image: grafana/loki:1.6.0
   # loki.pullPolicy -- Image pull policy for Loki images.
   pullPolicy: IfNotPresent
 
@@ -301,6 +301,8 @@ storage:
 canary:
   # canary.enabled -- Enable the Loki-Canary deployment
   enabled: false
+  # canary.image -- Which image to use for Loki-Canary
+  image: grafana/loki-canary:1.6.0
   # canary.resources -- Custom resources for the Loki-Canary deployment.
   resources: {}
   # canary.tolartions -- Add tolartions for pod assginment

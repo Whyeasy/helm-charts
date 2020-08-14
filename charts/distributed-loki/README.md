@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.2.3`
+Current chart version is `0.2.4`
 
 
 
@@ -16,6 +16,7 @@ Current chart version is `0.2.3`
 | canary.args | list | `[]` | Allow extra arguments into the container. |
 | canary.enabled | bool | `false` | Enable the Loki-Canary deployment |
 | canary.env | list | `[]` | Allow Extra env variables into the deployment |
+| canary.image | string | `"grafana/loki-canary:1.6.0"` | Which image to use for Loki-Canary |
 | canary.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
 | canary.tolarations | list | `[]` |  |
@@ -63,7 +64,7 @@ Current chart version is `0.2.3`
 | ingester.replicaCount | int | `3` | Number of replicas for the Ingester deployment. |
 | ingester.resources | object | `{"limits":{"cpu":2,"memory":"10Gi"},"requests":{"cpu":1,"memory":"5Gi"}}` | Custom resources for the Ingester deployment. |
 | ingester.tolarations | list | `[]` |  |
-| loki.image | string | `"grafana/loki:1.5.0"` | Image repository for Loki images. |
+| loki.image | string | `"grafana/loki:1.6.0"` | Image repository for Loki images. |
 | loki.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Loki images. |
 | memcached.affinity | object | `{}` | Replace default affinity with custom affinity |
 | memcached.image | string | `"memcached:1.5.17-alpine"` | Image repository for the Memcached images. |

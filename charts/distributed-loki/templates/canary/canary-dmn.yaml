@@ -36,7 +36,7 @@ spec:
         {{- if .Values.canary.args }}
           {{- toYaml .Values.canary.args | nindent 8 }}
         {{- end }}
-        image: grafana/loki-canary:latest
+        image: {{ .Values.canary.image }}
         imagePullPolicy: IfNotPresent
         name: loki-canary
         {{- if .Values.canary.resources }}
