@@ -2,7 +2,7 @@ stackdriver-exporter
 ====================
 A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
 
-Current chart version is `0.1.7`
+Current chart version is `0.1.8`
 
 
 
@@ -17,7 +17,7 @@ Current chart version is `0.1.7`
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull Policy to use within Cluster. |
 | image.repository | string | `"prometheuscommunity/stackdriver-exporter"` | Image repository to use. |
-| image.tag | string | `"v0.10.0"` | Image tag to use. |
+| image.tag | string | `"v0.11.0"` | Image tag to use. |
 | imagePullSecrets | list | `[]` | Providing image pull secrets when needed. |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` | Adding a Node selector for your deployment. |

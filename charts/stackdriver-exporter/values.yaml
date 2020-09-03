@@ -9,7 +9,7 @@ image:
   # image.repository -- Image repository to use.
   repository: prometheuscommunity/stackdriver-exporter
   # image.tag -- Image tag to use.
-  tag: v0.10.0
+  tag: v0.11.0
   # image.pullPolicy -- Pull Policy to use within Cluster.
   pullPolicy: IfNotPresent
 
