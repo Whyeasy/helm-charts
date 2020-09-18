@@ -1,8 +1,8 @@
-jira-exporter
-=============
-A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
+jira-sd-exporter
+================
+A Helm chart to deploy [jira-sd-exporter](https://github.com/Whyeasy/jira-sd-exporter)
 
-Current chart version is `0.1.6`
+Current chart version is `0.0.1`
 
 
 
@@ -17,8 +17,8 @@ Current chart version is `0.1.6`
 | envFrom | list | `[]` | environment variable sources for the container |
 | fullnameOverride | string | `""` | full name of the chart. |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
-| image.repository | string | `"whyeasy/jira-exporter"` | image repository |
-| image.tag | string | `"v0.0.7"` | image tag |
+| image.repository | string | `"whyeasy/jira-sd-exporter"` | image repository |
+| image.tag | string | `"v0.0.2"` | image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | override name of the chart |
 | nodeSelector | object | `{}` | node for scheduler pod assignment |

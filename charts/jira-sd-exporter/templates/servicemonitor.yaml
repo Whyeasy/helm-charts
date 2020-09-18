@@ -1,0 +1,24 @@
+{{ if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "jira-sd-exporter.fullname" . }}
+  labels:
+    {{- include "jira-sd-exporter.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - port: metrics
+    {{- if .Values.serviceMonitor.interval }}
+    interval: {{ .Values.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- with .Values.serviceMonitor.endpoints }}
+      {{- toYaml . | nindent 2 }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- include "jira-sd-exporter.selectorLabels" . | nindent 6 }}
+{{- end }}
