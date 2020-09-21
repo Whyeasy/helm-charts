@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: distributor
+    app.kubernetes.io/part-of: gossip-ring
 spec:
   minReadySeconds: 10
   replicas: {{ .Values.distributor.replicaCount }}

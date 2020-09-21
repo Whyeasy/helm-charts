@@ -20,18 +20,19 @@ data:
                 consistent_hash: true
                 host: {{ include "loki-helm.memcached-index-writes" . }}.{{ .Release.Namespace }}.svc.cluster.local
                 service: memcached-client
+
+    memberlist:
+        rejoin_interval: {{ .Values.memberlist.rejoin }}
+        bind_port: {{ .Values.memberlist.port }}
+        join_members: [
+            {{ include "loki.fullname" . }}-gossip-ring
+        ]
+
     distributor:
         ring:
             kvstore:
                 {{ if .Values.memberlist.enable }}
                 store: memberlist
-                memberlist:
-                    rejoin_interval: {{ .Values.memberlist.rejoin }}
-                    bind_port: {{ .Values.memberlist.port }}
-                    join_members: [
-                        {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                        {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                    ]
                 {{ else }}
                 consul:
                     consistent_reads: false
@@ -41,17 +42,20 @@ data:
                     watch_rate_limit: 1
                 store: consul
                 {{ end }}
+
     frontend:
         compress_responses: {{ .Values.querierFrontend.config.compressResponses }}
         max_outstanding_per_tenant: 200
         {{- if .Values.querierFrontend.config.logQueries}}
         log_queries_longer_than: {{ .Values.querierFrontend.config.logQueries }}
         {{- end }}
+
     frontend_worker:
         frontend_address: {{ include "loki-helm.querier-frontend" . }}.{{ .Release.Namespace }}.svc.cluster.local:9095
         grpc_client_config:
             max_send_msg_size: 1.048576e+08
         parallelism: {{ .Values.querier.config.parallelism }}
+
     ingester:
         chunk_block_size: {{ .Values.ingester.config.chunkSize }}
         chunk_idle_period: {{ .Values.ingester.config.chunkIdle }}
@@ -68,13 +72,6 @@ data:
                 kvstore:
                     {{ if .Values.memberlist.enable }}
                     store: memberlist
-                    memberlist:
-                        rejoin_interval: {{ .Values.memberlist.rejoin }}
-                        bind_port: {{ .Values.memberlist.port }}
-                        join_members: [
-                            {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                            {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                        ]
                     {{ else }}
                     consul:
                         consistent_reads: true
@@ -84,10 +81,12 @@ data:
                     {{ end }}
                 replication_factor: {{ .Values.ingester.config.replicationFactor }}
         max_transfer_retries: {{ .Values.ingester.config.transferRetries }}
+
     ingester_client:
         grpc_client_config:
             max_recv_msg_size: 6.7108864e+07
         remote_timeout: 1s
+
     limits_config:
         enforce_metric_name: false
         ingestion_burst_size_mb: 20
@@ -99,6 +98,7 @@ data:
         max_streams_per_user: 0
         reject_old_samples: true
         reject_old_samples_max_age: 168h
+
     query_range:
         align_queries_with_step: true
         cache_results: {{ .Values.querierFrontend.config.cacheResult }}
@@ -114,6 +114,7 @@ data:
                     update_interval: 1m
             max_freshness: 10m
         split_queries_by_interval: {{ .Values.querierFrontend.config.splitQueries }}
+
     schema_config:
         configs:
           - from: "2018-04-15"
@@ -123,6 +124,7 @@ data:
             object_store: {{ .Values.storage.objectStore }}
             schema: v11
             store: {{ .Values.storage.store }}
+
     server:
         graceful_shutdown_timeout: 5s
         grpc_server_max_concurrent_streams: 1000
@@ -131,6 +133,7 @@ data:
         http_listen_port: 3100
         http_server_idle_timeout: 120s
         http_server_write_timeout: 1m
+
     storage_config:
         cassandra:
             addresses: {{ .Values.storage.config.storeUrl }}
@@ -146,7 +149,8 @@ data:
             memcached_client:
                 consistent_hash: true
                 host: {{ include "loki-helm.memcached-index-queries" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                service: memcached-client         
+                service: memcached-client      
+                
     table_manager:
         chunk_tables_provisioning:
             inactive_read_throughput: 0
