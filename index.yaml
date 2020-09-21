@@ -244,6 +244,16 @@ entries:
     version: 0.1.0
   jira-sd-exporter:
   - apiVersion: v2
+    appVersion: 0.0.5
+    created: "2020-09-21T12:28:05.663401749Z"
+    description: A Helm chart to deploy [jira-sd-exporter](https://github.com/Whyeasy/jira-sd-exporter)
+    digest: 256d894e97d4afce2b37718c70622e96d9f566566dea2d5037ddbd8b7a70a31b
+    name: jira-sd-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/jira-sd-exporter-0.0.4/jira-sd-exporter-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
     appVersion: 0.0.4
     created: "2020-09-21T12:09:48.653832839Z"
     description: A Helm chart to deploy [jira-sd-exporter](https://github.com/Whyeasy/jira-sd-exporter)
