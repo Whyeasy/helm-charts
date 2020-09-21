@@ -1,3 +1,4 @@
+{{- if ne .Values.memberlist.enable true }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,3 +112,4 @@ spec:
       - configMap:
           name: {{ include "loki-helm.consul" . }}
         name: consul
+{{- end }}

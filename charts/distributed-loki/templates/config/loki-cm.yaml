@@ -23,6 +23,16 @@ data:
     distributor:
         ring:
             kvstore:
+                {{ if .Values.memberlist.enable }}
+                store: memberlist
+                    memberlist:
+                        rejoin_interval: {{ .Values.memberlist.rejoin }}
+                        bind_port: {{ .Values.memberlist.port }}
+                        join_members: [
+                            {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                            {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                        ]
+                {{ else }}
                 consul:
                     consistent_reads: false
                     host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
@@ -30,6 +40,7 @@ data:
                     watch_burst_size: 1
                     watch_rate_limit: 1
                 store: consul
+                {{ end }}
     frontend:
         compress_responses: {{ .Values.querierFrontend.config.compressResponses }}
         max_outstanding_per_tenant: 200
@@ -55,11 +66,22 @@ data:
             ring:
                 heartbeat_timeout: 1m
                 kvstore:
+                    {{ if .Values.memberlist.enable }}
+                    store: memberlist
+                    memberlist:
+                        rejoin_interval: {{ .Values.memberlist.rejoin }}
+                        bind_port: {{ .Values.memberlist.port }}
+                        join_members: [
+                            {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                            {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                        ]
+                    {{ else }}
                     consul:
                         consistent_reads: true
                         host: {{ include "loki-helm.consul" . }}.{{ .Release.Namespace }}.svc.cluster.local:8500
                         http_client_timeout: 20s
                     store: consul
+                    {{ end }}
                 replication_factor: {{ .Values.ingester.config.replicationFactor }}
         max_transfer_retries: {{ .Values.ingester.config.transferRetries }}
     ingester_client:

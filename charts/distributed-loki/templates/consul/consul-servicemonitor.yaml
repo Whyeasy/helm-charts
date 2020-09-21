@@ -1,3 +1,4 @@
+{{- if ne .Values.memberlist.enable true }}
 {{- if .Values.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -30,4 +31,5 @@ spec:
     {{- if .Values.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
     {{- end }}
+{{- end }}
 {{- end }}

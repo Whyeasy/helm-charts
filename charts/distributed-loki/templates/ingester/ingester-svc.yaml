@@ -13,5 +13,10 @@ spec:
   - name: ingester-grpc
     port: 9095
     targetPort: 9095
+  {{- if .Values.memberlist.enable }}
+  - name: ingester-memberlist
+    port: {{ .Values.memberlist.port}}
+    targetPort: {{ .Values.memberlist.port}}
+  {{- end }}
   selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: ingester

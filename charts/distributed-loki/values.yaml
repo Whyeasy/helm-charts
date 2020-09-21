@@ -4,6 +4,14 @@ loki:
   # loki.pullPolicy -- Image pull policy for Loki images.
   pullPolicy: IfNotPresent
 
+memberlist:
+  # memberlist.enable -- Enable the ring to be a Mmeberslist. This will disable consul.
+  enable: false
+  # memberlist.rejoin -- How often to rejoin the cluster.
+  rejoin: 5m
+  # memberlist.port -- Port to listen on for gossip messages.
+  port: 7946
+
 consul:
   # consul.image -- Image repository for the Consul images.
   image: consul:1.5.3

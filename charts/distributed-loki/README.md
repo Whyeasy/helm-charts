@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.2.4`
+Current chart version is `0.3.0`
 
 
 
@@ -66,6 +66,9 @@ Current chart version is `0.2.4`
 | ingester.tolarations | list | `[]` |  |
 | loki.image | string | `"grafana/loki:1.6.0"` | Image repository for Loki images. |
 | loki.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Loki images. |
+| memberlist.enable | bool | `false` | Enable the ring to be a Mmeberslist. This will disable consul. |
+| memberlist.port | int | `7946` | Port to listen on for gossip messages. |
+| memberlist.rejoin | string | `"5m"` | How often to rejoin the cluster. |
 | memcached.affinity | object | `{}` | Replace default affinity with custom affinity |
 | memcached.image | string | `"memcached:1.5.17-alpine"` | Image repository for the Memcached images. |
 | memcached.nodeSelector | object | `{}` | Add Node labels for pod assginment |

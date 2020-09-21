@@ -50,6 +50,10 @@ spec:
           name: http-metrics
         - containerPort: 9095
           name: grpc
+        {{- if .Values.memberlist.enable }}
+        - containerPort: {{ .Values.memberlist.port}}
+          name: memberlist
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /ready
