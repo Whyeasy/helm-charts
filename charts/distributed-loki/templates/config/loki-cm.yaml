@@ -25,7 +25,9 @@ data:
         rejoin_interval: {{ .Values.memberlist.rejoin }}
         bind_port: {{ .Values.memberlist.port }}
         join_members: [
-            {{ include "loki-helm.fullname" . }}-memberlist
+            {{ include "loki-helm.distributor" . }}
+            {{ include "loki-helm.ingester" . }}
+            {{ include "loki-helm.querier" . }}
         ]
 
     distributor:
