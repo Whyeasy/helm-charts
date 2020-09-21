@@ -25,13 +25,13 @@ data:
             kvstore:
                 {{ if .Values.memberlist.enable }}
                 store: memberlist
-                    memberlist:
-                        rejoin_interval: {{ .Values.memberlist.rejoin }}
-                        bind_port: {{ .Values.memberlist.port }}
-                        join_members: [
-                            {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                            {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
-                        ]
+                memberlist:
+                    rejoin_interval: {{ .Values.memberlist.rejoin }}
+                    bind_port: {{ .Values.memberlist.port }}
+                    join_members: [
+                        {{ include "loki-helm.ingester" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                        {{ include "loki-helm.distributor" . }}.{{ .Release.Namespace }}.svc.cluster.local
+                    ]
                 {{ else }}
                 consul:
                     consistent_reads: false
