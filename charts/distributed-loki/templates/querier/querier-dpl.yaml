@@ -51,6 +51,10 @@ spec:
           name: http-metrics
         - containerPort: 9095
           name: grpc
+        {{- if .Values.memberlist.enable }}
+        - containerPort: {{ .Values.memberlist.port}}
+          name: memberlist
+        {{- end }}
         {{- if .Values.querier.resources }}
         resources: {{- toYaml .Values.querier.resources | nindent 12 }}
         {{- end }}
