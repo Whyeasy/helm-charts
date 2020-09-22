@@ -8,10 +8,10 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - name: query-frontend-http-metrics
+  - name: querier-frontend-http-metrics
     port: 3100
     targetPort: 3100
-  - name: query-frontend-grpc
+  - name: querier-frontend-grpc
     port: 9095
     targetPort: 9095
   selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
