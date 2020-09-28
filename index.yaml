@@ -799,4 +799,15 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/stackdriver-exporter-0.1.0/stackdriver-exporter-0.1.0.tgz
     version: 0.1.0
+  version-checker:
+  - apiVersion: v2
+    appVersion: v0.2.0
+    created: "2020-09-28T13:15:10.729037138Z"
+    description: A Helm chart for version-checker
+    digest: 8417055cbe1ffec64d8fee614a8079ee3ddf0de24940b1784a8f0173d12378e7
+    home: https://github.com/joshvanl/verison-checker
+    name: version-checker
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/version-checker-0.2.0/version-checker-0.2.0.tgz
+    version: 0.2.0
 generated: "2020-04-07T13:13:22.040148679Z"
