@@ -1,0 +1,166 @@
+{{ $chartname := include "version-checker.name" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $chartname }}
+  labels:
+{{ include "version-checker.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $chartname }}
+  template:
+    metadata:
+      labels:
+        app: {{ $chartname }}
+      annotations:
+        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        enable.version-checker.io/{{ $chartname }}: "true"
+    spec:
+      serviceAccountName: {{ $chartname }}
+      containers:
+      - name: {{ $chartname }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8080
+        command: ["version-checker"]
+        args:
+          - "--image-cache-timeout={{.Values.versionChecker.imageCacheTimeout}}"
+          - "--log-level={{.Values.versionChecker.logLevel}}"
+          - "--metrics-serving-address={{.Values.versionChecker.metricsServingAddress}}"
+          - "--test-all-containers={{.Values.versionChecker.testAllContainers}}"
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        env:
+
+        # ACR
+        {{- if .Values.acr.refreshKey }}
+        - name: VERSION_CHECKER_ACR_REFRESH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.acr.refreshKey }}
+        {{- end }}
+        {{- if .Values.acr.usernameKey }}
+        - name: VERSION_CHECKER_ACR_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.acr.usernameKey }}
+        {{- end }}
+        {{- if .Values.acr.passwordKey }}
+        - name: VERSION_CHECKER_ACR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.acr.passwordKey }}
+        {{- end }}
+
+        # Docker
+        {{- if .Values.docker.tokenKey }}
+        - name: VERSION_CHECKER_DOCKER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.docker.tokenKey }}
+        {{- end }}
+        {{- if .Values.docker.usernameKey }}
+        - name: VERSION_CHECKER_DOCKER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.docker.usernameKey }}
+        {{- end }}
+        {{- if .Values.docker.passwordKey }}
+        - name: VERSION_CHECKER_DOCKER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.docker.passwordKey }}
+        {{- end }}
+
+        # ECR
+        {{- if .Values.ecr.accessKeyIDKey }}
+        - name: VERSION_CHECKER_ECR_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.ecr.accessKeyIDKey }}
+        {{- end }}
+        {{- if .Values.ecr.secretAccessKey }}
+        - name: VERSION_CHECKER_ECR_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.ecr.secretAccessKey }}
+        {{- end }}
+        {{- if .Values.ecr.sessionTokenKey }}
+        - name: VERSION_CHECKER_ECR_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.ecr.sessionTokenKey }}
+        {{- end }}
+
+        # GCR
+        {{- if .Values.gcr.tokenKey }}
+        - name: VERSION_CHECKER_GCR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.gcr.tokenKey }}
+        {{- end }}
+
+        # Quay
+        {{- if .Values.quay.tokenKey }}
+        - name: VERSION_CHECKER_QUAY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ .Values.quay.tokenKey }}
+        {{- end }}
+
+        # Selfhosted
+        {{range $index, $element := .Values.selfhosted.registries }}
+        {{- if $element.host }}
+        - name: VERSION_CHECKER_SELFHOSTED_HOST_{{ $element.name }}
+          value: {{ $element.host }} 
+        {{- end }}
+        {{- if $element.username }}
+        - name: VERSION_CHECKER_SELFHOSTED_USERNAME_{{ $element.name }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ $element.usernameKey }}
+        {{- end }}
+        {{- if $element.password }}
+        - name: VERSION_CHECKER_SELFHOSTED_PASSWORD_{{ $element.name }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ $element.passwordKey }}
+        {{- end }}
+        {{- if $element.token }}
+        - name: VERSION_CHECKER_SELFHOSTED_TOKEN_{{ $element.name }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: {{ $element.tokenKey }}
+        {{- end }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

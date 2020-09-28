@@ -1,0 +1,102 @@
+# Default values for version-checker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# replicaCount -- Amount of replicas to run.
+replicaCount: 1
+
+image:
+  # image.repository -- Image repository to use.
+  repository: quay.io/jetstack/version-checker
+  # image.tag -- Image tag to use.
+  tag: v0.2.0
+  # image.pullPolicy -- Pull Policy to use within Cluster.
+  pullPolicy: IfNotPresent
+
+service:
+  # service.port -- Define which port to for your service.
+  port: 8080
+
+versionChecker:
+  # versionChecker.imageCacheTimeout -- Specify the time version checker needs to refresh image versions.
+  imageCacheTimeout: 30m
+  # versionChecker.logLevel -- Specify the log level.
+  logLevel: info # debug, info, warn, error, fatal, panic
+  # versionChecker.metricsServingAddress -- Specify the listening address and port for serving metrics.
+  metricsServingAddress: 0.0.0.0:8080
+  # versionChecker.testAllContainers -- Specify if all containers need to be checked or use annotation.
+  testAllContainers: true # don't require the enable.version-checker.io annotation
+
+# secretName -- Provide the name of the secret that contains all tokens, password and/or usernames.
+secretName: ""
+
+acr:
+  # acr.usernameKey -- Provide the secret key containing the ACR Username
+  usernameKey:
+  # acr.passwordKey -- Provide the secret key containing the ACR Password.
+  passwordKey:
+  # acr.refreshTokenKey -- Provide the secret key containing the ACR Refresh Token.
+  refreshTokenKey:
+
+docker:
+  # docker.usernameKey -- Provide the secret key containing the Docker Username
+  usernameKey:
+  # docker.passwordKey -- Provide the secret key containing the Docker Password.
+  passwordKey:
+  # docker.tokenKey -- Provide the secret key containing the Docker Token.
+  tokenKey:
+
+ecr:
+  # ecr.accessKeyIDKey -- Provide the secret key containing the ECR Access Key
+  accessKeyIDKey:
+  # ecr.secretAccessKey -- Provide the secret key containing the ECR Secret Access Key
+  secretAccessKey:
+  # ecr.sessionTokenKey -- Provide the secret key containing the ECR Session Token
+  sessionTokenKey:
+
+gcr:
+  # gcr.tokenKey -- Provide the secret key containing the GCR Token.
+  tokenKey:
+
+quay:
+  # quay.tokenKey -- Provide the secret key containing the Quay Token.
+  tokenKey:
+
+selfhosted: 
+  # selfhosted.registries -- Provide a list containing the needed info for selfhosted registries.
+  registries: {}
+  #- name: REGISTRY
+  #  host: http://registry:5000
+  #  usernameKey:
+  #  passwordKey:
+  #  tokenKey:
+  #- name: EXAMPLE
+  #  host: https://artifactory.example.com
+  #  username: foo
+  #  password: bar
+  #  token:
+
+# resources -- define custom resources to use for your deployment.
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #
+
+# nodeSelector -- Adding a Node selector for your deployment.
+nodeSelector: {}
+
+# tolerations -- Adding any tolerations to your deployment.
+tolerations: []
+
+# affinity -- Adding any affinity for your deployment.
+affinity: {}
+
+serviceMonitor:
+  # serviceMonitor.enabled -- Deploy a Prometheus Service Monitor along with the exporter.
+  enabled: false
+  # serviceMonitor.additionalLabels -- Adding any additional labels to the service monitor.
+  additionalLabels: {}
