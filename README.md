@@ -10,6 +10,7 @@ This repository contains [Helm](https://helm.sh) charts for various projects
 - [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
 - [Jira-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-exporter)
 - [Jira-sd-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-sd-exporter)
+- [Version-checker](https://github.com/Whyeasy/helm-charts/tree/master/charts/version-checker)
 
 ## Installing Charts from this Repository
 
