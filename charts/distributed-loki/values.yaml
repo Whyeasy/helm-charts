@@ -1,6 +1,6 @@
 loki:
   # loki.image -- Image repository for Loki images.
-  image: grafana/loki:1.6.0
+  image: grafana/loki:1.6.1
   # loki.pullPolicy -- Image pull policy for Loki images.
   pullPolicy: IfNotPresent
 
@@ -57,7 +57,7 @@ gateway:
   # gateway.replicaCount -- Number of replicas for the Gateway deployment.
   replicaCount: 3
   # gateway.image -- Image repository for the Gateway images.
-  image: nginx:1.15.1-alpine
+  image: nginx:1.18.0-alpine
   # gateway.pullPolicy -- Image pull policy for the Gateway images.
   pullPolicy: IfNotPresent
   # gateway.resources -- Custom resources for the Gateway deployment.
@@ -138,7 +138,7 @@ memcached:
   # memcached.replicaCount -- Number of replicas for the Memcached deployment.
   replicaCount: 3
   # memcached.image -- Image repository for the Memcached images.
-  image: memcached:1.5.17-alpine
+  image: memcached:1.6.7-alpine
   # memcached.pullPolicy -- Image pull policy for the Memcached images.
   pullPolicy: IfNotPresent
   # memcached.resources -- Custom resources for the Memcached deployment.
@@ -310,7 +310,7 @@ canary:
   # canary.enabled -- Enable the Loki-Canary deployment
   enabled: false
   # canary.image -- Which image to use for Loki-Canary
-  image: grafana/loki-canary:1.6.0
+  image: grafana/loki-canary:1.6.1
   # canary.resources -- Custom resources for the Loki-Canary deployment.
   resources: {}
   # canary.tolartions -- Add tolartions for pod assginment

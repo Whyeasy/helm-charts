@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.3.7`
+Current chart version is `0.3.8`
 
 
 
@@ -16,7 +16,7 @@ Current chart version is `0.3.7`
 | canary.args | list | `[]` | Allow extra arguments into the container. |
 | canary.enabled | bool | `false` | Enable the Loki-Canary deployment |
 | canary.env | list | `[]` | Allow Extra env variables into the deployment |
-| canary.image | string | `"grafana/loki-canary:1.6.0"` | Which image to use for Loki-Canary |
+| canary.image | string | `"grafana/loki-canary:1.6.1"` | Which image to use for Loki-Canary |
 | canary.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
 | canary.tolarations | list | `[]` |  |
@@ -38,7 +38,7 @@ Current chart version is `0.3.7`
 | gateway.env | list | `[]` | Allow Extra env variables into the deployment |
 | gateway.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | gateway.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
-| gateway.image | string | `"nginx:1.15.1-alpine"` | Image repository for the Gateway images. |
+| gateway.image | string | `"nginx:1.18.0-alpine"` | Image repository for the Gateway images. |
 | gateway.ingress.annotations | object | `{}` |  |
 | gateway.ingress.enabled | bool | `false` | Enable Ingress for your gateway deployment |
 | gateway.ingress.host | string | `"chart-example.local"` |  |
@@ -64,13 +64,13 @@ Current chart version is `0.3.7`
 | ingester.replicaCount | int | `3` | Number of replicas for the Ingester deployment. |
 | ingester.resources | object | `{"limits":{"cpu":2,"memory":"10Gi"},"requests":{"cpu":1,"memory":"5Gi"}}` | Custom resources for the Ingester deployment. |
 | ingester.tolarations | list | `[]` |  |
-| loki.image | string | `"grafana/loki:1.6.0"` | Image repository for Loki images. |
+| loki.image | string | `"grafana/loki:1.6.1"` | Image repository for Loki images. |
 | loki.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Loki images. |
 | memberlist.enable | bool | `false` | Enable the ring to be a Mmeberslist. This will disable consul. |
 | memberlist.port | int | `7946` | Port to listen on for gossip messages. |
 | memberlist.rejoin | string | `"5m"` | How often to rejoin the cluster. |
 | memcached.affinity | object | `{}` | Replace default affinity with custom affinity |
-| memcached.image | string | `"memcached:1.5.17-alpine"` | Image repository for the Memcached images. |
+| memcached.image | string | `"memcached:1.6.7-alpine"` | Image repository for the Memcached images. |
 | memcached.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | memcached.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Memcached images. |
 | memcached.replicaCount | int | `3` | Number of replicas for the Memcached deployment. |

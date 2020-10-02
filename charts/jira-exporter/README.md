@@ -2,7 +2,7 @@ jira-exporter
 =============
 A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
 
-Current chart version is `0.1.6`
+Current chart version is `0.1.7`
 
 
 
@@ -18,7 +18,7 @@ Current chart version is `0.1.6`
 | fullnameOverride | string | `""` | full name of the chart. |
 | image.pullPolicy | string | `"IfNotPresent"` | image pull policy |
 | image.repository | string | `"whyeasy/jira-exporter"` | image repository |
-| image.tag | string | `"v0.0.7"` | image tag |
+| image.tag | string | `"v0.0.8"` | image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | override name of the chart |
 | nodeSelector | object | `{}` | node for scheduler pod assignment |
