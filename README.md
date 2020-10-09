@@ -3,13 +3,14 @@
 This repository contains [Helm](https://helm.sh) charts for various projects
 
 - [Distributed Loki](https://github.com/whyeasy/helm-charts/tree/master/charts/distributed-loki)
-- [Prometheus MongoDb Exporter](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-mongodb-exporter)
-- [k8s Node Termination Handler](https://github.com/whyeasy/helm-charts/tree/master/charts/k8s-node-termination-handler)
 - [Gitlab-extra-expoter](https://github.com/Whyeasy/helm-charts/tree/master/charts/gitlab-extra-exporter)
-- [Stackdriver-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/stackdriver-exporter)
-- [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
 - [Jira-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-exporter)
 - [Jira-sd-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-sd-exporter)
+- [k8s Node Termination Handler](https://github.com/whyeasy/helm-charts/tree/master/charts/k8s-node-termination-handler)
+- [Osiris](https://github.com/whyeasy/helm-charts/tree/master/charts/osiris)
+- [Prometheus MongoDb Exporter](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-mongodb-exporter)
+- [Stackdriver-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/stackdriver-exporter)
+- [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
 - [Version-checker](https://github.com/Whyeasy/helm-charts/tree/master/charts/version-checker)
 
 ## Installing Charts from this Repository
