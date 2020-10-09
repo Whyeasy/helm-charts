@@ -1,0 +1,103 @@
+image:
+  # image.repository -- Image location, NOT including the tag
+  repository: whyeasy/osiris
+  # image.tag -- Image tag
+  tag: v0.1.0
+  # image.pullPolicy -- Image pull policy
+  pullPolicy: IfNotPresent
+
+# imagePullSecrets -- image pull secret for private images
+imagePullSecrets: []
+# nameOverride -- Optional name override
+nameOverride: ""
+# fullnameOverride -- Optional full name override
+fullnameOverride: ""
+
+activator:
+  # activator.replicaCount -- Number of replicas for the activator deployment.
+  replicaCount: 1
+  # activator.resources -- custom resource configuration
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  # activator.nodeSelector -- node for scheduler pod assignment
+  nodeSelector: {}
+  # activator.tolerations -- tolerations for scheduler pod assignment
+  tolerations: []
+  # activator.affinity -- affinity for scheduler pod assignment
+  affinity: {}
+
+zeroscaler:
+  # zeroscaler.resources -- custom resource configuration
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  # zeroscaler.nodeSelector -- node for scheduler pod assignment
+  nodeSelector: {}
+  # zeroscaler.tolerations -- tolerations for scheduler pod assignment
+  tolerations: []
+  # zeroscaler.affinity -- affinity for scheduler pod assignment
+  affinity: {}
+  # zeroscaler.metricsCheckInterval -- The interval in which the zeroScaler would repeatedly track the pod http request metrics.
+  # The value is the number of seconds of the interval
+  metricsCheckInterval: 150
+
+proxyInjector:
+  # proxyInjector.replicaCount -- Number of replicas for the proxy injector deployment.
+  replicaCount: 1
+  # proxyInjector.resources -- custom resource configuration
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  # proxyInjector.nodeSelector -- node for scheduler pod assignment
+  nodeSelector: {}
+  # proxyInjector.tolerations -- tolerations for scheduler pod assignment
+  tolerations: []
+  # proxyInjector.affinity -- affinity for scheduler pod assignment
+  affinity: {}
+
+endpointsController:
+  # endpointsController.resources -- custom resource configuration
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  # endpointsController.nodeSelector -- node for scheduler pod assignment
+  nodeSelector: {}
+  # endpointsController.tolerations -- tolerations for scheduler pod assignment
+  tolerations: []
+  # endpointsController.affinity -- affinity for scheduler pod assignment
+  affinity: {}
+
+endpointsHijacker:
+  # endpointsHijacker.replicaCount -- Number of replicas for the endpoints hijacker  deployment.
+  replicaCount: 1
+  # endpointsHijacker.resources -- custom resource configuration
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  # endpointsHijacker.nodeSelector -- node for scheduler pod assignment
+  nodeSelector: {}
+  # endpointsHijacker.tolerations -- tolerations for scheduler pod assignment
+  tolerations: []
+  # endpointsHijacker.affinity -- affinity for scheduler pod assignment
+  affinity: {}
