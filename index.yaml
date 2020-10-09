@@ -705,6 +705,19 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.0.16/loki-distributed-0.0.16.tgz
     version: 0.0.16
+  osiris:
+  - apiVersion: v1
+    appVersion: v0.1.0
+    created: "2020-10-09T08:34:33.1021425Z"
+    description: A general purpose, scale-to-zero component for Kubernetes
+    digest: a7a5e58cf664a38b6ab9dd314f2c498ffbb87a358a0e64e3d71b21e7d10e90a6
+    home: https://github.com/whyeasy/osiris
+    name: osiris
+    sources:
+    - https://github.com/whyeasy/osiris
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/osiris-v0.0.1/osiris-v0.0.1.tgz
+    version: v0.0.1
   prometheus-mongodb-exporter:
   - apiVersion: v2
     appVersion: v0.10.0
