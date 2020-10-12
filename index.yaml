@@ -707,6 +707,18 @@ entries:
     version: 0.0.16
   osiris:
   - apiVersion: v1
+    appVersion: v0.3.0
+    created: "2020-10-12T07:51:26.05203702Z"
+    description: A general purpose, scale-to-zero component for Kubernetes
+    digest: 4306b1469c5df09bd42b6519a1063baa7127d1de7ebd0a98ad5fdbc299aec5e0
+    home: https://github.com/whyeasy/osiris
+    name: osiris
+    sources:
+    - https://github.com/whyeasy/osiris
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/osiris-v0.0.2/osiris-v0.0.2.tgz
+    version: v0.0.2
+  - apiVersion: v1
     appVersion: v0.1.0
     created: "2020-10-09T08:34:33.1021425Z"
     description: A general purpose, scale-to-zero component for Kubernetes
