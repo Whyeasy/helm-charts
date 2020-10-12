@@ -1,8 +1,8 @@
 apiVersion: v1
 name: osiris
 description: A general purpose, scale-to-zero component for Kubernetes
-version: v0.0.1
-appVersion: v0.1.0
+version: v0.0.2
+appVersion: v0.3.0
 home: https://github.com/whyeasy/osiris
 sources:
 - https://github.com/whyeasy/osiris

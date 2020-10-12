@@ -2,7 +2,7 @@ image:
   # image.repository -- Image location, NOT including the tag
   repository: whyeasy/osiris
   # image.tag -- Image tag
-  tag: v0.1.0
+  tag: v0.3.0
   # image.pullPolicy -- Image pull policy
   pullPolicy: IfNotPresent
 

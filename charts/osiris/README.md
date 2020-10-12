@@ -2,7 +2,7 @@ osiris
 ======
 A general purpose, scale-to-zero component for Kubernetes
 
-Current chart version is `v0.0.1`
+Current chart version is `v0.0.2`
 
 Source code can be found [here](https://github.com/whyeasy/osiris)
 
@@ -29,7 +29,7 @@ Source code can be found [here](https://github.com/whyeasy/osiris)
 | fullnameOverride | string | `""` | Optional full name override |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | image.repository | string | `"whyeasy/osiris"` | Image location, NOT including the tag |
-| image.tag | string | `"v0.1.0"` | Image tag |
+| image.tag | string | `"v0.3.0"` | Image tag |
 | imagePullSecrets | list | `[]` | image pull secret for private images |
 | nameOverride | string | `""` | Optional name override |
 | proxyInjector.affinity | object | `{}` | affinity for scheduler pod assignment |
