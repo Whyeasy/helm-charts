@@ -876,6 +876,16 @@ entries:
     version: 0.1.0
   version-checker:
   - apiVersion: v2
+    appVersion: v0.2.1
+    created: "2020-10-16T10:32:13.755293174Z"
+    description: A Helm chart for version-checker
+    digest: e0f893d78c22a5d9d67a64c0b61ac51019e2006f8fd9478ce041f61aa422636a
+    home: https://github.com/joshvanl/verison-checker
+    name: version-checker
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/version-checker-0.2.2/version-checker-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     appVersion: v0.2.0
     created: "2020-09-28T13:15:10.729037138Z"
     description: A Helm chart for version-checker
