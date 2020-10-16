@@ -9,7 +9,7 @@ image:
   # image.repository -- Image repository to use.
   repository: quay.io/jetstack/version-checker
   # image.tag -- Image tag to use.
-  tag: v0.2.0
+  tag: v0.2.1
   # image.pullPolicy -- Pull Policy to use within Cluster.
   pullPolicy: IfNotPresent
 

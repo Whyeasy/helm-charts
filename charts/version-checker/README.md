@@ -2,7 +2,7 @@ version-checker
 ===============
 A Helm chart for version-checker
 
-Current chart version is `0.2.0`
+Current chart version is `0.2.1`
 
 Source code can be found [here](https://github.com/joshvanl/verison-checker)
 
@@ -25,7 +25,7 @@ Source code can be found [here](https://github.com/joshvanl/verison-checker)
 | gcr.tokenKey | string | `nil` | Provide the secret key containing the GCR Token. |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull Policy to use within Cluster. |
 | image.repository | string | `"quay.io/jetstack/version-checker"` | Image repository to use. |
-| image.tag | string | `"v0.2.0"` | Image tag to use. |
+| image.tag | string | `"v0.2.1"` | Image tag to use. |
 | nodeSelector | object | `{}` | Adding a Node selector for your deployment. |
 | quay.tokenKey | string | `nil` | Provide the secret key containing the Quay Token. |
 | replicaCount | int | `1` | Amount of replicas to run. |
