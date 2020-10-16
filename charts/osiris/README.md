@@ -2,7 +2,7 @@ osiris
 ======
 A general purpose, scale-to-zero component for Kubernetes
 
-Current chart version is `v0.0.2`
+Current chart version is `v0.0.3`
 
 Source code can be found [here](https://github.com/whyeasy/osiris)
 

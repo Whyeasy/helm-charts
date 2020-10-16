@@ -19,7 +19,6 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "osiris.name" . }}-endpoints-hijacker
         app.kubernetes.io/instance: {{ .Release.Name }}
-        releaseRevision: "{{ .Release.Revision }}"
     spec:
       serviceAccountName: {{ include "osiris.fullname" . }}
     {{- with .Values.imagePullSecrets }}
