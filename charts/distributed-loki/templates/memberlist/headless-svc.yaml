@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "loki-helm.fullname" . }}-memberlist
   labels:
-    {{- include "loki.labels" . | nindent 4 }}
+    {{- include "loki-helm.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
   clusterIP: None
@@ -13,7 +13,6 @@ spec:
       port: 7946
       targetPort: memberlist
       protocol: TCP
-  selector:
-    labels: {{- include "loki-helm.labels" . | nindent 4 }}
-      app.kubernetes.io/part-of: memberlist
+  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
 {{- end }}
