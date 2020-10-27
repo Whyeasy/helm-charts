@@ -24,6 +24,7 @@ spec:
         config_hash: 8f80031113ab434770ef7e9215512968
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: ingester
+        app.kubernetes.io/part-of: memberlist
     spec:
       {{- if .Values.ingester.affinity }}
       affinity: {{- toYaml .Values.ingester.affinity | nindent 8 }}

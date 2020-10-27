@@ -22,6 +22,7 @@ spec:
         config_hash: 8f80031113ab434770ef7e9215512968
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: querier
+        app.kubernetes.io/part-of: memberlist
     spec:
       {{- if .Values.querier.affinity }}
       affinity: {{- toYaml .Values.querier.affinity | nindent 8 }}

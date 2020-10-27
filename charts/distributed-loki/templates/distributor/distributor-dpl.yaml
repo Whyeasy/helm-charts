@@ -19,6 +19,7 @@ spec:
         config_hash: 8f80031113ab434770ef7e9215512968
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
         app.kubernetes.io/component: distributor
+        app.kubernetes.io/part-of: memberlist
     spec:
       {{- if .Values.distributor.affinity }}
       affinity: {{- toYaml .Values.distributor.affinity | nindent 8 }}
