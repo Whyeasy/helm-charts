@@ -1,8 +1,12 @@
 loki:
   # loki.image -- Image repository for Loki images.
-  image: grafana/loki:1.6.1
+  image: grafana/loki:2.0.0
   # loki.pullPolicy -- Image pull policy for Loki images.
   pullPolicy: IfNotPresent
+  # loki.userBoltDBShipper -- Enable Index bucket storage.
+  useBoltDBShipper: false
+  # loki.config -- Provide the config for Loki.
+  config: ""
 
 memberlist:
   # memberlist.enable -- Enable the ring to be a Mmeberslist. This will disable consul.
@@ -11,23 +15,6 @@ memberlist:
   rejoin: 5m
   # memberlist.port -- Port to listen on for gossip messages.
   port: 7946
-
-consul:
-  # consul.image -- Image repository for the Consul images.
-  image: consul:1.5.3
-  # consul.pullPolicy -- Image pull policy for the Consul images.
-  pullPolicy: IfNotPresent
-  # consul.resources -- Custom resources for the Consul deployment.
-  resources:
-    requests:
-      cpu: 100m
-      memory: 500Mi
-  # consul.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # consul.nodeSelector -- Add Node labels for pod assginment
-  nodeSelector: {}
-  # consul.affinity -- Replace default affinity with custom affinity
-  affinity: {}
 
 distributor:
   # distributor.replicaCount -- Number of replicas for the Distributor deployment.
@@ -119,6 +106,11 @@ ingester:
   nodeSelector: {}
   # ingester.affinity -- Replace default affinity with custom affinity
   affinity: {}
+  persistence:
+    # ingester.persistence.size -- Specify disk size for Ingester persistence storage
+    size: 10Gi
+    # ingester.persistence.storageClass -- Specify custom storageClass to use.
+    storageClass: "standard"
   config:
     # ingester.config.chunkSize -- The targeted _uncompressed_ size in bytes of a chunk block
     chunkSize: 262144
@@ -227,6 +219,11 @@ querier:
   nodeSelector: {}
   # querier.affinity -- Replace default affinity with custom affinity
   affinity: {}
+  persistence:
+    # querier.persistence.size -- Specify disk size for Querier persistence storage
+    size: 10Gi
+    # querier.persistence.storageClass -- Specify custom storageClass to use.
+    storageClass: "standard"
   config:
     # querier.config.parallelism -- Number of simultaneous queries to process
     parallelism: 10
@@ -266,6 +263,8 @@ querierFrontend:
 
 
 tableManager:
+  # tableManager.enabled -- Needed when using cassandra as index strogae!
+  enabled: true
   # tableManager.replicaCount -- Number of replicas for the Table-manager deployment.
   replicaCount: 1
   # tableManager.resources -- Custom resources for the Table-manager deployment.

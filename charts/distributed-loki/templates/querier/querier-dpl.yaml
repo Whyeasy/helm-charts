@@ -1,3 +1,4 @@
+{{- if eq .Values.loki.useBoltDBShipper false}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -81,3 +82,4 @@ spec:
       {{- with .Values.querier.extraVolumes }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+{{- end }}

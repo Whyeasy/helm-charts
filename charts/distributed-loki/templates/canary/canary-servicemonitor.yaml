@@ -4,6 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "loki-helm.canary" . }}
+  namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: loki-canary
     {{- if .Values.serviceMonitor.additionalLabels }}
@@ -15,7 +16,7 @@ spec:
       app.kubernetes.io/component: loki-canary
   namespaceSelector:
     matchNames:
-      - {{ .Release.Namespace | quote }}
+      - {{ include "loki-helm.canary" . }}
   endpoints:
   - port: metrics
     {{- if .Values.serviceMonitor.interval }}

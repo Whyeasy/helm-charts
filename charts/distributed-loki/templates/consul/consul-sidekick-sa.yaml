@@ -1,9 +1,0 @@
-{{- if ne .Values.memberlist.enable true }}
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: consul-sidekick
-  namespace: {{ .Release.Namespace }}
-  labels: {{- include "loki-helm.labels" . | nindent 4 }}
-    app.kubernetes.io/component: consul
-{{- end }}

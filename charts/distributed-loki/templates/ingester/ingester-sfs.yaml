@@ -1,6 +1,6 @@
-{{- if eq .Values.loki.useBoltDBShipper false}}
+{{- if .Values.loki.useBoltDBShipper }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "loki-helm.ingester" . }}
   namespace: {{ .Release.Namespace }}
@@ -41,6 +41,8 @@ spec:
         {{- toYaml .Values.ingester.tolerations | nindent 8 }}
       containers:
       - args:
+        - -boltdb.shipper.active-index-directory=/data/index
+        - -boltdb.shipper.cache-location=/data/boltdb-cache
         - -config.file=/etc/loki/config/config.yaml
         - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
         - -target=ingester
@@ -73,9 +75,13 @@ spec:
           name: loki
         - mountPath: /etc/loki/overrides
           name: overrides
+        - mountPath: /data
+          name: ingester-data
         {{- with .Values.ingester.extraVolumeMounts }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      securityContext:
+        fsGroup: 10001
       terminationGracePeriodSeconds: 4800
       volumes:
       - configMap:
@@ -87,4 +93,14 @@ spec:
       {{- with .Values.ingester.extraVolumes }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+    volumeClaimTemplates:
+    - metadata:
+        name: ingester-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.ingester.persistence.size | quote }}
+        storageClassName: {{ .Values.ingester.persistence.storageClass }}
 {{- end }}

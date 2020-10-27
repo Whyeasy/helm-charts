@@ -1,3 +1,4 @@
+{{- if .Values.tableManager.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -63,3 +64,4 @@ spec:
       {{- with .Values.tableManager.extraVolumes }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+{{- end }}

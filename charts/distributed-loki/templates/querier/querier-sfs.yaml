@@ -1,54 +1,51 @@
-{{- if eq .Values.loki.useBoltDBShipper false}}
+{{- if .Values.loki.useBoltDBShipper }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: {{ include "loki-helm.ingester" . }}
+  name: {{ include "loki-helm.querier" . }}
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
-    app.kubernetes.io/component: ingester
+    app.kubernetes.io/component: querier
 spec:
-  minReadySeconds: 60
-  replicas: {{ .Values.ingester.replicaCount }}
+  minReadySeconds: 10
+  replicas: {{ .Values.querier.replicaCount }}
   revisionHistoryLimit: 10
   selector:
     matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: ingester
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+      app.kubernetes.io/component: querier
   template:
     metadata:
       annotations:
         config_hash: 8f80031113ab434770ef7e9215512968
       labels: {{- include "loki-helm.labels" . | nindent 8 }}
-        app.kubernetes.io/component: ingester
+        app.kubernetes.io/component: querier
     spec:
-      {{- if .Values.ingester.affinity }}
-      affinity: {{- toYaml .Values.ingester.affinity | nindent 8 }}
+      {{- if .Values.querier.affinity }}
+      affinity: {{- toYaml .Values.querier.affinity | nindent 8 }}
       {{- else }}
-      affinity: 
+      affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
-                app.kubernetes.io/component: ingester
+                app.kubernetes.io/component: querier
             topologyKey: kubernetes.io/hostname
       {{- end }}
       nodeSelector:
-        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.querier.nodeSelector | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
+        {{- toYaml .Values.querier.tolerations | nindent 8 }}
       containers:
       - args:
+        - -boltdb.shipper.cache-location=/data/boltdb-cache
         - -config.file=/etc/loki/config/config.yaml
         - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
-        - -target=ingester
+        - -target=querier
         image: {{ .Values.loki.image }}
         imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
-        name: ingester
-        {{- if .Values.ingester.env }}
-        env: {{- toYaml .Values.ingester.env | nindent 8 }}
+        name: querier
+        {{- if .Values.querier.env }}
+        env: {{- toYaml .Values.querier.env | nindent 8 }}
         {{- end }}
         ports:
         - containerPort: 3100
@@ -59,24 +56,27 @@ spec:
         - containerPort: {{ .Values.memberlist.port}}
           name: memberlist
         {{- end }}
+        {{- if .Values.querier.resources }}
+        resources: {{- toYaml .Values.querier.resources | nindent 12 }}
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /ready
             port: 3100
           initialDelaySeconds: 15
           timeoutSeconds: 1
-        {{- if .Values.ingester.resources }}
-        resources: {{- toYaml .Values.ingester.resources | nindent 12 }}
-        {{- end }}
         volumeMounts:
+        - mountPath: /data
+          name: querier-data
         - mountPath: /etc/loki/config
           name: loki
         - mountPath: /etc/loki/overrides
           name: overrides
-        {{- with .Values.ingester.extraVolumeMounts }}
+        {{- with .Values.querier.extraVolumeMounts }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      terminationGracePeriodSeconds: 4800
+      securityContext:
+        fsGroup: 10001
       volumes:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-config
@@ -84,7 +84,17 @@ spec:
       - configMap:
           name: {{ include "loki-helm.fullname" . }}-overrides
         name: overrides
-      {{- with .Values.ingester.extraVolumes }}
+      {{- with .Values.querier.extraVolumes }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+    volumeClaimTemplates:
+    - metadata:
+        name: querier-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.querier.persistence.size | quote }}
+        storageClassName: {{ .Values.querier.persistence.storageClass }}
 {{- end }}

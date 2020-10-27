@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.3.8`
+Current chart version is `0.4.0`
 
 
 
@@ -20,12 +20,6 @@ Current chart version is `0.3.8`
 | canary.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
 | canary.tolarations | list | `[]` |  |
-| consul.affinity | object | `{}` | Replace default affinity with custom affinity |
-| consul.image | string | `"consul:1.5.3"` | Image repository for the Consul images. |
-| consul.nodeSelector | object | `{}` | Add Node labels for pod assginment |
-| consul.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Consul images. |
-| consul.resources | object | `{"requests":{"cpu":"100m","memory":"500Mi"}}` | Custom resources for the Consul deployment. |
-| consul.tolarations | list | `[]` |  |
 | distributor.affinity | object | `{}` | Replace default affinity with custom affinity |
 | distributor.env | list | `[]` | Allow Extra env variables into the deployment |
 | distributor.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
@@ -61,11 +55,15 @@ Current chart version is `0.3.8`
 | ingester.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | ingester.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
 | ingester.nodeSelector | object | `{}` | Add Node labels for pod assginment |
+| ingester.persistence.size | string | `"10Gi"` | Specify disk size for Ingester persistence storage |
+| ingester.persistence.storageClass | string | `"standard"` | Specify custom storageClass to use. |
 | ingester.replicaCount | int | `3` | Number of replicas for the Ingester deployment. |
 | ingester.resources | object | `{"limits":{"cpu":2,"memory":"10Gi"},"requests":{"cpu":1,"memory":"5Gi"}}` | Custom resources for the Ingester deployment. |
 | ingester.tolarations | list | `[]` |  |
-| loki.image | string | `"grafana/loki:1.6.1"` | Image repository for Loki images. |
+| loki.config | string | `""` | Provide the config for Loki. |
+| loki.image | string | `"grafana/loki:2.0.0"` | Image repository for Loki images. |
 | loki.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Loki images. |
+| loki.useBoltDBShipper | bool | `false` |  |
 | memberlist.enable | bool | `false` | Enable the ring to be a Mmeberslist. This will disable consul. |
 | memberlist.port | int | `7946` | Port to listen on for gossip messages. |
 | memberlist.rejoin | string | `"5m"` | How often to rejoin the cluster. |
@@ -97,6 +95,8 @@ Current chart version is `0.3.8`
 | querier.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | querier.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
 | querier.nodeSelector | object | `{}` | Add Node labels for pod assginment |
+| querier.persistence.size | string | `"10Gi"` | Specify disk size for Querier persistence storage |
+| querier.persistence.storageClass | string | `"standard"` | Specify custom storageClass to use. |
 | querier.replicaCount | int | `3` | Number of replicas for the Querier deployment. |
 | querier.resources | object | `{}` | Custom resources for the Querier deployment. |
 | querier.tolarations | list | `[]` |  |
@@ -123,6 +123,7 @@ Current chart version is `0.3.8`
 | storage.objectStore | string | `"gcs"` |  |
 | storage.store | string | `"cassandra"` | Type of store to use for you indexes. Currently only cassandra is supported. |
 | tableManager.affinity | object | `{}` | Replace default affinity with custom affinity |
+| tableManager.enabled | bool | `true` | Needed when using cassandra as index strogae! |
 | tableManager.env | list | `[]` | Allow Extra env variables into the deployment |
 | tableManager.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | tableManager.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
