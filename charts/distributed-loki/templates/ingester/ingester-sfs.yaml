@@ -42,6 +42,7 @@ spec:
         - -boltdb.shipper.active-index-directory=/data/index
         - -boltdb.shipper.cache-location=/data/boltdb-cache
         - -config.file=/etc/loki/config/config.yaml
+        - -ingester.max-transfer-retries=0
         - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
         - -target=ingester
         image: {{ .Values.loki.image }}
