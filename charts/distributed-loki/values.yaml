@@ -10,9 +10,7 @@ loki:
 
 memberlist:
   # memberlist.enable -- Enable the ring to be a Mmeberslist. This will disable consul.
-  enable: false
-  # memberlist.rejoin -- How often to rejoin the cluster.
-  rejoin: 5m
+  enable: true
   # memberlist.port -- Port to listen on for gossip messages.
   port: 7946
 
@@ -211,9 +209,6 @@ querier:
     size: 10Gi
     # querier.persistence.storageClass -- Specify custom storageClass to use.
     storageClass: "standard"
-  config:
-    # querier.config.parallelism -- Number of simultaneous queries to process
-    parallelism: 10
 
 
 querierFrontend:
@@ -264,23 +259,6 @@ tableManager:
   nodeSelector: {}
   # tableManager.affinity -- Replace default affinity with custom affinity
   affinity: {}
-
-storage:
-  # storage.store -- Type of store to use for you indexes. Currently only cassandra is supported.
-  store: cassandra
-  # storage.objectstore -- Type of store to use for your chunks. Currently only gcs is supported.
-  objectStore: gcs
-  config:
-    # storage.config.retentionPeriod -- Retention period of storing logs.
-    retentionPeriod: 0
-    # storage.config.retentionDelete -- Enable the deletion of indexes.
-    retentionDelete: false
-    # storage.config.storeUrl -- Url of your cassandra instance.
-    storeUrl: loki-cassandra.monitoring.svc
-    # storage.config.replicationFactor -- Replication factor of the label index in cassanra
-    replicationFactor: 1
-    # storage.config.bucketName -- Name of your gcs bucket.
-    bucketName: loki_distributed
 
 canary:
   # canary.enabled -- Enable the Loki-Canary deployment

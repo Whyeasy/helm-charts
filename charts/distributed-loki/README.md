@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.4.2`
+Current chart version is `0.4.3`
 
 
 
@@ -58,9 +58,8 @@ Current chart version is `0.4.2`
 | loki.image | string | `"grafana/loki:2.0.0"` | Image repository for Loki images. |
 | loki.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Loki images. |
 | loki.useBoltDBShipper | bool | `false` |  |
-| memberlist.enable | bool | `false` | Enable the ring to be a Mmeberslist. This will disable consul. |
+| memberlist.enable | bool | `true` | Enable the ring to be a Mmeberslist. This will disable consul. |
 | memberlist.port | int | `7946` | Port to listen on for gossip messages. |
-| memberlist.rejoin | string | `"5m"` | How often to rejoin the cluster. |
 | memcached.affinity | object | `{}` | Replace default affinity with custom affinity |
 | memcached.image | string | `"memcached:1.6.7-alpine"` | Image repository for the Memcached images. |
 | memcached.nodeSelector | object | `{}` | Add Node labels for pod assginment |
@@ -84,7 +83,6 @@ Current chart version is `0.4.2`
 | memcachedIndexWrites.resources | object | `{"limits":{"cpu":3,"memory":"1536Mi"},"requests":{"cpu":"500m","memory":"1329Mi"}}` | Custom resources for the Memcached-index-writes deployment. |
 | memcachedIndexWrites.tolarations | list | `[]` |  |
 | querier.affinity | object | `{}` | Replace default affinity with custom affinity |
-| querier.config.parallelism | int | `10` | Number of simultaneous queries to process |
 | querier.env | list | `[]` | Allow Extra env variables into the deployment |
 | querier.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | querier.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
@@ -105,13 +103,6 @@ Current chart version is `0.4.2`
 | serviceMonitor.additionalLabels | object | `{}` | Set additional labels for the service monitor. |
 | serviceMonitor.enabled | bool | `false` | Enable service monitors for Loki deployment. |
 | serviceMonitor.interval | string | `""` | Set interval scraping the targets. |
-| storage.config.bucketName | string | `"loki_distributed"` | Name of your gcs bucket. |
-| storage.config.replicationFactor | int | `1` | Replication factor of the label index in cassanra |
-| storage.config.retentionDelete | bool | `false` | Enable the deletion of indexes. |
-| storage.config.retentionPeriod | int | `0` | Retention period of storing logs. |
-| storage.config.storeUrl | string | `"loki-cassandra.monitoring.svc"` | Url of your cassandra instance. |
-| storage.objectStore | string | `"gcs"` |  |
-| storage.store | string | `"cassandra"` | Type of store to use for you indexes. Currently only cassandra is supported. |
 | tableManager.affinity | object | `{}` | Replace default affinity with custom affinity |
 | tableManager.enabled | bool | `true` | Needed when using cassandra as index strogae! |
 | tableManager.env | list | `[]` | Allow Extra env variables into the deployment |

@@ -7,12 +7,14 @@ metadata:
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: querier
 spec:
-  minReadySeconds: 10
   replicas: {{ .Values.querier.replicaCount }}
   revisionHistoryLimit: 10
   selector:
     matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: querier
+  serviceName: {{ include "loki-helm.querier" . }}
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       annotations:
@@ -87,14 +89,14 @@ spec:
       {{- with .Values.querier.extraVolumes }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
-    volumeClaimTemplates:
-    - metadata:
-        name: querier-data
-      spec:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.querier.persistence.size | quote }}
-        storageClassName: {{ .Values.querier.persistence.storageClass }}
+  volumeClaimTemplates:
+  - metadata:
+      name: querier-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.querier.persistence.size | quote }}
+      storageClassName: {{ .Values.querier.persistence.storageClass }}
 {{- end }}

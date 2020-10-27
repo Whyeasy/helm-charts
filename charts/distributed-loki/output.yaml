@@ -1,0 +1,2368 @@
+NAME: loki
+LAST DEPLOYED: Tue Oct 27 14:14:44 2020
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+canary:
+  enabled: true
+  resources:
+    requests:
+      cpu: 20m
+      memory: 50Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+distributor:
+  nodeSelector:
+    node_pool: preemptible
+  resources:
+    requests:
+      cpu: 500m
+      memory: 100Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+gateway:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.allow-http: "false"
+      kubernetes.io/ingress.global-static-ip-name: lighthouse-loki-gateway
+      networking.gke.io/managed-certificates: loki-gateway
+    enabled: true
+    host: loki-gateway.twill.tools
+  nodeSelector:
+    node_pool: preemptible
+  service:
+    annotations:
+      beta.cloud.google.com/backend-config: '{"ports": {"80":"loki-gateway"}}'
+    type: NodePort
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+ingester:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: ingester
+          topologyKey: kubernetes.io/hostname
+        weight: 1
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/secrets/google/key.json
+  extraVolumeMounts:
+  - mountPath: /var/secrets/google
+    name: google-cloud-key
+  extraVolumes:
+  - name: google-cloud-key
+    secret:
+      items:
+      - key: SA_KEY
+        path: key.json
+      secretName: loki
+  persistence:
+    storageClass: ssd
+  replicaCount: 5
+  resources:
+    limits:
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+loki:
+  config: "auth_enabled: false\nchunk_store_config:\n    chunk_cache_config:\n        memcached:\n
+    \           batch_size: 100\n            parallelism: 100\n        memcached_client:\n
+    \           consistent_hash: true\n            host: {{ include \"loki-helm.memcached\"
+    . }}.{{ .Release.Namespace }}.svc.cluster.local\n            service: memcached-client\n
+    \   max_look_back_period: 672h\n    write_dedupe_cache_config:\n        memcached:\n
+    \           batch_size: 100\n            parallelism: 100\n        memcached_client:\n
+    \           consistent_hash: true\n            host: {{ include \"loki-helm.memcached-index-writes\"
+    . }}.{{ .Release.Namespace }}.svc.cluster.local\n            service: memcached-client\n\nmemberlist:\n
+    \   rejoin_interval: 5m\n    bind_port: 7946\n    join_members:\n        - {{
+    include \"loki-helm.distributor\" . }}\n        - {{ include \"loki-helm.ingester\"
+    . }}\n        - {{ include \"loki-helm.querier\" . }}\n\ndistributor:\n    ring:\n
+    \       kvstore:\n            store: memberlist\n\nfrontend:\n    compress_responses:
+    true\n    max_outstanding_per_tenant: 200\n    log_queries_longer_than: 5s\n\nfrontend_worker:\n
+    \   frontend_address: {{ include \"loki-helm.querier-frontend\" . }}.{{ .Release.Namespace
+    }}.svc.cluster.local:9095\n    grpc_client_config:\n        max_send_msg_size:
+    1.048576e+08\n    parallelism: 10\n\ningester:\n    chunk_block_size: 262144\n
+    \   chunk_idle_period: 30m\n    max_chunk_age: 1h\n    lifecycler:\n        heartbeat_period:
+    5s\n        interface_names:\n          - eth0\n        join_after: 30s\n        num_tokens:
+    512\n        ring:\n            heartbeat_timeout: 1m\n            kvstore:\n
+    \               store: memberlist\n            replication_factor: 3\n    max_transfer_retries:
+    30\n\ningester_client:\n    grpc_client_config:\n        max_recv_msg_size: 6.7108864e+07\n
+    \   remote_timeout: 1s\n\nlimits_config:\n    enforce_metric_name: false\n    ingestion_burst_size_mb:
+    20\n    ingestion_rate_mb: 10\n    ingestion_rate_strategy: global\n    max_global_streams_per_user:
+    10000\n    max_query_length: 12000h\n    max_query_parallelism: 14\n    max_streams_per_user:
+    0\n    reject_old_samples: true\n    reject_old_samples_max_age: 168h\n    max_cache_freshness_per_query:
+    15m\nquerier:\n    query_ingesters_within: 2h\nquery_range:\n    align_queries_with_step:
+    true\n    cache_results: true\n    max_retries: 5\n    results_cache:\n        cache:\n
+    \           memcached_client:\n                consistent_hash: true\n                host:
+    {{ include \"loki-helm.memcached-frontend\" . }}.{{ .Release.Namespace }}.svc.cluster.local\n
+    \               max_idle_conns: 16\n                service: memcached-client\n
+    \               timeout: 500ms\n                update_interval: 1m\n    split_queries_by_interval:
+    30m\n\nschema_config:\n    configs:\n      - from: \"2018-04-15\"\n        index:\n
+    \           period: 168h\n            prefix: monitoring_index_\n        object_store:
+    gcs\n        schema: v11\n        store: cassandra\n      - from: \"2020-10-28\"\n
+    \       index:\n            period: 24h\n            prefix: loki_index_\n        object_store:
+    gcs\n        schema: v11\n        store: boltdb-shipper\n\nserver:\n    graceful_shutdown_timeout:
+    5s\n    grpc_server_max_concurrent_streams: 1000\n    grpc_server_max_recv_msg_size:
+    1.048576e+08\n    grpc_server_max_send_msg_size: 1.048576e+08\n    http_listen_port:
+    3100\n    http_server_idle_timeout: 120s\n    http_server_write_timeout: 1m\n\nstorage_config:\n
+    \   cassandra:\n        addresses: cassandra.loki.svc\n        auth: false\n        keyspace:
+    lokiindex\n        replication_factor: 3\n    gcs:\n        bucket_name: tools-lighthouse-eu-loki-distributed-chunks\n
+    \   boltdb_shipper:\n        shared_store: gcs\n    index_queries_cache_config:\n
+    \       memcached:\n            batch_size: 100\n            parallelism: 100\n
+    \       memcached_client:\n            consistent_hash: true\n            host:
+    {{ include \"loki-helm.memcached-index-queries\" . }}.{{ .Release.Namespace }}.svc.cluster.local\n
+    \           service: memcached-client      \n            \ntable_manager:\n    chunk_tables_provisioning:\n
+    \       inactive_read_throughput: 0\n        inactive_write_throughput: 0\n        provisioned_read_throughput:
+    0\n        provisioned_write_throughput: 0\n    index_tables_provisioning:\n        inactive_read_throughput:
+    0\n        inactive_write_throughput: 0\n        provisioned_read_throughput:
+    0\n        provisioned_write_throughput: 0\n    retention_deletes_enabled: true\n
+    \   retention_period: 672h"
+  useBoltDBShipper: true
+memcached:
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 2
+  resources:
+    requests:
+      memory: 3Gi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedFrontend:
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 3
+  resources:
+    requests:
+      memory: 500Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedIndexQueries:
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 3
+  resources:
+    requests:
+      memory: 500Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedIndexWrites:
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 2
+  resources:
+    requests:
+      memory: 500Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+querier:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: querier
+          topologyKey: kubernetes.io/hostname
+        weight: 1
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/secrets/google/key.json
+  extraVolumeMounts:
+  - mountPath: /var/secrets/google
+    name: google-cloud-key
+  extraVolumes:
+  - name: google-cloud-key
+    secret:
+      items:
+      - key: SA_KEY
+        path: key.json
+      secretName: loki
+  nodeSelector:
+    node_pool: preemptible
+  persistence:
+    storageClass: ssd
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 3
+      memory: 2Gi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+querierFrontend:
+  nodeSelector:
+    node_pool: preemptible
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+serviceMonitor:
+  enabled: true
+storage:
+  config:
+    bucketName: tools-lighthouse-eu-loki-distributed-chunks
+    replicationFactor: 3
+    storeUrl: cassandra.loki.svc
+tableManager:
+  nodeSelector:
+    node_pool: preemptible
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+
+COMPUTED VALUES:
+canary:
+  affinity: {}
+  args: []
+  enabled: true
+  env: []
+  image: grafana/loki-canary:2.0.0
+  nodeSelector: {}
+  resources:
+    requests:
+      cpu: 20m
+      memory: 50Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+distributor:
+  affinity: {}
+  env: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 100Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+gateway:
+  affinity: {}
+  env: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image: nginx:1.18.0-alpine
+  ingress:
+    annotations:
+      kubernetes.io/ingress.allow-http: "false"
+      kubernetes.io/ingress.global-static-ip-name: lighthouse-loki-gateway
+      networking.gke.io/managed-certificates: loki-gateway
+    enabled: true
+    host: loki-gateway.twill.tools
+    tls: []
+  nodeSelector:
+    node_pool: preemptible
+  pullPolicy: IfNotPresent
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  service:
+    annotations:
+      beta.cloud.google.com/backend-config: '{"ports": {"80":"loki-gateway"}}'
+    type: NodePort
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+ingester:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: ingester
+          topologyKey: kubernetes.io/hostname
+        weight: 1
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/secrets/google/key.json
+  extraVolumeMounts:
+  - mountPath: /var/secrets/google
+    name: google-cloud-key
+  extraVolumes:
+  - name: google-cloud-key
+    secret:
+      items:
+      - key: SA_KEY
+        path: key.json
+      secretName: loki
+  nodeSelector: {}
+  persistence:
+    size: 10Gi
+    storageClass: ssd
+  replicaCount: 5
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  tolarations: []
+loki:
+  config: "auth_enabled: false\nchunk_store_config:\n    chunk_cache_config:\n        memcached:\n
+    \           batch_size: 100\n            parallelism: 100\n        memcached_client:\n
+    \           consistent_hash: true\n            host: {{ include \"loki-helm.memcached\"
+    . }}.{{ .Release.Namespace }}.svc.cluster.local\n            service: memcached-client\n
+    \   max_look_back_period: 672h\n    write_dedupe_cache_config:\n        memcached:\n
+    \           batch_size: 100\n            parallelism: 100\n        memcached_client:\n
+    \           consistent_hash: true\n            host: {{ include \"loki-helm.memcached-index-writes\"
+    . }}.{{ .Release.Namespace }}.svc.cluster.local\n            service: memcached-client\n\nmemberlist:\n
+    \   rejoin_interval: 5m\n    bind_port: 7946\n    join_members:\n        - {{
+    include \"loki-helm.distributor\" . }}\n        - {{ include \"loki-helm.ingester\"
+    . }}\n        - {{ include \"loki-helm.querier\" . }}\n\ndistributor:\n    ring:\n
+    \       kvstore:\n            store: memberlist\n\nfrontend:\n    compress_responses:
+    true\n    max_outstanding_per_tenant: 200\n    log_queries_longer_than: 5s\n\nfrontend_worker:\n
+    \   frontend_address: {{ include \"loki-helm.querier-frontend\" . }}.{{ .Release.Namespace
+    }}.svc.cluster.local:9095\n    grpc_client_config:\n        max_send_msg_size:
+    1.048576e+08\n    parallelism: 10\n\ningester:\n    chunk_block_size: 262144\n
+    \   chunk_idle_period: 30m\n    max_chunk_age: 1h\n    lifecycler:\n        heartbeat_period:
+    5s\n        interface_names:\n          - eth0\n        join_after: 30s\n        num_tokens:
+    512\n        ring:\n            heartbeat_timeout: 1m\n            kvstore:\n
+    \               store: memberlist\n            replication_factor: 3\n    max_transfer_retries:
+    30\n\ningester_client:\n    grpc_client_config:\n        max_recv_msg_size: 6.7108864e+07\n
+    \   remote_timeout: 1s\n\nlimits_config:\n    enforce_metric_name: false\n    ingestion_burst_size_mb:
+    20\n    ingestion_rate_mb: 10\n    ingestion_rate_strategy: global\n    max_global_streams_per_user:
+    10000\n    max_query_length: 12000h\n    max_query_parallelism: 14\n    max_streams_per_user:
+    0\n    reject_old_samples: true\n    reject_old_samples_max_age: 168h\n    max_cache_freshness_per_query:
+    15m\nquerier:\n    query_ingesters_within: 2h\nquery_range:\n    align_queries_with_step:
+    true\n    cache_results: true\n    max_retries: 5\n    results_cache:\n        cache:\n
+    \           memcached_client:\n                consistent_hash: true\n                host:
+    {{ include \"loki-helm.memcached-frontend\" . }}.{{ .Release.Namespace }}.svc.cluster.local\n
+    \               max_idle_conns: 16\n                service: memcached-client\n
+    \               timeout: 500ms\n                update_interval: 1m\n    split_queries_by_interval:
+    30m\n\nschema_config:\n    configs:\n      - from: \"2018-04-15\"\n        index:\n
+    \           period: 168h\n            prefix: monitoring_index_\n        object_store:
+    gcs\n        schema: v11\n        store: cassandra\n      - from: \"2020-10-28\"\n
+    \       index:\n            period: 24h\n            prefix: loki_index_\n        object_store:
+    gcs\n        schema: v11\n        store: boltdb-shipper\n\nserver:\n    graceful_shutdown_timeout:
+    5s\n    grpc_server_max_concurrent_streams: 1000\n    grpc_server_max_recv_msg_size:
+    1.048576e+08\n    grpc_server_max_send_msg_size: 1.048576e+08\n    http_listen_port:
+    3100\n    http_server_idle_timeout: 120s\n    http_server_write_timeout: 1m\n\nstorage_config:\n
+    \   cassandra:\n        addresses: cassandra.loki.svc\n        auth: false\n        keyspace:
+    lokiindex\n        replication_factor: 3\n    gcs:\n        bucket_name: tools-lighthouse-eu-loki-distributed-chunks\n
+    \   boltdb_shipper:\n        shared_store: gcs\n    index_queries_cache_config:\n
+    \       memcached:\n            batch_size: 100\n            parallelism: 100\n
+    \       memcached_client:\n            consistent_hash: true\n            host:
+    {{ include \"loki-helm.memcached-index-queries\" . }}.{{ .Release.Namespace }}.svc.cluster.local\n
+    \           service: memcached-client      \n            \ntable_manager:\n    chunk_tables_provisioning:\n
+    \       inactive_read_throughput: 0\n        inactive_write_throughput: 0\n        provisioned_read_throughput:
+    0\n        provisioned_write_throughput: 0\n    index_tables_provisioning:\n        inactive_read_throughput:
+    0\n        inactive_write_throughput: 0\n        provisioned_read_throughput:
+    0\n        provisioned_write_throughput: 0\n    retention_deletes_enabled: true\n
+    \   retention_period: 672h"
+  image: grafana/loki:2.0.0
+  pullPolicy: IfNotPresent
+  useBoltDBShipper: true
+memberlist:
+  enable: true
+  port: 7946
+memcached:
+  affinity: {}
+  image: memcached:1.6.7-alpine
+  nodeSelector:
+    node_pool: preemptible
+  pullPolicy: IfNotPresent
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 3
+      memory: 6Gi
+    requests:
+      cpu: 500m
+      memory: 3Gi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedFrontend:
+  affinity: {}
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 3
+      memory: 1546Mi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedIndexQueries:
+  affinity: {}
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 3
+      memory: 1536Mi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+memcachedIndexWrites:
+  affinity: {}
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 3
+      memory: 1536Mi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+querier:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: querier
+          topologyKey: kubernetes.io/hostname
+        weight: 1
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/secrets/google/key.json
+  extraVolumeMounts:
+  - mountPath: /var/secrets/google
+    name: google-cloud-key
+  extraVolumes:
+  - name: google-cloud-key
+    secret:
+      items:
+      - key: SA_KEY
+        path: key.json
+      secretName: loki
+  nodeSelector:
+    node_pool: preemptible
+  persistence:
+    size: 10Gi
+    storageClass: ssd
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 3
+      memory: 2Gi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+querierFrontend:
+  affinity: {}
+  env: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 2
+  resources:
+    limits:
+      memory: 1200Mi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+serviceMonitor:
+  additionalLabels: {}
+  enabled: true
+  interval: ""
+storage:
+  config:
+    bucketName: tools-lighthouse-eu-loki-distributed-chunks
+    replicationFactor: 3
+    storeUrl: cassandra.loki.svc
+tableManager:
+  affinity: {}
+  enabled: true
+  env: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  nodeSelector:
+    node_pool: preemptible
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  tolarations: []
+  tolerations:
+  - effect: NoSchedule
+    key: preemptible
+    operator: Equal
+    value: "true"
+
+HOOKS:
+---
+# Source: loki-distributed/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "loki-loki-distributed-test-connection"
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['loki-loki-distributed-gateway:80']
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: loki-distributed/templates/config/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-loki-distributed-config
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: loki-config
+data:
+  config.yaml: |
+    auth_enabled: false
+    chunk_store_config:
+        chunk_cache_config:
+            memcached:
+                batch_size: 100
+                parallelism: 100
+            memcached_client:
+                consistent_hash: true
+                host: loki-loki-distributed-memcached.default.svc.cluster.local
+                service: memcached-client
+        max_look_back_period: 672h
+        write_dedupe_cache_config:
+            memcached:
+                batch_size: 100
+                parallelism: 100
+            memcached_client:
+                consistent_hash: true
+                host: loki-loki-distributed-memcached-index-writes.default.svc.cluster.local
+                service: memcached-client
+    
+    memberlist:
+        rejoin_interval: 5m
+        bind_port: 7946
+        join_members:
+            - loki-loki-distributed-distributor
+            - loki-loki-distributed-ingester
+            - loki-loki-distributed-querier
+    
+    distributor:
+        ring:
+            kvstore:
+                store: memberlist
+    
+    frontend:
+        compress_responses: true
+        max_outstanding_per_tenant: 200
+        log_queries_longer_than: 5s
+    
+    frontend_worker:
+        frontend_address: loki-loki-distributed-querier-frontend.default.svc.cluster.local:9095
+        grpc_client_config:
+            max_send_msg_size: 1.048576e+08
+        parallelism: 10
+    
+    ingester:
+        chunk_block_size: 262144
+        chunk_idle_period: 30m
+        max_chunk_age: 1h
+        lifecycler:
+            heartbeat_period: 5s
+            interface_names:
+              - eth0
+            join_after: 30s
+            num_tokens: 512
+            ring:
+                heartbeat_timeout: 1m
+                kvstore:
+                    store: memberlist
+                replication_factor: 3
+        max_transfer_retries: 30
+    
+    ingester_client:
+        grpc_client_config:
+            max_recv_msg_size: 6.7108864e+07
+        remote_timeout: 1s
+    
+    limits_config:
+        enforce_metric_name: false
+        ingestion_burst_size_mb: 20
+        ingestion_rate_mb: 10
+        ingestion_rate_strategy: global
+        max_global_streams_per_user: 10000
+        max_query_length: 12000h
+        max_query_parallelism: 14
+        max_streams_per_user: 0
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+        max_cache_freshness_per_query: 15m
+    querier:
+        query_ingesters_within: 2h
+    query_range:
+        align_queries_with_step: true
+        cache_results: true
+        max_retries: 5
+        results_cache:
+            cache:
+                memcached_client:
+                    consistent_hash: true
+                    host: loki-loki-distributed-memcahced-frontend.default.svc.cluster.local
+                    max_idle_conns: 16
+                    service: memcached-client
+                    timeout: 500ms
+                    update_interval: 1m
+        split_queries_by_interval: 30m
+    
+    schema_config:
+        configs:
+          - from: "2018-04-15"
+            index:
+                period: 168h
+                prefix: monitoring_index_
+            object_store: gcs
+            schema: v11
+            store: cassandra
+          - from: "2020-10-28"
+            index:
+                period: 24h
+                prefix: loki_index_
+            object_store: gcs
+            schema: v11
+            store: boltdb-shipper
+    
+    server:
+        graceful_shutdown_timeout: 5s
+        grpc_server_max_concurrent_streams: 1000
+        grpc_server_max_recv_msg_size: 1.048576e+08
+        grpc_server_max_send_msg_size: 1.048576e+08
+        http_listen_port: 3100
+        http_server_idle_timeout: 120s
+        http_server_write_timeout: 1m
+    
+    storage_config:
+        cassandra:
+            addresses: cassandra.loki.svc
+            auth: false
+            keyspace: lokiindex
+            replication_factor: 3
+        gcs:
+            bucket_name: tools-lighthouse-eu-loki-distributed-chunks
+        boltdb_shipper:
+            shared_store: gcs
+        index_queries_cache_config:
+            memcached:
+                batch_size: 100
+                parallelism: 100
+            memcached_client:
+                consistent_hash: true
+                host: loki-loki-distributed-memcached-index-queries.default.svc.cluster.local
+                service: memcached-client      
+                
+    table_manager:
+        chunk_tables_provisioning:
+            inactive_read_throughput: 0
+            inactive_write_throughput: 0
+            provisioned_read_throughput: 0
+            provisioned_write_throughput: 0
+        index_tables_provisioning:
+            inactive_read_throughput: 0
+            inactive_write_throughput: 0
+            provisioned_read_throughput: 0
+            provisioned_write_throughput: 0
+        retention_deletes_enabled: true
+        retention_period: 672h
+---
+# Source: loki-distributed/templates/config/overrides-cm.yaml
+apiVersion: v1
+data:
+  overrides.yaml: |
+    overrides: {}
+kind: ConfigMap
+metadata:
+  name: loki-loki-distributed-overrides
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: overrides-config
+---
+# Source: loki-distributed/templates/gateway/gateway-cm.yaml
+apiVersion: v1
+data:
+  nginx.conf: |
+    worker_processes  5;  ## Default: 1
+    error_log  /dev/stderr;
+    pid        /tmp/nginx.pid;
+    worker_rlimit_nofile 8192;
+
+    events {
+      worker_connections  4096;  ## Default: 1024
+    }
+
+    http {
+      default_type application/octet-stream;
+      log_format   main '$remote_addr - $remote_user [$time_local]  $status '
+        '"$request" $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for"';
+      access_log   /dev/stderr  main;
+      sendfile     on;
+      tcp_nopush   on;
+      resolver kube-dns.kube-system.svc.cluster.local;
+
+      server {
+        listen               80;
+
+        location = / {
+          proxy_pass      http://loki-loki-distributed-querier.default.svc.cluster.local:3100/ready;
+        }
+
+        location = /api/prom/push {
+          proxy_pass       http://loki-loki-distributed-distributor.default.svc.cluster.local:3100$request_uri;
+        }
+
+        location = /api/prom/tail {
+          proxy_pass       http://loki-loki-distributed-querier.default.svc.cluster.local:3100$request_uri;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        }
+
+        location ~ /api/prom/.* {
+          proxy_pass       http://loki-loki-distributed-querier-frontend.default.svc.cluster.local:3100$request_uri;
+        }
+
+        location = /loki/api/v1/push {
+          proxy_pass       http://loki-loki-distributed-distributor.default.svc.cluster.local:3100$request_uri;
+        }
+
+        location = /loki/api/v1/tail {
+          proxy_pass       http://loki-loki-distributed-querier.default.svc.cluster.local:3100$request_uri;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        }
+
+        location ~ /loki/api/.* {
+          proxy_pass       http://loki-loki-distributed-querier-frontend.default.svc.cluster.local:3100$request_uri;
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: loki-loki-distributed-gateway-config
+  namespace: default
+---
+# Source: loki-distributed/templates/canary/canary-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-loki-canary
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: loki-canary
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: loki-canary
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 3500
+    targetPort: 3500
+---
+# Source: loki-distributed/templates/distributor/distributor-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: distributor
+  name: loki-loki-distributed-distributor
+spec:
+  ports:
+  - name: distributor-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: distributor-grpc
+    port: 9095
+    targetPort: 9095
+  - name: distributor-memberlist
+    port: 7946
+    targetPort: 7946
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: distributor
+---
+# Source: loki-distributed/templates/gateway/gateway-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-gateway
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: gateway
+  annotations:
+    beta.cloud.google.com/backend-config: '{"ports": {"80":"loki-gateway"}}'
+  
+spec:
+  type: NodePort
+  ports:
+  - name: nginx-http
+    port: 80
+    targetPort: 80
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: gateway
+---
+# Source: loki-distributed/templates/ingester/ingester-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: ingester
+  name: loki-loki-distributed-ingester
+  namespace: default
+spec:
+  ports:
+  - name: ingester-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: ingester-grpc
+    port: 9095
+    targetPort: 9095
+  - name: ingester-memberlist
+    port: 7946
+    targetPort: 7946
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: ingester
+---
+# Source: loki-distributed/templates/memcached-frontend/memcached-frontend-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-memcahced-frontend
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-frontend
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-client
+    port: 11211
+    targetPort: 11211
+  - name: exporter-http-metrics
+    port: 9150
+    targetPort: 9150
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: memcached-frontend
+---
+# Source: loki-distributed/templates/memcached-index-queries/memcached-index-queries.svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-memcached-index-queries
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-queries
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-client
+    port: 11211
+    targetPort: 11211
+  - name: exporter-http-metrics
+    port: 9150
+    targetPort: 9150
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: memcached-index-queries
+---
+# Source: loki-distributed/templates/memcached-index-writes/memcached-index-writes-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-memcached-index-writes
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-writes
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-client
+    port: 11211
+    targetPort: 11211
+  - name: exporter-http-metrics
+    port: 9150
+    targetPort: 9150
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: memcached-index-writes
+---
+# Source: loki-distributed/templates/memcached/memcached-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-memcached
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-client
+    port: 11211
+    targetPort: 11211
+  - name: exporter-http-metrics
+    port: 9150
+    targetPort: 9150
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: memcached
+---
+# Source: loki-distributed/templates/querier-frontend/querier-frontend-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-querier-frontend
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier-frontend
+spec:
+  clusterIP: None
+  ports:
+  - name: querier-frontend-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: querier-frontend-grpc
+    port: 9095
+    targetPort: 9095
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: querier-frontend
+---
+# Source: loki-distributed/templates/querier/querier-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-querier
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier
+spec:
+  ports:
+  - name: querier-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: querier-grpc
+    port: 9095
+    targetPort: 9095
+  - name: querier-memberlist
+    port: 7946
+    targetPort: 7946
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: querier
+---
+# Source: loki-distributed/templates/table-manager/table-manager-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loki-distributed-table-manager
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: table-manager
+spec:
+  ports:
+  - name: table-manager-http-metrics
+    port: 3100
+    targetPort: 3100
+  - name: table-manager-grpc
+    port: 9095
+    targetPort: 9095
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/component: table-manager
+---
+# Source: loki-distributed/templates/canary/canary-dmn.yaml
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: loki-canary
+  name: loki-loki-distributed-loki-canary
+spec:
+  selector: 
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: loki-canary
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      name: loki-loki-distributed-loki-canary
+      labels:
+        app.kubernetes.io/component: loki-canary
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+    spec:
+      affinity:
+        {}
+      nodeSelector:
+        {}
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -addr=loki-loki-distributed-gateway.default.svc.cluster.local:80
+        - -labelname=instance
+        - -labelvalue=$(POD_NAME)
+        image: grafana/loki-canary:2.0.0
+        imagePullPolicy: IfNotPresent
+        name: loki-canary
+        resources:
+            requests:
+              cpu: 20m
+              memory: 50Mi
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        ports:
+        - containerPort: 3500
+          name: metrics
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /metrics
+            port: metrics
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+---
+# Source: loki-distributed/templates/distributor/distributor-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-loki-distributed-distributor
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: distributor
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: distributor
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: distributor
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: distributor
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -target=distributor
+        image: grafana/loki:2.0.0
+        imagePullPolicy: "IfNotPresent"
+        name: distributor
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        - containerPort: 7946
+          name: memberlist
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 100Mi
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /etc/loki/overrides
+          name: overrides
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-config
+        name: loki
+      - configMap:
+          name: loki-loki-distributed-overrides
+        name: overrides
+---
+# Source: loki-distributed/templates/gateway/gateway-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-loki-distributed-gateway
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: gateway
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: gateway
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: gateway
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - image: nginx:1.18.0-alpine
+        imagePullPolicy: "IfNotPresent"
+        name: nginx
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15 
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /etc/nginx
+          name: gateway-config
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-gateway-config
+        name: gateway-config
+---
+# Source: loki-distributed/templates/querier-frontend/querier-frontend-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-loki-distributed-querier-frontend
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier-frontend
+spec:
+  minReadySeconds: 10
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: querier-frontend
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: querier-frontend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: querier-frontend
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -log.level=debug
+        - -target=query-frontend
+        image: grafana/loki:2.0.0
+        imagePullPolicy: "IfNotPresent"
+        name: query-frontend
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        resources:
+            limits:
+              memory: 1200Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /etc/loki/overrides
+          name: overrides
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-config
+        name: loki
+      - configMap:
+          name: loki-loki-distributed-overrides
+        name: overrides
+---
+# Source: loki-distributed/templates/table-manager/table-manager-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-loki-distributed-table-manager
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: table-manager
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: table-manager
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: table-manager
+    spec:
+      affinity:
+        {}
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -target=table-manager
+        image: grafana/loki:2.0.0
+        imagePullPolicy: "IfNotPresent"
+        name: table-manager
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-config
+        name: loki
+---
+# Source: loki-distributed/templates/ingester/ingester-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-ingester
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: ingester
+spec:
+  replicas: 5
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: ingester
+  serviceName: loki-loki-distributed-ingester
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: ingester
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: ingester
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      nodeSelector:
+        {}
+      tolerations:
+        null
+      containers:
+      - args:
+        - -boltdb.shipper.active-index-directory=/data/index
+        - -boltdb.shipper.cache-location=/data/boltdb-cache
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -target=ingester
+        image: grafana/loki:2.0.0
+        imagePullPolicy: "IfNotPresent"
+        name: ingester
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        - containerPort: 7946
+          name: memberlist
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /etc/loki/overrides
+          name: overrides
+        - mountPath: /data
+          name: ingester-data
+        - mountPath: /var/secrets/google
+          name: google-cloud-key
+      securityContext:
+        fsGroup: 10001
+      terminationGracePeriodSeconds: 4800
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-config
+        name: loki
+      - configMap:
+          name: loki-loki-distributed-overrides
+        name: overrides
+      - name: google-cloud-key
+        secret:
+          items:
+          - key: SA_KEY
+            path: key.json
+          secretName: loki
+  volumeClaimTemplates:
+  - metadata:
+      name: ingester-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: "10Gi"
+      storageClassName: ssd
+---
+# Source: loki-distributed/templates/memcached-frontend/memcached-frontend-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-memcahced-frontend
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-frontend
+  serviceName: loki-loki-distributed-memcahced-frontend
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: memcached-frontend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: memcached-frontend
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -m 1024
+        - -I 5m
+        - -c 1024
+        - -v
+        image: memcached:1.6.7-alpine
+        imagePullPolicy: "IfNotPresent"
+        name: memcached
+        ports:
+        - containerPort: 11211
+          name: client
+        resources:
+            limits:
+              cpu: 3
+              memory: 1546Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+      - args:
+        - --memcached.address=localhost:11211
+        - --web.listen-address=0.0.0.0:9150
+        image: prom/memcached-exporter:v0.6.0
+        imagePullPolicy: IfNotPresent
+        name: exporter
+        ports:
+        - containerPort: 9150
+          name: http-metrics
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: loki-distributed/templates/memcached-index-queries/memcached-index-queries-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-memcached-index-queries
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-queries
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-index-queries
+  serviceName: loki-loki-distributed-memcached-index-queries
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: memcached-index-queries
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: memcached-index-queries
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -m 1024
+        - -I 5m
+        - -c 1024
+        - -v
+        image: memcached:1.6.7-alpine
+        imagePullPolicy: "IfNotPresent"
+        name: memcached
+        ports:
+        - containerPort: 11211
+          name: client
+        resources:
+            limits:
+              cpu: 3
+              memory: 1536Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+      - args:
+        - --memcached.address=localhost:11211
+        - --web.listen-address=0.0.0.0:9150
+        image: prom/memcached-exporter:v0.6.0
+        imagePullPolicy: IfNotPresent
+        name: exporter
+        ports:
+        - containerPort: 9150
+          name: http-metrics
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: loki-distributed/templates/memcached-index-writes/memcached-index-writes-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-memcached-index-writes
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-writes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-index-writes
+  serviceName: loki-loki-distributed-memcached-index-writes
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: memcached-index-writes
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: memcached-index-writes
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -m 1024
+        - -I 1m
+        - -c 1024
+        - -v
+        image: memcached:1.6.7-alpine
+        imagePullPolicy: "IfNotPresent"
+        name: memcached
+        ports:
+        - containerPort: 11211
+          name: client
+        resources:
+            limits:
+              cpu: 3
+              memory: 1536Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+      - args:
+        - --memcached.address=localhost:11211
+        - --web.listen-address=0.0.0.0:9150
+        image: prom/memcached-exporter:v0.6.0
+        imagePullPolicy: IfNotPresent
+        name: exporter
+        ports:
+        - containerPort: 9150
+          name: http-metrics
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: loki-distributed/templates/memcached/memcached-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-memcached
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached
+  serviceName: loki-loki-distributed-memcached
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: memcached
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: loki-distributed
+                app.kubernetes.io/instance: loki
+                app.kubernetes.io/component: memcached
+            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -m 4096
+        - -I 2m
+        - -c 1024
+        - -v
+        image: memcached:1.6.7-alpine
+        imagePullPolicy: "IfNotPresent"
+        name: memcached
+        ports:
+        - containerPort: 11211
+          name: client
+        resources:
+            limits:
+              cpu: 3
+              memory: 6Gi
+            requests:
+              cpu: 500m
+              memory: 3Gi
+      - args:
+        - --memcached.address=localhost:11211
+        - --web.listen-address=0.0.0.0:9150
+        image: prom/memcached-exporter:v0.6.0
+        imagePullPolicy: IfNotPresent
+        name: exporter
+        ports:
+        - containerPort: 9150
+          name: http-metrics
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: loki-distributed/templates/querier/querier-sfs.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-loki-distributed-querier
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: querier
+  serviceName: loki-loki-distributed-querier
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        config_hash: 8f80031113ab434770ef7e9215512968
+      labels:
+        helm.sh/chart: loki-distributed-0.4.2
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: querier
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: querier
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      nodeSelector:
+        node_pool: preemptible
+      tolerations:
+        - effect: NoSchedule
+          key: preemptible
+          operator: Equal
+          value: "true"
+      containers:
+      - args:
+        - -boltdb.shipper.cache-location=/data/boltdb-cache
+        - -config.file=/etc/loki/config/config.yaml
+        - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
+        - -target=querier
+        image: grafana/loki:2.0.0
+        imagePullPolicy: "IfNotPresent"
+        name: querier
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        - containerPort: 9095
+          name: grpc
+        - containerPort: 7946
+          name: memberlist
+        resources:
+            requests:
+              cpu: 3
+              memory: 2Gi
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /data
+          name: querier-data
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /etc/loki/overrides
+          name: overrides
+        - mountPath: /var/secrets/google
+          name: google-cloud-key
+      securityContext:
+        fsGroup: 10001
+      volumes:
+      - configMap:
+          name: loki-loki-distributed-config
+        name: loki
+      - configMap:
+          name: loki-loki-distributed-overrides
+        name: overrides
+      - name: google-cloud-key
+        secret:
+          items:
+          - key: SA_KEY
+            path: key.json
+          secretName: loki
+  volumeClaimTemplates:
+  - metadata:
+      name: querier-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: "10Gi"
+      storageClassName: ssd
+---
+# Source: loki-distributed/templates/gateway/gateway-ing.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata: 
+  name: loki-loki-distributed-gateway
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: gateway
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.global-static-ip-name: lighthouse-loki-gateway
+    networking.gke.io/managed-certificates: loki-gateway
+spec:
+  rules:
+    - host: loki-gateway.twill.tools
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: loki-loki-distributed-gateway
+              servicePort: nginx-http
+---
+# Source: loki-distributed/templates/canary/canary-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-loki-canary
+  namespace: default
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: loki-canary
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: loki-canary
+  namespaceSelector:
+    matchNames:
+      - loki-loki-distributed-loki-canary
+  endpoints:
+  - port: metrics
+---
+# Source: loki-distributed/templates/distributor/distributor-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-distributor
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: distributor
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: distributor
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: distributor-http-metrics
+---
+# Source: loki-distributed/templates/ingester/ingester-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-ingester
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: ingester
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: ingester
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: ingester-http-metrics
+---
+# Source: loki-distributed/templates/memcached-frontend/memcached-frontend-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-memcahced-frontend
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-frontend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-frontend
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: exporter-http-metrics
+---
+# Source: loki-distributed/templates/memcached-index-queries/memcached-index-queries-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-memcached-index-queries
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-queries
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-index-queries
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: exporter-http-metrics
+---
+# Source: loki-distributed/templates/memcached-index-writes/memcached-index-writes-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-memcached-index-writes
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached-index-writes
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached-index-writes
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: exporter-http-metrics
+---
+# Source: loki-distributed/templates/memcached/memcached-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-memcached
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: memcached
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: memcached
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: exporter-http-metrics
+---
+# Source: loki-distributed/templates/querier-frontend/querier-frontend-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-querier-frontend
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier-frontend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: querier-frontend
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: querier-frontend-http-metrics
+---
+# Source: loki-distributed/templates/querier/querier-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-querier
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: querier
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: querier
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: querier-http-metrics
+---
+# Source: loki-distributed/templates/table-manager/table-manager-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-loki-distributed-table-manager
+  labels:
+    helm.sh/chart: loki-distributed-0.4.2
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: table-manager
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/component: table-manager
+  namespaceSelector:
+    matchNames:
+      - "default"
+  endpoints:
+  - port: table-manager-http-metrics
+
+NOTES:
+Thank you for installing loki-distributed.
+
+Your release is named loki.
+
+To learn more about the release, try:
+
+  $ helm status loki
+  $ helm get all loki
