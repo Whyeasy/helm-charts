@@ -111,19 +111,6 @@ ingester:
     size: 10Gi
     # ingester.persistence.storageClass -- Specify custom storageClass to use.
     storageClass: "standard"
-  config:
-    # ingester.config.chunkSize -- The targeted _uncompressed_ size in bytes of a chunk block
-    chunkSize: 262144
-    # ingester.config.chunkIdle -- How long chunks should sit in-memory with no updates before being flushed if they don't hit the max block size
-    chunkIdle: 30m
-    # ingester.config.chunkTargetSize -- A target _compressed_ size in bytes for chunks
-    chunkTargetSize: 0
-    # ingester.config.maxChunkAge -- The maximum duration of a timeseries chunk in memory.
-    maxChunkAge: 1h
-    # ingester.config.trasnferRetries -- Retry transfer chunks when leaving ring
-    transferRetries: 10
-    # ingester.config.replicationFactor -- Replication factor between ingesters. Minimal is 1.
-    replicationFactor: 2
 
 
 memcached:
@@ -251,16 +238,6 @@ querierFrontend:
   nodeSelector: {}
   # querierFrontend.affinity -- Replace default affinity with custom affinity
   affinity: {}
-  config:
-    # querierFrontend.config.splitQueries -- Set value for parallelize queries intervals
-    splitQueries: 30m
-    # querierFrontend.config.cacheResult -- Cache Results 
-    cacheResult: true
-    # querierFrontend.config.logQueries -- Log queries that are longer than X amount of time.
-    logQueries: ""
-    # querierFrontend.config.compressResponses -- Compress responses fomr queries.
-    compressResponses: true
-
 
 tableManager:
   # tableManager.enabled -- Needed when using cassandra as index strogae!

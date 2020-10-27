@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.4.1`
+Current chart version is `0.4.2`
 
 
 
@@ -45,12 +45,6 @@ Current chart version is `0.4.1`
 | gateway.service.type | string | `"ClusterIP"` |  |
 | gateway.tolarations | list | `[]` |  |
 | ingester.affinity | object | `{}` | Replace default affinity with custom affinity |
-| ingester.config.chunkIdle | string | `"30m"` | How long chunks should sit in-memory with no updates before being flushed if they don't hit the max block size |
-| ingester.config.chunkSize | int | `262144` | The targeted _uncompressed_ size in bytes of a chunk block |
-| ingester.config.chunkTargetSize | int | `0` | A target _compressed_ size in bytes for chunks |
-| ingester.config.maxChunkAge | string | `"1h"` | The maximum duration of a timeseries chunk in memory. |
-| ingester.config.replicationFactor | int | `2` | Replication factor between ingesters. Minimal is 1. |
-| ingester.config.transferRetries | int | `10` |  |
 | ingester.env | list | `[]` | Allow Extra env variables into the deployment |
 | ingester.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | ingester.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
@@ -101,10 +95,6 @@ Current chart version is `0.4.1`
 | querier.resources | object | `{}` | Custom resources for the Querier deployment. |
 | querier.tolarations | list | `[]` |  |
 | querierFrontend.affinity | object | `{}` | Replace default affinity with custom affinity |
-| querierFrontend.config.cacheResult | bool | `true` | Cache Results  |
-| querierFrontend.config.compressResponses | bool | `true` | Compress responses fomr queries. |
-| querierFrontend.config.logQueries | string | `""` | Log queries that are longer than X amount of time. |
-| querierFrontend.config.splitQueries | string | `"30m"` | Set value for parallelize queries intervals |
 | querierFrontend.env | list | `[]` | Allow Extra env variables into the deployment |
 | querierFrontend.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
 | querierFrontend.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
