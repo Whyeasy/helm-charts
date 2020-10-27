@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.4.0`
+Current chart version is `0.4.1`
 
 
 
@@ -16,7 +16,7 @@ Current chart version is `0.4.0`
 | canary.args | list | `[]` | Allow extra arguments into the container. |
 | canary.enabled | bool | `false` | Enable the Loki-Canary deployment |
 | canary.env | list | `[]` | Allow Extra env variables into the deployment |
-| canary.image | string | `"grafana/loki-canary:1.6.1"` | Which image to use for Loki-Canary |
+| canary.image | string | `"grafana/loki-canary:2.0.0"` | Which image to use for Loki-Canary |
 | canary.nodeSelector | object | `{}` | Add Node labels for pod assginment |
 | canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
 | canary.tolarations | list | `[]` |  |

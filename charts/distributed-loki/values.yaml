@@ -309,7 +309,7 @@ canary:
   # canary.enabled -- Enable the Loki-Canary deployment
   enabled: false
   # canary.image -- Which image to use for Loki-Canary
-  image: grafana/loki-canary:1.6.1
+  image: grafana/loki-canary:2.0.0
   # canary.resources -- Custom resources for the Loki-Canary deployment.
   resources: {}
   # canary.tolartions -- Add tolartions for pod assginment
