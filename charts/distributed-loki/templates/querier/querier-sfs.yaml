@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels: {{- include "loki-helm.labels" . | nindent 4 }}
     app.kubernetes.io/component: querier
+    app.kubernetes.io/part-of: memberlist
 spec:
   replicas: {{ .Values.querier.replicaCount }}
   revisionHistoryLimit: 10

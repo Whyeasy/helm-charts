@@ -1,0 +1,19 @@
+{{- if .Values.memberlist.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "loki-helm.fullname" . }}-memberlist
+  labels:
+    {{- include "loki.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: http
+      port: 7946
+      targetPort: memberlist
+      protocol: TCP
+  selector:
+    labels: {{- include "loki-helm.labels" . | nindent 4 }}
+      app.kubernetes.io/part-of: memberlist
+{{- end }}
