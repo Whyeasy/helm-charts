@@ -837,6 +837,18 @@ entries:
   prometheus-mongodb-exporter:
   - apiVersion: v2
     appVersion: v0.10.0
+    created: "2020-10-29T15:52:33.117411503Z"
+    description: A Prometheus exporter for MongoDB metrics
+    digest: 9d023b704171bf1b46afcec25070c6b5fc2a405c8023a4c20d546b3eaefefb39
+    name: prometheus-mongodb-exporter
+    sources:
+    - https://github.com/percona/mongodb_exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.3/prometheus-mongodb-exporter-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: v0.10.0
     created: "2020-04-09T10:08:33.868571892Z"
     description: A Prometheus exporter for MongoDB metrics
     digest: 71fe35833dc630634ed9af69476c46bdad0d14fd429200746c75632c60338d17
