@@ -7,4 +7,4 @@ type: application
 sources:
 - https://github.com/percona/mongodb_exporter
 
-version: 0.0.2
+version: 0.0.3

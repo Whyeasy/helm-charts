@@ -2,7 +2,7 @@ prometheus-mongodb-exporter
 ===========================
 A Prometheus exporter for MongoDB metrics
 
-Current chart version is `0.0.2`
+Current chart version is `0.0.3`
 
 
 
