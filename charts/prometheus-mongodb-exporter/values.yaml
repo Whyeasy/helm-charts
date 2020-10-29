@@ -112,5 +112,5 @@ serviceMonitor:
   # serviceMonitor.additionalLabels -- Additional labels to add to the ServiceMonitor
   additionalLabels: {}
 
-# tolartions -- Add tolartions for pod assginment
+# tolerations -- Add tolerations for pod assignment 
 tolerations: []

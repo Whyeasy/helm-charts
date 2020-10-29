@@ -2,7 +2,7 @@ prometheus-mongodb-exporter
 ===========================
 A Prometheus exporter for MongoDB metrics
 
-Current chart version is `0.0.1`
+Current chart version is `0.0.2`
 
 
 
@@ -55,4 +55,4 @@ Current chart version is `0.0.1`
 | serviceMonitor.enabled | bool | `true` | Enable service monitor for the Prometheus Operator |
 | serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
 | serviceMonitor.scrapeTimeout | string | `"10s"` | Interval at which metric scrapes should time out |
-| tolerations | list | `[]` |  |
+| tolerations | list | `[]` | Add tolerations for pod assignment  |
