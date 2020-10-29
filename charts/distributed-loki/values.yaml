@@ -9,7 +9,7 @@ loki:
   config: ""
 
 memberlist:
-  # memberlist.enable -- Enable the ring to be a Mmeberslist. This will disable consul.
+  # memberlist.enable -- Enable the ring to be a Meberslist. This will disable consul.
   enable: true
   # memberlist.port -- Port to listen on for gossip messages.
   port: 7946
@@ -31,9 +31,9 @@ distributor:
   extraVolumeMounts: []
   # distributor.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
-  # distributor.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # distributor.nodeSelector -- Add Node labels for pod assginment
+  # distributor.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # distributor.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # distributor.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -73,9 +73,9 @@ gateway:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
-  # gateway.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # gateway.nodeSelector -- Add Node labels for pod assginment
+  # gateway.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # gateway.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # gateway.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -98,9 +98,9 @@ ingester:
   # ingester.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
 
-  # ingester.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # ingester.nodeSelector -- Add Node labels for pod assginment
+  # ingester.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # ingester.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # ingester.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -126,9 +126,9 @@ memcached:
     requests:
       cpu: 500m
       memory: 5Gi
-  # memcached.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # memcached.nodeSelector -- Add Node labels for pod assginment
+  # memcached.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # memcached.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # memcached.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -144,9 +144,9 @@ memcachedFrontend:
     requests:
       cpu: 500m
       memory: 1329Mi
-  # memcachedFrontend.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # memcachedFrontend.nodeSelector -- Add Node labels for pod assginment
+  # memcachedFrontend.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # memcachedFrontend.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # memcachedFrontend.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -162,9 +162,9 @@ memcachedIndexQueries:
     requests:
       cpu: 500m
       memory: 1329Mi
-  # memcachedIndexQueries.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # memcachedIndexQueries.nodeSelector -- Add Node labels for pod assginment
+  # memcachedIndexQueries.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # memcachedIndexQueries.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # memcachedIndexQueries.affinity -- Add custom affinity to deployment
   affinity: {}
@@ -180,9 +180,9 @@ memcachedIndexWrites:
     requests:
       cpu: 500m
       memory: 1329Mi
-  # memcachedIndexWrites.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # memcachedIndexWrites.nodeSelector -- Add Node labels for pod assginment
+  # memcachedIndexWrites.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # memcachedIndexWrites.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # memcachedIndexWrites.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -198,9 +198,9 @@ querier:
   extraVolumeMounts: []
   # querier.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
-  # querier.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # querier.nodeSelector -- Add Node labels for pod assginment
+  # querier.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # querier.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # querier.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -227,9 +227,9 @@ querierFrontend:
   extraVolumeMounts: []
   # querierFrontend.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
-  # querierFrontend.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # querierFrontend.nodeSelector -- Add Node labels for pod assginment
+  # querierFrontend.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # querierFrontend.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # querierFrontend.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -253,9 +253,9 @@ tableManager:
   extraVolumeMounts: []
   # tableManager.extraVolumes -- Allow Extra volumes into the deployment
   extraVolumes: []
-  # tableManager.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # tableManager.nodeSelector -- Add Node labels for pod assginment
+  # tableManager.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # tableManager.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # tableManager.affinity -- Replace default affinity with custom affinity
   affinity: {}
@@ -267,9 +267,9 @@ canary:
   image: grafana/loki-canary:2.0.0
   # canary.resources -- Custom resources for the Loki-Canary deployment.
   resources: {}
-  # canary.tolartions -- Add tolartions for pod assginment
-  tolarations: []
-  # canary.nodeSelector -- Add Node labels for pod assginment
+  # canary.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # canary.nodeSelector -- Add Node labels for pod assignment
   nodeSelector: {}
   # canary.affinity -- Replace default affinity with custom affinity
   affinity: {}
