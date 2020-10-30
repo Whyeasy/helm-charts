@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.4.9`
+Current chart version is `0.5.0`
 
 
 
@@ -26,7 +26,7 @@ Current chart version is `0.4.9`
 | distributor.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
 | distributor.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | distributor.replicaCount | int | `3` | Number of replicas for the Distributor deployment. |
-| distributor.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"500Mi"}}` | Custom resources for the Distributor deployment. |
+| distributor.resources | object | `{}` | Custom resources for the Distributor deployment. |
 | distributor.tolerations | list | `[]` |  |
 | gateway.affinity | object | `{}` | Replace default affinity with custom affinity |
 | gateway.env | list | `[]` | Allow Extra env variables into the deployment |
@@ -40,7 +40,7 @@ Current chart version is `0.4.9`
 | gateway.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | gateway.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Gateway images. |
 | gateway.replicaCount | int | `3` | Number of replicas for the Gateway deployment. |
-| gateway.resources | object | `{"requests":{"cpu":"50m","memory":"100Mi"}}` | Custom resources for the Gateway deployment. |
+| gateway.resources | object | `{}` | Custom resources for the Gateway deployment. |
 | gateway.service.annotations | object | `{}` |  |
 | gateway.service.type | string | `"ClusterIP"` |  |
 | gateway.tolerations | list | `[]` |  |
@@ -52,7 +52,7 @@ Current chart version is `0.4.9`
 | ingester.persistence.size | string | `"10Gi"` | Specify disk size for Ingester persistence storage |
 | ingester.persistence.storageClass | string | `"standard"` | Specify custom storageClass to use. |
 | ingester.replicaCount | int | `3` | Number of replicas for the Ingester deployment. |
-| ingester.resources | object | `{"limits":{"cpu":2,"memory":"10Gi"},"requests":{"cpu":1,"memory":"5Gi"}}` | Custom resources for the Ingester deployment. |
+| ingester.resources | object | `{}` | Custom resources for the Ingester deployment. |
 | ingester.tolerations | list | `[]` |  |
 | loki.config | string | `""` | Provide the config for Loki. |
 | loki.image | string | `"grafana/loki:2.0.0"` | Image repository for Loki images. |
@@ -65,22 +65,22 @@ Current chart version is `0.4.9`
 | memcached.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | memcached.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Memcached images. |
 | memcached.replicaCount | int | `3` | Number of replicas for the Memcached deployment. |
-| memcached.resources | object | `{"limits":{"cpu":3,"memory":"6Gi"},"requests":{"cpu":"500m","memory":"5Gi"}}` | Custom resources for the Memcached deployment. |
+| memcached.resources | object | `{}` | Custom resources for the Memcached deployment. |
 | memcached.tolerations | list | `[]` |  |
 | memcachedFrontend.affinity | object | `{}` | Replace default affinity with custom affinity |
 | memcachedFrontend.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | memcachedFrontend.replicaCount | int | `3` | Number of replicas for the Memcached-frontend deployment. |
-| memcachedFrontend.resources | object | `{"limits":{"cpu":3,"memory":"1546Mi"},"requests":{"cpu":"500m","memory":"1329Mi"}}` | Custom resources for the Memcached-frontend deployment. |
+| memcachedFrontend.resources | object | `{}` | Custom resources for the Memcached-frontend deployment. |
 | memcachedFrontend.tolerations | list | `[]` |  |
 | memcachedIndexQueries.affinity | object | `{}` | Add custom affinity to deployment |
 | memcachedIndexQueries.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | memcachedIndexQueries.replicaCount | int | `3` | Number of replicas for the Memcached-index-queries deployment. |
-| memcachedIndexQueries.resources | object | `{"limits":{"cpu":3,"memory":"1536Mi"},"requests":{"cpu":"500m","memory":"1329Mi"}}` | Custom resources for the Memcached-index-queries deployment. |
+| memcachedIndexQueries.resources | object | `{}` | Custom resources for the Memcached-index-queries deployment. |
 | memcachedIndexQueries.tolerations | list | `[]` |  |
 | memcachedIndexWrites.affinity | object | `{}` | Replace default affinity with custom affinity |
 | memcachedIndexWrites.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | memcachedIndexWrites.replicaCount | int | `3` | Number of replicas for the Memcached-index-writes deployment. |
-| memcachedIndexWrites.resources | object | `{"limits":{"cpu":3,"memory":"1536Mi"},"requests":{"cpu":"500m","memory":"1329Mi"}}` | Custom resources for the Memcached-index-writes deployment. |
+| memcachedIndexWrites.resources | object | `{}` | Custom resources for the Memcached-index-writes deployment. |
 | memcachedIndexWrites.tolerations | list | `[]` |  |
 | querier.affinity | object | `{}` | Replace default affinity with custom affinity |
 | querier.env | list | `[]` | Allow Extra env variables into the deployment |
@@ -98,7 +98,7 @@ Current chart version is `0.4.9`
 | querierFrontend.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
 | querierFrontend.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | querierFrontend.replicaCount | int | `2` | Number of replicas for the Querier-frontend deployment. |
-| querierFrontend.resources | object | `{"limits":{"memory":"1200Mi"},"requests":{"cpu":"2","memory":"600Mi"}}` | Customer resources for the Querier-frontend deployment. |
+| querierFrontend.resources | object | `{}` | Customer resources for the Querier-frontend deployment. |
 | querierFrontend.tolerations | list | `[]` |  |
 | serviceMonitor.additionalLabels | object | `{}` | Set additional labels for the service monitor. |
 | serviceMonitor.enabled | bool | `false` | Enable service monitors for Loki deployment. |
@@ -110,5 +110,5 @@ Current chart version is `0.4.9`
 | tableManager.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
 | tableManager.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | tableManager.replicaCount | int | `1` | Number of replicas for the Table-manager deployment. |
-| tableManager.resources | object | `{"limits":{"cpu":"200m","memory":"200Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Custom resources for the Table-manager deployment. |
+| tableManager.resources | object | `{}` | Custom resources for the Table-manager deployment. |
 | tableManager.tolerations | list | `[]` |  |
