@@ -101,3 +101,6 @@ Naming deployments
 {{- define "loki-helm.canary" -}}
   {{- printf "%s-loki-canary" (include "loki-helm.fullname" .) -}}
 {{- end -}}
+{{- define "loki-helm.compactor" -}}
+  {{- printf "%s-loki-compactor" (include "loki-helm.fullname" .) -}}
+{{- end -}}

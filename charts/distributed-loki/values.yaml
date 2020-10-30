@@ -260,6 +260,29 @@ tableManager:
   # tableManager.affinity -- Replace default affinity with custom affinity
   affinity: {}
 
+compactor:
+  # compactor.replicaCount -- Number of replicas for the compactor deployment.
+  replicaCount: 1
+  # compactor.resources -- Custom resources for the compactor deployment.
+  resources: {}
+  # compactor.env -- Allow Extra env variables into the deployment
+  env: []
+  # compactor.extraVolumeMounts -- Allow Extra volume mounts into the deployment
+  extraVolumeMounts: []
+  # compactor.extraVolumes -- Allow Extra volumes into the deployment
+  extraVolumes: []
+  # compactor.tolartions -- Add tolartions for pod assignment
+  tolerations: []
+  # compactor.nodeSelector -- Add Node labels for pod assignment
+  nodeSelector: {}
+  # compactor.affinity -- Replace default affinity with custom affinity
+  affinity: {}
+  persistence:
+    # compactor.persistence.size -- Specify disk size for compactor persistence storage
+    size: 10Gi
+    # compactor.persistence.storageClass -- Specify custom storageClass to use.
+    storageClass: "standard"
+
 canary:
   # canary.enabled -- Enable the Loki-Canary deployment
   enabled: false

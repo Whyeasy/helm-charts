@@ -1,0 +1,91 @@
+{{- if .Values.loki.useBoltDBShipper }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "loki-helm.compactor" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: compactor
+spec:
+  replicas: {{ .Values.compactor.replicaCount }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: compactor
+  serviceName: {{ include "loki-helm.compactor" . }}
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        config_hash: 236d4e548877a82506a5c3b540e95341
+      labels: {{- include "loki-helm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: compactor
+    spec:
+      {{- if .Values.compactor.affinity }}
+      affinity: {{- toYaml .Values.compactor.affinity | nindent 8 }}
+      {{- else }}
+      affinity: 
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {{- include "loki-helm.selectorLabels" . | nindent 16 }}
+                app.kubernetes.io/component: compactor
+            topologyKey: kubernetes.io/hostname
+      {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.compactor.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.compactor.tolerations | nindent 8 }}
+      containers:
+      - args:
+        - -boltdb.shipper.compactor.shared-store=gcs
+        - -boltdb.shipper.compactor.working-directory=/data/compactor
+        - -config.file=/etc/loki/config/config.yaml
+        - -target=compactor
+        image: {{ .Values.loki.image }}
+        imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}
+        name: compactor
+        {{- if .Values.compactor.env }}
+        env: {{- toYaml .Values.compactor.env | nindent 8 }}
+        {{- end }}
+        ports:
+        - containerPort: 3100
+          name: http-metrics
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3100
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        {{- if .Values.compactor.resources }}
+        resources: {{- toYaml .Values.compactor.resources | nindent 12 }}
+        {{- end }}
+        volumeMounts:
+        - mountPath: /etc/loki/config
+          name: loki
+        - mountPath: /data
+          name: compactor-data
+        {{- with .Values.compactor.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      securityContext:
+        fsGroup: 10001d
+      volumes:
+      - configMap:
+          name: {{ include "loki-helm.fullname" . }}-config
+        name: loki
+      {{- with .Values.compactor.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: compactor-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.compactor.persistence.size | quote }}
+      storageClassName: {{ .Values.compactor.persistence.storageClass }}
+{{- end }}

@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.5.0`
+Current chart version is `0.6.0`
 
 
 
@@ -20,6 +20,16 @@ Current chart version is `0.5.0`
 | canary.nodeSelector | object | `{}` | Add Node labels for pod assignment |
 | canary.resources | object | `{}` | Custom resources for the Loki-Canary deployment. |
 | canary.tolerations | list | `[]` |  |
+| compactor.affinity | object | `{}` | Replace default affinity with custom affinity |
+| compactor.env | list | `[]` | Allow Extra env variables into the deployment |
+| compactor.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |
+| compactor.extraVolumes | list | `[]` | Allow Extra volumes into the deployment |
+| compactor.nodeSelector | object | `{}` | Add Node labels for pod assignment |
+| compactor.persistence.size | string | `"10Gi"` | Specify disk size for compactor persistence storage |
+| compactor.persistence.storageClass | string | `"standard"` | Specify custom storageClass to use. |
+| compactor.replicaCount | int | `1` | Number of replicas for the compactor deployment. |
+| compactor.resources | object | `{}` | Custom resources for the compactor deployment. |
+| compactor.tolerations | list | `[]` |  |
 | distributor.affinity | object | `{}` | Replace default affinity with custom affinity |
 | distributor.env | list | `[]` | Allow Extra env variables into the deployment |
 | distributor.extraVolumeMounts | list | `[]` | Allow Extra volume mounts into the deployment |

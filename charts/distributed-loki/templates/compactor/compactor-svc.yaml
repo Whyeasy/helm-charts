@@ -1,0 +1,16 @@
+{{- if .Values.loki.useBoltDBShipper }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels: {{- include "loki-helm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: compactor
+  name: {{ include "loki-helm.compactor" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: compactor-http-metrics
+    port: 3100
+    targetPort: 3100
+  selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: compactor
+{{- end }}
