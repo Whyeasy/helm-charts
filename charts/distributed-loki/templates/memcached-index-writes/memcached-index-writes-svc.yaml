@@ -1,3 +1,4 @@
+{{- if eq .Values.loki.useBoltDBShipper false}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -16,3 +17,4 @@ spec:
     targetPort: 9150
   selector: {{- include "loki-helm.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: memcached-index-writes
+{{- end }}

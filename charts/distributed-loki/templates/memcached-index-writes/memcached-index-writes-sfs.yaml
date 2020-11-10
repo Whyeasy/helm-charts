@@ -1,3 +1,4 @@
+{{- if eq .Values.loki.useBoltDBShipper false}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -57,3 +58,4 @@ spec:
           name: http-metrics
   updateStrategy:
     type: RollingUpdate
+{{- end }}
