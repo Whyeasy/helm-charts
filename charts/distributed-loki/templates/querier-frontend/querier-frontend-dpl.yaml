@@ -38,7 +38,6 @@ spec:
       - args:
         - -config.file=/etc/loki/config/config.yaml
         - -limits.per-user-override-config=/etc/loki/overrides/overrides.yaml
-        - -log.level=debug
         - -target=query-frontend
         image: {{ .Values.loki.image }}
         imagePullPolicy: {{ .Values.loki.pullPolicy | quote }}

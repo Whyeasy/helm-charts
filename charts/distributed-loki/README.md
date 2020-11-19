@@ -2,7 +2,7 @@ loki-distributed
 ================
 A Helm chart for Kubernetes
 
-Current chart version is `0.7.0`
+Current chart version is `0.7.1`
 
 
 
