@@ -845,6 +845,29 @@ entries:
     urls:
     - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.0.16/loki-distributed-0.0.16.tgz
     version: 0.0.16
+  oauth2-proxy:
+  - apiVersion: v1
+    appVersion: 5.1.0
+    created: "2020-12-17T10:47:49.143617179Z"
+    deprecated: true
+    description: A reverse proxy that provides authentication with Google, Github
+      or other providers
+    digest: ca46305678851aef5415f8ccf0c28906dfb21ddbd4137826d682a10fdfdf64e0
+    home: https://pusher.github.io/oauth2_proxy/
+    keywords:
+    - kubernetes
+    - oauth
+    - oauth2
+    - authentication
+    - google
+    - github
+    kubeVersion: '>=1.9.0-0'
+    name: oauth2-proxy
+    sources:
+    - https://github.com/pusher/oauth2_proxy
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/oauth2-proxy-3.2.5/oauth2-proxy-3.2.5.tgz
+    version: 3.2.5
   osiris:
   - apiVersion: v1
     appVersion: v0.3.0
