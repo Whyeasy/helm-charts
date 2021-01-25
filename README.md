@@ -2,7 +2,7 @@
 
 This repository contains [Helm](https://helm.sh) charts for various projects
 
-- [Distributed Loki](https://github.com/whyeasy/helm-charts/tree/master/charts/distributed-loki)
+- [Distributed Loki](https://github.com/whyeasy/helm-charts/tree/master/charts/distributed-loki) -- Deprecated
 - [Gitlab-extra-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/gitlab-extra-exporter)
 - [Eventrouter](https://github.com/Whyeasy/helm-charts/tree/master/charts/eventrouter)
 - [Jira-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-exporter)

@@ -1,14 +1,16 @@
-loki-distributed
-================
-A Helm chart for Kubernetes
+# loki-distributed
 
-Current chart version is `0.7.1`
+![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
+---
 
+This Helm chart is deprecated and won't be updated anymore. At the end of Q1 2021 I will remove this chart from the repo.
 
+---
 
+DEPRECATED - Moved to the grafana community helm chart - https://github.com/grafana/helm-charts/
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -51,8 +53,8 @@ Current chart version is `0.7.1`
 | gateway.pullPolicy | string | `"IfNotPresent"` | Image pull policy for the Gateway images. |
 | gateway.replicaCount | int | `3` | Number of replicas for the Gateway deployment. |
 | gateway.resources | object | `{}` | Custom resources for the Gateway deployment. |
-| gateway.service.annotations | object | `{}` |  |
-| gateway.service.type | string | `"ClusterIP"` |  |
+| gateway.service.annotations | object | `{}` | Annotations to apply on gateway service |
+| gateway.service.type | string | `"ClusterIP"` | Service type |
 | gateway.tolerations | list | `[]` |  |
 | ingester.affinity | object | `{}` | Replace default affinity with custom affinity |
 | ingester.env | list | `[]` | Allow Extra env variables into the deployment |
