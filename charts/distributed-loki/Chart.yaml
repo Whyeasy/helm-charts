@@ -3,5 +3,5 @@ name: loki-distributed
 deprecated: true
 description: DEPRECATED - Moved to the grafana community helm chart - https://github.com/grafana/helm-charts/
 type: application
-version: 0.7.1
+version: 0.7.2
 appVersion: 2.0.0
