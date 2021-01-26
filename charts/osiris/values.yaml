@@ -2,7 +2,7 @@ image:
   # image.repository -- Image location, NOT including the tag
   repository: whyeasy/osiris
   # image.tag -- Image tag
-  tag: v0.3.0
+  tag: dm-oss-short-dns
   # image.pullPolicy -- Image pull policy
   pullPolicy: IfNotPresent
 
@@ -67,6 +67,11 @@ proxyInjector:
   tolerations: []
   # proxyInjector.affinity -- affinity for scheduler pod assignment
   affinity: {}
+  # The glog level for the proxy:
+  # - 1: log incoming requests
+  # - 2: log information about requests count (and "ignored" requests)
+  # -- The glog level for the proxy
+  proxyLogLevel:
 
 endpointsController:
   # endpointsController.resources -- custom resource configuration

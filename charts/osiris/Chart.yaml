@@ -1,8 +1,8 @@
 apiVersion: v1
 name: osiris
-description: A general purpose, scale-to-zero component for Kubernetes
-version: v0.0.4
-appVersion: v0.3.0
-home: https://github.com/whyeasy/osiris
+description: A general purpose, scale-to-zero component for Kubernetes. This chart is based on the forked Osiris by Dailymotion-oss.
+version: v0.1.0
+appVersion: dm-oss-short-dns
+home: https://github.com/dailymotion-oss/osiris
 sources:
-- https://github.com/whyeasy/osiris
+- https://github.com/dailymotion-oss/osiris

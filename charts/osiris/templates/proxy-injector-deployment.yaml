@@ -46,6 +46,10 @@ spec:
           value: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         - name: PROXY_IMAGE_PULL_POLICY
           value: {{ .Values.image.pullPolicy }}
+        {{- with .Values.proxyInjector.proxyLogLevel }}
+        - name: PROXY_LOG_LEVEL
+          value: {{ . | quote }}
+        {{- end }}
         ports:
         - name: https
           containerPort: 5000
