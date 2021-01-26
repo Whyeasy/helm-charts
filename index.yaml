@@ -3,6 +3,20 @@ entries:
   eventrouter:
   - apiVersion: v2
     appVersion: "0.3"
+    created: "2021-01-26T12:03:38.931878696Z"
+    description: A Helm chart for eventrouter (https://github.com/heptiolabs/eventrouter)
+    digest: 36cb6511a730f3db79cb65a83863639b85439d1da1cf36f360c62d5aaacff648
+    home: https://github.com/heptiolabs/eventrouter
+    keywords:
+    - eventrouter
+    name: eventrouter
+    sources:
+    - https://github.com/heptiolabs/eventrouter
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/eventrouter-0.3.3/eventrouter-0.3.3.tgz
+    version: 0.3.3
+  - apiVersion: v2
+    appVersion: "0.3"
     created: "2020-12-17T12:29:39.683482706Z"
     description: A Helm chart for eventruter (https://github.com/heptiolabs/eventrouter)
     digest: 0d06eb6114f9c382ef58c6fc2097e083923c8c24bc81f21fe405cb91702f5c93
@@ -16,6 +30,16 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/eventrouter-0.3.2/eventrouter-0.3.2.tgz
     version: 0.3.2
   gitlab-extra-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.16
+    created: "2021-01-26T12:03:38.992638871Z"
+    description: A Helm chart to deploy [gitlab-extra-exporter](https://github.com/Whyeasy/gitlab-extra-exporter)
+    digest: 6f23d6e92196413b1703dd81939a411927141349c63461c2ac2d0cffd0641603
+    name: gitlab-extra-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/gitlab-extra-exporter-0.1.18/gitlab-extra-exporter-0.1.18.tgz
+    version: 0.1.18
   - apiVersion: v2
     appVersion: 0.0.16
     created: "2020-10-02T12:11:28.91748679Z"
@@ -199,6 +223,16 @@ entries:
   jira-exporter:
   - apiVersion: v2
     appVersion: 0.0.8
+    created: "2021-01-26T12:03:39.079010079Z"
+    description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
+    digest: 6440a37aa54afbc496c0ff4aaad461d0d88e1ae45f858a4713bf9ae7dfb284a5
+    name: jira-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/jira-exporter-0.1.8/jira-exporter-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 0.0.8
     created: "2020-10-02T12:11:28.994155143Z"
     description: A Helm chart to deploy [jira-exporter](https://github.com/Whyeasy/jira-exporter)
     digest: 563e26af6317067ee32b1ff3ca85c5fdff8972f9548050e5f66ae392691cd35a
@@ -280,6 +314,16 @@ entries:
   jira-sd-exporter:
   - apiVersion: v2
     appVersion: 0.0.6
+    created: "2021-01-26T12:03:39.164120165Z"
+    description: A Helm chart to deploy [jira-sd-exporter](https://github.com/Whyeasy/jira-sd-exporter)
+    digest: 7dc58bafbc624fa0e7cb2652d9c0f4ce7d0e8b9e50decb8b73b2b3128e1f9321
+    name: jira-sd-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/jira-sd-exporter-0.0.6/jira-sd-exporter-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: 0.0.6
     created: "2020-10-02T12:11:29.078607686Z"
     description: A Helm chart to deploy [jira-sd-exporter](https://github.com/Whyeasy/jira-sd-exporter)
     digest: ef93260a339a97eb20da921de1bb97eac285e280a91f2039ef1d5ce52e64ec60
@@ -331,6 +375,16 @@ entries:
   k8s-node-termination-handler:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2021-01-26T12:03:39.241006166Z"
+    description: A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
+    digest: b9e341b03e65209c59712eacaf5ab946a92b2a1ae3c5eb86af93311c447b4bf7
+    name: k8s-node-termination-handler
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/k8s-node-termination-handler-0.0.4/k8s-node-termination-handler-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2020-06-02T09:22:52.127013679Z"
     description: A Helm chart to deploy [k8s-node-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
     digest: 224ffc909caae0dcdf81b0d73f1bbbe45bb736b00c3de412585d4b0f1cf94814
@@ -360,6 +414,17 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/k8s-node-termination-handler-0.0.1/k8s-node-termination-handler-0.0.1.tgz
     version: 0.0.1
   loki-distributed:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2021-01-26T12:03:39.323259022Z"
+    deprecated: true
+    description: DEPRECATED - Moved to the grafana community helm chart - https://github.com/grafana/helm-charts/
+    digest: f5d9b898007f1b16c1b4a91d59c218e73994eab013c050e591a2079c9e8e6476
+    name: loki-distributed
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/loki-distributed-0.7.2/loki-distributed-0.7.2.tgz
+    version: 0.7.2
   - apiVersion: v2
     appVersion: 2.0.0
     created: "2020-11-19T14:35:19.775938054Z"
@@ -863,6 +928,27 @@ entries:
   oauth2-proxy:
   - apiVersion: v2
     appVersion: 5.1.0
+    created: "2021-01-26T12:03:39.415172679Z"
+    description: A reverse proxy that provides authentication with Google, Github
+      or other providers
+    digest: d3efced4068a336e139ac4f04538d5a27743917823541df787b240765f188ae2
+    home: https://pusher.github.io/oauth2_proxy/
+    keywords:
+    - kubernetes
+    - oauth
+    - oauth2
+    - authentication
+    - google
+    - github
+    kubeVersion: '>=1.9.0-0'
+    name: oauth2-proxy
+    sources:
+    - https://github.com/pusher/oauth2_proxy
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/oauth2-proxy-3.2.7/oauth2-proxy-3.2.7.tgz
+    version: 3.2.7
+  - apiVersion: v2
+    appVersion: 5.1.0
     created: "2020-12-17T11:29:10.102193548Z"
     description: A reverse proxy that provides authentication with Google, Github
       or other providers
@@ -905,6 +991,19 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/oauth2-proxy-3.2.5/oauth2-proxy-3.2.5.tgz
     version: 3.2.5
   osiris:
+  - apiVersion: v1
+    appVersion: dm-oss-short-dns
+    created: "2021-01-26T12:03:39.49591922Z"
+    description: A general purpose, scale-to-zero component for Kubernetes. This chart
+      is based on the forked Osiris by Dailymotion-oss.
+    digest: bb80cda8e10cfc3fb887d561c1d46a59ccf8d3125401a389433b6b0a7d66a1e6
+    home: https://github.com/dailymotion-oss/osiris
+    name: osiris
+    sources:
+    - https://github.com/dailymotion-oss/osiris
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/osiris-v0.1.0/osiris-v0.1.0.tgz
+    version: v0.1.0
   - apiVersion: v1
     appVersion: v0.3.0
     created: "2020-10-16T12:52:38.893577304Z"
@@ -956,6 +1055,18 @@ entries:
   prometheus-mongodb-exporter:
   - apiVersion: v2
     appVersion: v0.10.0
+    created: "2021-01-26T12:03:39.568719678Z"
+    description: A Prometheus exporter for MongoDB metrics
+    digest: 882cb6c5d222a3e140c41e8ccdafa77675641b98271862caba0a2696e8f7531b
+    name: prometheus-mongodb-exporter
+    sources:
+    - https://github.com/percona/mongodb_exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.4/prometheus-mongodb-exporter-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: v0.10.0
     created: "2020-10-29T15:52:33.117411503Z"
     description: A Prometheus exporter for MongoDB metrics
     digest: 9d023b704171bf1b46afcec25070c6b5fc2a405c8023a4c20d546b3eaefefb39
@@ -979,6 +1090,16 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-mongodb-exporter-0.0.1/prometheus-mongodb-exporter-0.0.1.tgz
     version: 0.0.1
   sonarcloud-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.3
+    created: "2021-01-26T12:03:39.637607496Z"
+    description: A Helm chart to deploy [sonarcloud-exporter](https://github.com/Whyeasy/sonarcloud-exporter)
+    digest: 5396bd951d697dbc1ae889e47d29c66a65dfa55796fda35162111f973ec39d8d
+    name: sonarcloud-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/sonarcloud-exporter-0.1.3/sonarcloud-exporter-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v2
     appVersion: 0.0.3
     created: "2020-10-02T12:11:29.241828765Z"
@@ -1010,6 +1131,17 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/sonarcloud-exporter-0.1.0/sonarcloud-exporter-0.1.0.tgz
     version: 0.1.0
   stackdriver-exporter:
+  - apiVersion: v2
+    appVersion: 0.11.0
+    created: "2021-01-26T12:03:39.719747851Z"
+    description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO
+      SA and Secrets.
+    digest: b2bb73990cfd57423f579e67eef92d810f4e97a5fba3c9a6ef7e694885a4ad5c
+    name: stackdriver-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/stackdriver-exporter-0.1.9/stackdriver-exporter-0.1.9.tgz
+    version: 0.1.9
   - apiVersion: v2
     appVersion: 0.11.0
     created: "2020-09-03T12:03:50.387837831Z"
@@ -1110,6 +1242,16 @@ entries:
     - https://github.com/Whyeasy/helm-charts/releases/download/stackdriver-exporter-0.1.0/stackdriver-exporter-0.1.0.tgz
     version: 0.1.0
   version-checker:
+  - apiVersion: v2
+    appVersion: v0.2.1
+    created: "2021-01-26T12:03:39.814256835Z"
+    description: A Helm chart for version-checker
+    digest: bc66626eab7ecb364505b284258a4cbc3cccb93282051f91282cc2bb3396e952
+    home: https://github.com/joshvanl/verison-checker
+    name: version-checker
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/version-checker-0.2.3/version-checker-0.2.3.tgz
+    version: 0.2.3
   - apiVersion: v2
     appVersion: v0.2.1
     created: "2020-10-16T10:32:13.755293174Z"
