@@ -993,6 +993,19 @@ entries:
   osiris:
   - apiVersion: v1
     appVersion: dm-oss-short-dns
+    created: "2021-01-26T15:37:44.85099232Z"
+    description: A general purpose, scale-to-zero component for Kubernetes. This chart
+      is based on the forked Osiris by Dailymotion-oss.
+    digest: 68edeab0fcd9376e3ca2479e39d68f3f90ccbf385088ffb7f5607e70b46c6f1e
+    home: https://github.com/dailymotion-oss/osiris
+    name: osiris
+    sources:
+    - https://github.com/dailymotion-oss/osiris
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/osiris-0.1.1/osiris-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: dm-oss-short-dns
     created: "2021-01-26T12:03:39.49591922Z"
     description: A general purpose, scale-to-zero component for Kubernetes. This chart
       is based on the forked Osiris by Dailymotion-oss.
