@@ -1,6 +1,6 @@
 # osiris
 
-![Version: v0.1.0](https://img.shields.io/badge/Version-v0.1.0-informational?style=flat-square) ![AppVersion: dm-oss-short-dns](https://img.shields.io/badge/AppVersion-dm--oss--short--dns-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![AppVersion: dm-oss-short-dns](https://img.shields.io/badge/AppVersion-dm--oss--short--dns-informational?style=flat-square)
 
 A general purpose, scale-to-zero component for Kubernetes. This chart is based on the forked Osiris by Dailymotion-oss.
 
