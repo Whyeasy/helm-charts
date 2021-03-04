@@ -1,6 +1,7 @@
 apiVersion: v2
 name: stackdriver-exporter
-description: A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
+description: DEPRECATED - Moved to the prometheus community helm chart - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-stackdriver-exporter
+deprecated: true
 type: application
-version: 0.1.9
+version: 0.1.10
 appVersion: 0.11.0

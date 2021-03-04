@@ -1,8 +1,10 @@
 # stackdriver-exporter
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.0](https://img.shields.io/badge/AppVersion-0.11.0-informational?style=flat-square)
+> **:exclamation: This Helm Chart is deprecated!**
 
-A slim Helm Chart to deploy a GCP Stackdriver exporter, with BYO SA and Secrets.
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.0](https://img.shields.io/badge/AppVersion-0.11.0-informational?style=flat-square)
+
+DEPRECATED - Moved to the prometheus community helm chart - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-stackdriver-exporter
 
 ## Values
 
