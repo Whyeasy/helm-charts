@@ -1,0 +1,86 @@
+image:
+  # -- image repository
+  repository: whyeasy/prometheus-statuspage-pusher
+  # -- image tag
+  tag: 0.1.1
+  # -- image pull policy
+  pullPolicy: IfNotPresent
+
+
+statuspage:
+  # -- Metric push interval to Statuspage
+  pushInterval: 30s
+  # -- Statuspage ID
+  id: 0
+  # -- statuspage URL
+  url: https://api.statuspage.io
+
+prometheus:
+  # -- URL of Prometheus API
+  url: http://localhost:9091/prometheus
+  # -- Entries of metricsID and Prometheus expression to send to Statuspage
+  metrics:
+    - "metricID: prometheus-expression"
+    - "metricID2: prometheus-expression2"
+  # <statuspage-MetricsID> : <prometheus_expression>
+  # abcdef: avg(up{job="web"})
+
+# -- image pull secret for private images
+imagePullSecrets: []
+# -- override name of the chart
+nameOverride: ""
+# -- full name of the chart.
+fullnameOverride: ""
+
+# -- custom resource configuration
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 128Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+# -- Add security context to pods
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Add security context to deployment
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# -- node for scheduler pod assignment
+nodeSelector: {}
+
+# -- Node/pod affinities
+affinity: {}
+
+# -- Annotations to be added to the pods
+annotations: {}
+
+# -- additional volume mounts
+extraVolumeMounts: []
+#  - name: some
+#    mountPath: /volume
+
+# -- additional volumes
+extraVolumes: []
+#  - name: tmp
+#    emptyDir: {}
+
+# -- environment variables for the container
+env: []
+
+# -- environment variable sources for the container
+envFrom: []
+#  - configMapRef:
+#      name: pusher-cm
+
+strategy:
+  # -- Strategy for deploying containers
+  type: RollingUpdate

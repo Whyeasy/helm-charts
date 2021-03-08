@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "prometheus-statuspage-pusher.fullname" . }}
+  labels:
+    {{- include "prometheus-statuspage-pusher.labels" . | nindent 4 }}
+data:
+  queries.yaml: |
+    {{- range .Values.prometheus.metrics }}
+    {{ . }}
+    {{- end }}

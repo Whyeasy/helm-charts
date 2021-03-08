@@ -11,6 +11,7 @@ This repository contains [Helm](https://helm.sh) charts for various projects
 - [Oauth2-proxy](https://github.com/Whyeasy/helm-charts/tree/master/charts/oauth2-proxy)
 - [Osiris](https://github.com/whyeasy/helm-charts/tree/master/charts/osiris)
 - [Prometheus MongoDb Exporter](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-mongodb-exporter)
+- [Prometheus Statuspage Pusher](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-statuspage-pusher)
 - [Stackdriver-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/stackdriver-exporter) -- Deprecated
 - [Sonarcloud-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/sonarcloud-exporter)
 - [Version-checker](https://github.com/Whyeasy/helm-charts/tree/master/charts/version-checker)
