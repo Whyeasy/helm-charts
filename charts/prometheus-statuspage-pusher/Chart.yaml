@@ -2,5 +2,5 @@ apiVersion: v2
 name: prometheus-statuspage-pusher
 description: A helm chart to deploy [prometheus-statuspage-pusher](https://github.com/Whyeasy/prometheus-statuspage-pusher).
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: 0.1.1
