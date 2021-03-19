@@ -2,7 +2,7 @@ image:
   # -- image repository
   repository: whyeasy/prometheus-statuspage-pusher
   # -- image tag
-  tag: 0.1.1
+  tag: 0.1.2
   # -- image pull policy
   pullPolicy: IfNotPresent
 
@@ -84,3 +84,19 @@ envFrom: []
 strategy:
   # -- Strategy for deploying containers
   type: RollingUpdate
+
+service:
+  # -- Serive type for the exporter
+  type: ClusterIP
+  # -- Service port for the exporter
+  port: 8080
+
+serviceMonitor:
+  # -- Deploy a service monitor along with the exporter.
+  enabled: false
+  # -- Set scraping interval for the service monitor.
+  interval: ""
+  # -- Set scraping time out for the service monitor.
+  scrapeTimeout: ""
+  # -- Specify addiotnal Endpoint objects
+  endpoints: []

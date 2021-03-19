@@ -35,16 +35,11 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           args:
-            - -c
-            - "/etc/statuspage-pusher/queries.yaml"
-            - -i 
-            - {{ .Values.statuspage.pushInterval | quote }}
-            - -si 
-            - {{ .Values.statuspage.id | quote }}
-            - -su 
-            - {{ .Values.statuspage.url | quote }}
-            - -pu 
-            - {{ .Values.prometheus.url | quote }}
+            - -c="/etc/statuspage-pusher/queries.yaml"
+            - -i={{ .Values.statuspage.pushInterval | quote }}
+            - -si={{ .Values.statuspage.id | quote }}
+            - -su={{ .Values.statuspage.url | quote }}
+            - -pu={{ .Values.prometheus.url | quote }}
         {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}
@@ -59,6 +54,11 @@ spec:
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- if .Values.serviceMonitor.enabled }}
+          ports:
+            - name: http
+              containerPort: 9095
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

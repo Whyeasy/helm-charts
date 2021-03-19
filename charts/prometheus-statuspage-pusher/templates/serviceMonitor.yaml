@@ -1,0 +1,24 @@
+{{ if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "prometheus-statuspage-pusher.fullname" . }}
+  labels:
+    {{- include "prometheus-statuspage-pusher.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - port: http
+    {{- if .Values.serviceMonitor.interval }}
+    interval: {{ .Values.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- with .Values.serviceMonitor.endpoints }}
+      {{- toYaml . | nindent 2 }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- include "prometheus-statuspage-pusher.selectorLabels" . | nindent 6 }}
+{{- end }}
