@@ -35,11 +35,11 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           args:
-            - -c="/etc/statuspage-pusher/queries.yaml"
+            - -c=/etc/statuspage-pusher/queries.yaml
             - -i={{ .Values.statuspage.pushInterval }}
-            - -si={{ .Values.statuspage.id | quote }}
-            - -su={{ .Values.statuspage.url | quote }}
-            - -pu={{ .Values.prometheus.url | quote }}
+            - -si={{ .Values.statuspage.id }}
+            - -su={{ .Values.statuspage.url }}
+            - -pu={{ .Values.prometheus.url }}
         {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}
