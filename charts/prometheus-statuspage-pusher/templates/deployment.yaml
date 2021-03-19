@@ -36,7 +36,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           args:
             - -c="/etc/statuspage-pusher/queries.yaml"
-            - -i={{ .Values.statuspage.pushInterval | quote }}
+            - -i={{ .Values.statuspage.pushInterval }}
             - -si={{ .Values.statuspage.id | quote }}
             - -su={{ .Values.statuspage.url | quote }}
             - -pu={{ .Values.prometheus.url | quote }}
