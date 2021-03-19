@@ -1104,6 +1104,16 @@ entries:
     version: 0.0.1
   prometheus-statuspage-pusher:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2021-03-19T10:14:56.310119651Z"
+    description: A helm chart to deploy [prometheus-statuspage-pusher](https://github.com/Whyeasy/prometheus-statuspage-pusher).
+    digest: d420090d9f4af625c9025d271a316ecf80984cddbb31613472453daddf7dfbf7
+    name: prometheus-statuspage-pusher
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/prometheus-statuspage-pusher-0.1.2/prometheus-statuspage-pusher-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.1
     created: "2021-03-08T11:32:43.298972704Z"
     description: A helm chart to deploy [prometheus-statuspage-pusher](https://github.com/Whyeasy/prometheus-statuspage-pusher).
