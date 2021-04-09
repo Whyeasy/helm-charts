@@ -1,0 +1,87 @@
+# Default values for site24x7-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  # -- image repository
+  repository: svenstaro/site24x7_exporter
+  # -- image pull policy
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# -- image pull secret for private images
+imagePullSecrets: []
+# -- override name of the chart
+nameOverride: ""
+# -- full name of the chart.
+fullnameOverride: ""
+
+# -- Add annotations on pods
+podAnnotations: {}
+
+# -- Add security context to pods
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Add security context to deployment
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+
+strategy:
+  # -- Strategy for deploying containers
+  type: RollingUpdate
+
+service:
+  # -- Serive type for the exporter
+  type: ClusterIP
+  # -- Service port for the exporter
+  port: 8080
+
+# -- custom resource configuration
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 128Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+# -- Node for scheduler pod assignment
+nodeSelector: {}
+
+# -- Node/pod affinities
+affinity: {}
+
+# -- Adding any tolerations to your deployment.
+tolerations: []
+
+serviceMonitor:
+  # -- Deploy a service monitor along with the exporter.
+  enabled: false
+  # -- Set scraping interval for the service monitor.
+  interval: ""
+  # -- Set scraping time out for the service monitor.
+  scrapeTimeout: ""
+  # -- Specify addiotnal Endpoint objects
+  endpoints: []
+
+site24x7:
+  # -- API endpoint to use (depends on region, see https://site24x7.com/help/api) [possible values: site24x7.com, site24x7.eu, site24x7.cn, site24x7.in,site24x7.net.au]
+  endpoint: site24x7.com
+
+# -- environment variables for the container
+env: []
+
+# -- environment variable sources for the container
+envFrom: []
+#  - configMapRef:
+#      name: site24x7-cm
