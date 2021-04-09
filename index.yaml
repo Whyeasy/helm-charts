@@ -1155,6 +1155,16 @@ entries:
     version: 0.1.0
   site24x7-exporter:
   - apiVersion: v2
+    appVersion: 0.5.2
+    created: "2021-04-09T09:59:51.44655911Z"
+    description: A Helm chart to deploy [site24x7-exporter](https://github.com/svenstaro/site24x7_exporter).
+    digest: 49749eaca4e51547cf027cf77677a31b970c6b567e52a3cf4c62c65515bcd747
+    name: site24x7-exporter
+    type: application
+    urls:
+    - https://github.com/Whyeasy/helm-charts/releases/download/site24x7-exporter-0.1.1/site24x7-exporter-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: v0.5.2
     created: "2021-04-09T09:26:35.578440382Z"
     description: A Helm chart to deploy [site24x7-exporter](https://github.com/svenstaro/site24x7_exporter).
