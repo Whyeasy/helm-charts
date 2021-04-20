@@ -2,5 +2,5 @@ apiVersion: v2
 name: site24x7-exporter
 description: A Helm chart to deploy [site24x7-exporter](https://github.com/svenstaro/site24x7_exporter).
 type: application
-version: 0.1.1
-appVersion: 0.5.2
+version: 0.1.2
+appVersion: 0.6.0
