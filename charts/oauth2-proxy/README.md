@@ -1,5 +1,7 @@
 # oauth2-proxy
 
+This Helm chart is deprecated and won't be updated anymore. Please use the official one at https://github.com/oauth2-proxy/manifests/tree/main/helm/oauth2-proxy
+
 ![Version: 3.2.6](https://img.shields.io/badge/Version-3.2.6-informational?style=flat-square) ![AppVersion: 5.1.0](https://img.shields.io/badge/AppVersion-5.1.0-informational?style=flat-square)
 
 A reverse proxy that provides authentication with Google, Github or other providers
