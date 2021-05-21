@@ -8,7 +8,7 @@ This repository contains [Helm](https://helm.sh) charts for various projects
 - [Jira-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-exporter)
 - [Jira-sd-exporter](https://github.com/Whyeasy/helm-charts/tree/master/charts/jira-sd-exporter)
 - [k8s Node Termination Handler](https://github.com/whyeasy/helm-charts/tree/master/charts/k8s-node-termination-handler)
-- [Oauth2-proxy](https://github.com/Whyeasy/helm-charts/tree/master/charts/oauth2-proxy)
+- [Oauth2-proxy](https://github.com/Whyeasy/helm-charts/tree/master/charts/oauth2-proxy) -- Deprecated
 - [Osiris](https://github.com/whyeasy/helm-charts/tree/master/charts/osiris)
 - [Prometheus MongoDb Exporter](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-mongodb-exporter)
 - [Prometheus Statuspage Pusher](https://github.com/whyeasy/helm-charts/tree/master/charts/prometheus-statuspage-pusher)
